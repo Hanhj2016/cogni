@@ -1,0 +1,104 @@
+
+//*********************qi guai ban ben////////////////////////
+//        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        var queryExpression = AWSDynamoDBScanExpression()
+//
+//        let temp = dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression)
+//        let real = temp.result
+//        for news in (real?.items)! {
+//                    posts.append(news as! Posts)
+//                }
+
+///////////////////////////////////////////////////////
+
+
+
+
+
+//load some posts:
+//********************
+//        let queryExpression = AWSDynamoDBQueryExpression()
+//        queryExpression.keyConditionExpression = "#postId > :postId"
+//        queryExpression.expressionAttributeNames = [
+//            "#postId": "post_id",
+//        ]
+//        queryExpression.expressionAttributeValues = [
+//            ":postId": "0",
+//        ]
+//        dynamoDbObjectMapper.query(Posts.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+//            if error != nil {
+//                print("The request failed. Error: \(String(describing: error))")
+//            }
+//            if output != nil {
+//                DispatchQueue.main.async(execute: {
+//                    for news in output!.items {
+//                        self.posts.append(news as! Posts)
+//                    }
+//                })
+//            }
+//        }
+//**********************
+
+
+
+
+
+//var temp:Posts = dynamoDbObjectMapper.load(Posts.self, hashKey: "Potaty", rangeKey: 5).result as! Posts
+//while(posts.count == 0){self.tableView.reloadData()}
+// load one post
+//***********
+//        dynamoDbObjectMapper.load(Posts.self, hashKey: "Potaty", rangeKey: 5).continueWith(executor: AWSExecutor.mainThread(), block: { (task:AWSTask!) -> AnyObject! in
+//            if let error = task.error as NSError? {
+//                print("Amazon DynamoDB Read Error: \(error)")
+//            }else if let resultBook = task.result as? Posts {
+//        DispatchQueue.main.async(execute: {
+//            self.posts.append(resultBook)
+//        })
+//            }
+//            return nil
+//        })
+//**************
+
+
+//******************test**********************//
+//        dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression).continueWith(executor: AWSExecutor.mainThread(), block: { (task:AWSTask!) -> AnyObject? in
+//            if let paginatedOutput = task.result{
+//                        for news in paginatedOutput.items {
+//                            posts.append(news as! Posts)
+//                        }
+//            }
+//            return nil
+//        })
+
+//****************************************
+
+
+
+
+
+
+
+// ****************************supposed to be storing local data****************************//
+//        var userDefaults = UserDefaults.standard
+//        let decoded  = userDefaults.object(forKey: "posts") as! Data
+//        let decodedTeams = NSKeyedUnarchiver.unarchiveObject(with: decoded) as! [Posts]
+//        print(decodedTeams.count)\
+//********************************************************************************************
+
+
+
+
+
+
+
+////////////////////  weird fuk//////////////////////////
+//        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        var queryExpression = AWSDynamoDBScanExpression()
+//
+//        let temp = dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression)
+//        let real = temp.result
+//        for news in (real?.items)! {
+//            posts.append(news as! Posts)
+//        }
+
+

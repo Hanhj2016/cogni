@@ -24,7 +24,8 @@ import AWSPinpoint
 import Foundation
 import AWSS3
 //var temp_Post:Posts = Posts()
-var posts:Set<Posts> = []
+var posts:[Posts] = []
+var time:[Int] = []
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -71,30 +72,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //****************working version*****************8//
-        //        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        //        var queryExpression = AWSDynamoDBScanExpression()
-        //        dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
-        //            DispatchQueue.main.async(execute: {
-        //                if let paginatedOutput = task{
-        //                    for news in paginatedOutput.items {
-        //                        posts.insert(news as! Posts)
-        //                    }
-        //                }
-        //            })
-        //        })
+                var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+                var queryExpression = AWSDynamoDBScanExpression()
+                dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
+                    DispatchQueue.main.async(execute: {
+                        if let paginatedOutput = task{
+                            if (paginatedOutput.items.count < posts.count)
+                            {posts = []}
+                            for news in paginatedOutput.items {
+                                if !posts.contains(news as! Posts)
+                                {posts.append(news as! Posts)}
+                            }
+                        }
+                    })
+                })
         //********************************//
+         //************** TIME ******************//
+        let date = Date()
+        let calendar = Calendar.current
+        time.append(calendar.component(.year, from: date)) // 0
+        time.append(calendar.component(.month, from: date)) // 1
+        time.append(calendar.component(.day, from: date)) //2
+        time.append(calendar.component(.hour, from: date)) // 3
+        time.append(calendar.component(.minute, from: date)) // 4
+        time.append(calendar.component(.second, from: date)) // 5
+        //************** TIME ******************//
         
-        //*********************qi guai ban ben////////////////////////
-        //        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        //        var queryExpression = AWSDynamoDBScanExpression()
-        //
-        //        let temp = dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression)
-        //        let real = temp.result
-        //        for news in (real?.items)! {
-        //                    posts.append(news as! Posts)
-        //                }
         
-        ///////////////////////////////////////////////////////
+        
+        
         
         
         // fetch the user pool client we initialized in above step
@@ -104,13 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pool.delegate = self
         
         
-        
-        //        var userDefaults = UserDefaults.standard
-        //        let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: posts)
-        //        userDefaults.set(encodedData, forKey: "posts")
-        //        userDefaults.synchronize()
-        //UserDefaults.standard.set(try? PropertyListEncoder().encode(posts), forKey:"posts")
-        
+    
         
         
         return true

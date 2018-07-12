@@ -29,6 +29,7 @@
 		B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C1DD5520F6763B004C611B /* post_cell.swift */; };
 		B9D6951020EE90790024F6FF /* profile_picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D6950F20EE90790024F6FF /* profile_picture.swift */; };
 		B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D6951520EE924C0024F6FF /* awsconfiguration.json */; };
+		B9F9B53C20F7A98D00CE306F /* trash_box in Resources */ = {isa = PBXBuildFile; fileRef = B9F9B53B20F7A98D00CE306F /* trash_box */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		B9C1DD5520F6763B004C611B /* post_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_cell.swift; sourceTree = "<group>"; };
 		B9D6950F20EE90790024F6FF /* profile_picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile_picture.swift; sourceTree = "<group>"; };
 		B9D6951420EE924C0024F6FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/awsconfiguration.json; sourceTree = "<group>"; };
+		B9F9B53B20F7A98D00CE306F /* trash_box */ = {isa = PBXFileReference; lastKnownFileType = text; path = trash_box; sourceTree = "<group>"; };
 		DBEB9BB4F88788184F7DD583 /* Pods-CognitoYourUserPoolsSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CognitoYourUserPoolsSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,6 +112,7 @@
 				17FC2F9E1E259F3200174015 /* ConfirmSignUpViewController.swift */,
 				B9C1DD5520F6763B004C611B /* post_cell.swift */,
 				17FC2FA01E25A25900174015 /* ForgotPasswordViewController.swift */,
+				B9F9B53B20F7A98D00CE306F /* trash_box */,
 				17FC2FA21E25A5D000174015 /* ConfirmForgotPasswordViewController.swift */,
 				17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */,
 				17FC2FA61E25A9A200174015 /* DevicesDetailTableViewController.swift */,
@@ -220,6 +223,7 @@
 				17FC2F921E25908D00174015 /* CognitoLogo.png in Resources */,
 				17FC2F851E258FC500174015 /* Main.storyboard in Resources */,
 				17FC2F951E2590D800174015 /* MFAViewController.xib in Resources */,
+				B9F9B53C20F7A98D00CE306F /* trash_box in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

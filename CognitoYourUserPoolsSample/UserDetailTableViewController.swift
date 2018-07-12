@@ -65,81 +65,6 @@ class UserDetailTableViewController : UITableViewController {
         
         if(posts.count == 0)
         {refresh()}
-        //******************test**********************//
-        //        dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression).continueWith(executor: AWSExecutor.mainThread(), block: { (task:AWSTask!) -> AnyObject? in
-        //            if let paginatedOutput = task.result{
-        //                        for news in paginatedOutput.items {
-        //                            posts.append(news as! Posts)
-        //                        }
-        //            }
-        //            return nil
-        //        })
-        
-        //****************************************
-        
-        
-        //var temp:Posts = dynamoDbObjectMapper.load(Posts.self, hashKey: "Potaty", rangeKey: 5).result as! Posts
-        //while(posts.count == 0){self.tableView.reloadData()}
-        // load one post
-        //***********
-        //        dynamoDbObjectMapper.load(Posts.self, hashKey: "Potaty", rangeKey: 5).continueWith(executor: AWSExecutor.mainThread(), block: { (task:AWSTask!) -> AnyObject! in
-        //            if let error = task.error as NSError? {
-        //                print("Amazon DynamoDB Read Error: \(error)")
-        //            }else if let resultBook = task.result as? Posts {
-        //        DispatchQueue.main.async(execute: {
-        //            self.posts.append(resultBook)
-        //        })
-        //            }
-        //            return nil
-        //        })
-        //**************
-        
-        
-        //load some posts:
-        //********************
-        //        let queryExpression = AWSDynamoDBQueryExpression()
-        //        queryExpression.keyConditionExpression = "#postId > :postId"
-        //        queryExpression.expressionAttributeNames = [
-        //            "#postId": "post_id",
-        //        ]
-        //        queryExpression.expressionAttributeValues = [
-        //            ":postId": "0",
-        //        ]
-        //        dynamoDbObjectMapper.query(Posts.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-        //            if error != nil {
-        //                print("The request failed. Error: \(String(describing: error))")
-        //            }
-        //            if output != nil {
-        //                DispatchQueue.main.async(execute: {
-        //                    for news in output!.items {
-        //                        self.posts.append(news as! Posts)
-        //                    }
-        //                })
-        //            }
-        //        }
-        //**********************
-        
-        
-        
-        
-        
-        
-        //**************
-        //scan
-        //        let scanExpression = AWSDynamoDBScanExpression()
-        //        dynamoDbObjectMapper.scan(Posts.self, expression: scanExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-        //            if error != nil {
-        //                print("The request failed. Error: \(String(describing: error))")
-        //            }
-        //            if output != nil {
-        //                DispatchQueue.main.async(execute: {
-        //                    for news in output!.items {
-        //                        posts.append(news as! Posts)
-        //                    }
-        //                })
-        //            }
-        //        }
-        //***************************
         
         self.navigationController?.setToolbarHidden(false, animated: true)
     }
@@ -157,20 +82,117 @@ class UserDetailTableViewController : UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "attribute", for: indexPath)
-        //let userAttribute = self.response?.userAttributes![indexPath.row]
-        cell.textLabel!.text = "\(indexPath.row)"
-        cell.detailTextLabel!.text = String(posts.count)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "post_cell", for: indexPath) as! post_cell
+        let temp:Posts = posts[indexPath.row]
         
-        //cell.textLabel!.text = posts[0]._text
-        //cell.detailTextLabel!.text = posts[0]._postId
         
-        // ****************************supposed to be storing local data****************************//
-        //        var userDefaults = UserDefaults.standard
-        //        let decoded  = userDefaults.object(forKey: "posts") as! Data
-        //        let decodedTeams = NSKeyedUnarchiver.unarchiveObject(with: decoded) as! [Posts]
-        //        print(decodedTeams.count)\
-        //********************************************************************************************
+        if ((temp._username) != nil)
+        {cell.username.text = temp._username}
+        if ((temp._title) != nil)
+        {cell.title.text = temp._title}
+        if ((temp._text) != nil)
+        {cell.content.text = temp._text
+            var greet4Height = cell.content.optimalHeight
+            cell.content.frame = CGRect(x: cell.content.frame.origin.x, y: cell.content.frame.origin.y, width: cell.content.frame.width, height: greet4Height)
+            cell.content.backgroundColor = UIColor.yellow
+        }
+        if ((temp._shared) != nil)
+        {cell.shared.text = String(temp._shared as! Int)}
+        if ((temp._comments) != nil)
+        {cell.comments.text = String(temp._comments as! Int)}
+        
+        if ((temp._liked) != nil)
+        {cell.liked.text = String(temp._liked as! Int)}
+        
+        if ((temp._time) != nil)
+        {//using the easy way
+            var output = ""
+            var _time = temp._time as! Int
+            var second = _time % 100
+            var Rem = _time / 100
+            var Minute = Rem % 100
+            Rem = Rem / 100
+            var hour = Rem % 100
+            Rem = Rem / 100
+            var day = Rem % 100
+            Rem = Rem / 100
+            var month = Rem % 100
+            Rem = Rem / 100
+            var year = (Rem % 100)%100
+            time[0] = time[0]%100
+         //   print("year:\(year)..month:\(month)..day:\(day)")
+            
+            if year == time[0]
+            {
+                if day == time[2]
+                {
+                    if hour == time[3]
+                    {
+                        if Minute == time[4]
+                        {output = "\(time[5]-second) 秒前"}
+                        else if time[4] - Minute == 1
+                        {output = "\(time[5]+60-second) 秒前"}
+                        else
+                        {output = "\(time[4]-Minute) 分钟前"}
+                    }
+                    else if time[3] - hour == 1
+                    {
+                        output = "\(time[4]+60-Minute) 分钟前"
+                    }
+                    else
+                    {
+                        output = "\(hour):\(Minute)"
+                    }
+                }
+                else if time[2] == (day + 1)
+                {
+                    output = "昨天\(hour):\(Minute)"
+                }
+                else if time[2] == day + 2
+                {
+                    output = "前天\(hour):\(Minute)"
+                }
+                else
+                {
+                    output = "\(month):\(day)"
+                }
+            }
+            else
+            {output = "\(year)/\(month)/\(day)"}
+            
+            
+            cell.time.text = output
+            
+            
+            
+        }
+        
+        if ((temp._tag) != nil)
+        {
+            let t = temp._tag
+            if t == 0
+            {cell.tagg.image = UIImage(named: "huodong")}
+            else if t == 1
+            {cell.tagg.image = UIImage(named: "renwu")}
+            else if t == 2
+            {cell.tagg.image = UIImage(named: "yuema")}
+            else if t == 3
+            {cell.tagg.image = UIImage(named: "qita")}
+        }
+        if ((temp._profilePicture != nil))
+        {
+            let url = URL(string: temp._profilePicture!)
+            let data = try? Data(contentsOf: url!)
+             cell.profile_picture.image = UIImage(data: data!)
+            cell.profile_picture.layer.borderWidth = 1.0
+            cell.profile_picture.layer.masksToBounds = false
+            cell.profile_picture.layer.borderColor = UIColor.white.cgColor
+            cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
+            cell.profile_picture.clipsToBounds = true
+        }
+        
+
+
         return cell
     }
     
@@ -186,36 +208,41 @@ class UserDetailTableViewController : UITableViewController {
     
     func refresh() {
         
+        //********************************//
+        //************** TIME ******************//
+        let date = Date()
+        let calendar = Calendar.current
+        time[0] = calendar.component(.year, from: date) // 0
+        time[1] = calendar.component(.month, from: date) // 1
+       time[2] = calendar.component(.day, from: date) //2
+       time[3] = calendar.component(.hour, from: date) // 3
+       time[4] = calendar.component(.minute, from: date) // 4
+        time[5] = calendar.component(.second, from: date) // 5
+    //    print("year:\(time[0])..month:\(time[1])..day:\(time[2])")
+        //************** TIME ******************//
+        
+        
+        
         //***********************
         //old version
-        print("refreshing")
+        //print("refreshing")
         var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         var queryExpression = AWSDynamoDBScanExpression()
         //print("76")
         dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
             DispatchQueue.main.async(execute: {
                 if let paginatedOutput = task{
+                    if (paginatedOutput.items.count < posts.count)
+                    {posts = []}
                     for news in paginatedOutput.items {
-                        posts.insert(news as! Posts)
+                        if !posts.contains(news as! Posts)
+                        {posts.append(news as! Posts)}
                     }
                 }
                 //   print("84")
             })
         })
-        
-        
-        ////////////////////  weird fuk//////////////////////////
-        //        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        //        var queryExpression = AWSDynamoDBScanExpression()
-        //
-        //        let temp = dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression)
-        //        let real = temp.result
-        //        for news in (real?.items)! {
-        //            posts.append(news as! Posts)
-        //        }
-        
-        
-        
+
         
         
         
