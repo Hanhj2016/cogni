@@ -29,7 +29,11 @@
 		B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C1DD5520F6763B004C611B /* post_cell.swift */; };
 		B9D6951020EE90790024F6FF /* profile_picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D6950F20EE90790024F6FF /* profile_picture.swift */; };
 		B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D6951520EE924C0024F6FF /* awsconfiguration.json */; };
+		B9E0B17720FAB258009ED8BD /* 43 发布界面.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */; };
+		B9E0B17920FE60F0009ED8BD /* image_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E0B17820FE60F0009ED8BD /* image_cell.swift */; };
 		B9F9B53C20F7A98D00CE306F /* trash_box in Resources */ = {isa = PBXBuildFile; fileRef = B9F9B53B20F7A98D00CE306F /* trash_box */; };
+		B9F9B53E20F7E4C100CE306F /* fabu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F9B53D20F7E4C100CE306F /* fabu.swift */; };
+		C45898B3B1F82CAEBB3D2148 /* Pods_chain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E8730576EDB3203667F8E00 /* Pods_chain.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,15 +55,21 @@
 		17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailTableViewController.swift; sourceTree = "<group>"; };
 		17FC2FA61E25A9A200174015 /* DevicesDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicesDetailTableViewController.swift; sourceTree = "<group>"; };
 		2D8C9B52DE415302BA7B152A /* Pods-CognitoYourUserPoolsSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CognitoYourUserPoolsSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample.release.xcconfig"; sourceTree = "<group>"; };
+		6E8730576EDB3203667F8E00 /* Pods_chain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB8F26771F0FF8105FC402DD /* Pods_CognitoYourUserPoolsSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CognitoYourUserPoolsSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0A9A7D7547397979E20D70A /* Pods-chain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chain.debug.xcconfig"; path = "Pods/Target Support Files/Pods-chain/Pods-chain.debug.xcconfig"; sourceTree = "<group>"; };
 		B902A60C20F3D44600331D17 /* prepare_posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prepare_posts.swift; sourceTree = "<group>"; };
 		B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabu_unit.swift; sourceTree = "<group>"; };
 		B98E223420E6A01C0044BB31 /* background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = background.swift; sourceTree = "<group>"; };
 		B9C1DD5520F6763B004C611B /* post_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_cell.swift; sourceTree = "<group>"; };
 		B9D6950F20EE90790024F6FF /* profile_picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile_picture.swift; sourceTree = "<group>"; };
 		B9D6951420EE924C0024F6FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/awsconfiguration.json; sourceTree = "<group>"; };
+		B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "43 发布界面.jpg"; sourceTree = "<group>"; };
+		B9E0B17820FE60F0009ED8BD /* image_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = image_cell.swift; sourceTree = "<group>"; };
 		B9F9B53B20F7A98D00CE306F /* trash_box */ = {isa = PBXFileReference; lastKnownFileType = text; path = trash_box; sourceTree = "<group>"; };
+		B9F9B53D20F7E4C100CE306F /* fabu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabu.swift; sourceTree = "<group>"; };
 		DBEB9BB4F88788184F7DD583 /* Pods-CognitoYourUserPoolsSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CognitoYourUserPoolsSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample.debug.xcconfig"; sourceTree = "<group>"; };
+		E3DAD77C24F85CC9C2515630 /* Pods-chain.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chain.release.xcconfig"; path = "Pods/Target Support Files/Pods-chain/Pods-chain.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +78,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D5A8E5387CC8FA610CFB75B /* Pods_CognitoYourUserPoolsSample.framework in Frameworks */,
+				C45898B3B1F82CAEBB3D2148 /* Pods_chain.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,15 +114,18 @@
 				17FC2F8B1E258FC500174015 /* Info.plist */,
 				17FC2F931E25909300174015 /* Supporting Files */,
 				17FC2F961E25928900174015 /* MFAViewController.swift */,
+				B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */,
 				17FC2F981E25940900174015 /* SignInViewController.swift */,
 				B9D6951520EE924C0024F6FF /* awsconfiguration.json */,
 				17FC2F9A1E259E0500174015 /* Constants.swift */,
 				B98E223420E6A01C0044BB31 /* background.swift */,
+				B9E0B17820FE60F0009ED8BD /* image_cell.swift */,
 				17FC2F9C1E259E5D00174015 /* SignUpViewController.swift */,
 				B902A60C20F3D44600331D17 /* prepare_posts.swift */,
 				17FC2F9E1E259F3200174015 /* ConfirmSignUpViewController.swift */,
 				B9C1DD5520F6763B004C611B /* post_cell.swift */,
 				17FC2FA01E25A25900174015 /* ForgotPasswordViewController.swift */,
+				B9F9B53D20F7E4C100CE306F /* fabu.swift */,
 				B9F9B53B20F7A98D00CE306F /* trash_box */,
 				17FC2FA21E25A5D000174015 /* ConfirmForgotPasswordViewController.swift */,
 				17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */,
@@ -133,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				AB8F26771F0FF8105FC402DD /* Pods_CognitoYourUserPoolsSample.framework */,
+				6E8730576EDB3203667F8E00 /* Pods_chain.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -151,6 +166,8 @@
 			children = (
 				DBEB9BB4F88788184F7DD583 /* Pods-CognitoYourUserPoolsSample.debug.xcconfig */,
 				2D8C9B52DE415302BA7B152A /* Pods-CognitoYourUserPoolsSample.release.xcconfig */,
+				B0A9A7D7547397979E20D70A /* Pods-chain.debug.xcconfig */,
+				E3DAD77C24F85CC9C2515630 /* Pods-chain.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -220,6 +237,7 @@
 				17FC2F8A1E258FC500174015 /* LaunchScreen.storyboard in Resources */,
 				17FC2F871E258FC500174015 /* Assets.xcassets in Resources */,
 				B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */,
+				B9E0B17720FAB258009ED8BD /* 43 发布界面.jpg in Resources */,
 				17FC2F921E25908D00174015 /* CognitoLogo.png in Resources */,
 				17FC2F851E258FC500174015 /* Main.storyboard in Resources */,
 				17FC2F951E2590D800174015 /* MFAViewController.xib in Resources */,
@@ -241,7 +259,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CognitoYourUserPoolsSample-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-chain-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -254,7 +272,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-chain/Pods-chain-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AWSAuthCore/AWSAuthCore.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSAuthUI/AWSAuthUI.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSCognitoIdentityProvider/AWSCognitoIdentityProvider.framework",
@@ -265,6 +283,9 @@
 				"${BUILT_PRODUCTS_DIR}/AWSPinpoint/AWSPinpoint.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSS3/AWSS3.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSUserPoolsSignIn/AWSUserPoolsSignIn.framework",
+				"${BUILT_PRODUCTS_DIR}/BSGridCollectionViewLayout/BSGridCollectionViewLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/BSImagePicker/BSImagePicker.framework",
+				"${BUILT_PRODUCTS_DIR}/UIImageViewModeScaleAspect/UIImageViewModeScaleAspect.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -278,10 +299,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSPinpoint.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSS3.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSUserPoolsSignIn.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSGridCollectionViewLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSImagePicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageViewModeScaleAspect.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-chain/Pods-chain-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -294,9 +318,11 @@
 				17FC2FA31E25A5D000174015 /* ConfirmForgotPasswordViewController.swift in Sources */,
 				17FC2FA11E25A25900174015 /* ForgotPasswordViewController.swift in Sources */,
 				B9D6951020EE90790024F6FF /* profile_picture.swift in Sources */,
+				B9F9B53E20F7E4C100CE306F /* fabu.swift in Sources */,
 				17FC2F9D1E259E5D00174015 /* SignUpViewController.swift in Sources */,
 				B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */,
 				B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */,
+				B9E0B17920FE60F0009ED8BD /* image_cell.swift in Sources */,
 				17FC2F9F1E259F3200174015 /* ConfirmSignUpViewController.swift in Sources */,
 				17FC2F9B1E259E0500174015 /* Constants.swift in Sources */,
 				B98E223520E6A01C0044BB31 /* background.swift in Sources */,
@@ -431,7 +457,7 @@
 		};
 		17FC2F8F1E258FC500174015 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DBEB9BB4F88788184F7DD583 /* Pods-CognitoYourUserPoolsSample.debug.xcconfig */;
+			baseConfigurationReference = B0A9A7D7547397979E20D70A /* Pods-chain.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 5BHGRFYGSS;
@@ -445,7 +471,7 @@
 		};
 		17FC2F901E258FC500174015 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D8C9B52DE415302BA7B152A /* Pods-CognitoYourUserPoolsSample.release.xcconfig */;
+			baseConfigurationReference = E3DAD77C24F85CC9C2515630 /* Pods-chain.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 5BHGRFYGSS;

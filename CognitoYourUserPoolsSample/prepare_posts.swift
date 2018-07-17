@@ -24,7 +24,7 @@ class prepare_posts: UIViewController {
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         let scanExpression = AWSDynamoDBScanExpression()
         DispatchQueue.main.async(execute: {
-            dynamoDbObjectMapper.scan(Posts.self, expression: scanExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+            dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: scanExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
                 if error != nil {
                     print("The request failed. Error: \(String(describing: error))")
                 }

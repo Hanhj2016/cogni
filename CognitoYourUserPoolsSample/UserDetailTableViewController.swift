@@ -56,7 +56,9 @@ class UserDetailTableViewController : UITableViewController {
         super.viewWillDisappear(animated)
         
         print("will disappear: \(posts.count)")
+        //self.navigationController?.hidesBottomBarWhenPushed = true
         self.navigationController?.setToolbarHidden(true, animated: true)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,7 +67,7 @@ class UserDetailTableViewController : UITableViewController {
         
         if(posts.count == 0)
         {refresh()}
-        
+        //self.navigationController?.hidesBottomBarWhenPushed = false
         self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
@@ -83,7 +85,7 @@ class UserDetailTableViewController : UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "post_cell", for: indexPath) as! post_cell
-        let temp:Posts = posts[indexPath.row]
+        let temp:ChanceWithValue = posts[indexPath.row]
         
         
         if ((temp._username) != nil)
@@ -92,7 +94,7 @@ class UserDetailTableViewController : UITableViewController {
         {cell.title.text = temp._title}
         if ((temp._text) != nil)
         {cell.content.text = temp._text
-            var greet4Height = cell.content.optimalHeight
+            let greet4Height = cell.content.optimalHeight
             cell.content.frame = CGRect(x: cell.content.frame.origin.x, y: cell.content.frame.origin.y, width: cell.content.frame.width, height: greet4Height)
             cell.content.backgroundColor = UIColor.yellow
         }
@@ -107,18 +109,18 @@ class UserDetailTableViewController : UITableViewController {
         if ((temp._time) != nil)
         {//using the easy way
             var output = ""
-            var _time = temp._time as! Int
-            var second = _time % 100
+            let _time = temp._time as! Int
+            let second = _time % 100
             var Rem = _time / 100
-            var Minute = Rem % 100
+            let Minute = Rem % 100
             Rem = Rem / 100
-            var hour = Rem % 100
+            let hour = Rem % 100
             Rem = Rem / 100
-            var day = Rem % 100
+            let day = Rem % 100
             Rem = Rem / 100
-            var month = Rem % 100
+            let month = Rem % 100
             Rem = Rem / 100
-            var year = (Rem % 100)%100
+            let year = (Rem % 100)%100
             time[0] = time[0]%100
          //   print("year:\(year)..month:\(month)..day:\(day)")
             
@@ -170,11 +172,11 @@ class UserDetailTableViewController : UITableViewController {
         if ((temp._tag) != nil)
         {
             let t = temp._tag
-            if t == 0
+            if t == 1
             {cell.tagg.image = UIImage(named: "huodong")}
-            else if t == 1
-            {cell.tagg.image = UIImage(named: "renwu")}
             else if t == 2
+            {cell.tagg.image = UIImage(named: "renwu")}
+            else if t == 0
             {cell.tagg.image = UIImage(named: "yuema")}
             else if t == 3
             {cell.tagg.image = UIImage(named: "qita")}
@@ -183,7 +185,7 @@ class UserDetailTableViewController : UITableViewController {
         {
             let url = URL(string: temp._profilePicture!)
             let data = try? Data(contentsOf: url!)
-             cell.profile_picture.image = UIImage(data: data!)
+            // cell.profile_picture.image = UIImage(data: data!)
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
             cell.profile_picture.layer.borderColor = UIColor.white.cgColor
@@ -229,14 +231,14 @@ class UserDetailTableViewController : UITableViewController {
         var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         var queryExpression = AWSDynamoDBScanExpression()
         //print("76")
-        dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
+        dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
             DispatchQueue.main.async(execute: {
                 if let paginatedOutput = task{
                     if (paginatedOutput.items.count < posts.count)
                     {posts = []}
                     for news in paginatedOutput.items {
-                        if !posts.contains(news as! Posts)
-                        {posts.append(news as! Posts)}
+                        if !posts.contains(news as! ChanceWithValue)
+                        {posts.append(news as! ChanceWithValue)}
                     }
                 }
                 //   print("84")
@@ -249,7 +251,7 @@ class UserDetailTableViewController : UITableViewController {
         self.user?.getDetails().continueOnSuccessWith { (task) -> AnyObject? in
             DispatchQueue.main.async(execute: {
                 self.response = task.result
-                self.title = self.user?.username
+                //self.title = self.user?.username
                 self.tableView.reloadData()
             })
             return nil

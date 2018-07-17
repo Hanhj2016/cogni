@@ -24,7 +24,7 @@ import AWSPinpoint
 import Foundation
 import AWSS3
 //var temp_Post:Posts = Posts()
-var posts:[Posts] = []
+var posts:[ChanceWithValue] = []
 var time:[Int] = []
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -74,14 +74,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //****************working version*****************8//
                 var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
                 var queryExpression = AWSDynamoDBScanExpression()
-                dynamoDbObjectMapper.scan(Posts.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
+                dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
                     DispatchQueue.main.async(execute: {
                         if let paginatedOutput = task{
                             if (paginatedOutput.items.count < posts.count)
                             {posts = []}
                             for news in paginatedOutput.items {
-                                if !posts.contains(news as! Posts)
-                                {posts.append(news as! Posts)}
+                                if !posts.contains(news as! ChanceWithValue)
+                                {posts.append(news as! ChanceWithValue)}
                             }
                         }
                     })
@@ -145,24 +145,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: AWSCognitoIdentityInteractiveAuthenticationDelegate {
     
     func startPasswordAuthentication() -> AWSCognitoIdentityPasswordAuthentication {
+        print("startPasswordAuthentication")
+        
+        self.navigationController = nil
+        self.signInViewController = nil
+        
         if (self.navigationController == nil) {
+            print("1")
             self.navigationController = self.storyboard?.instantiateViewController(withIdentifier: "signinController") as? UINavigationController
         }
         
         if (self.signInViewController == nil) {
+            print("2")
             self.signInViewController = self.navigationController?.viewControllers[0] as? SignInViewController
         }
         
         DispatchQueue.main.async {
-            self.navigationController!.popToRootViewController(animated: true)
+            print("3")
+            
+            print("\(self.navigationController!.isViewLoaded)")
+            
+            self.navigationController!.popToRootViewController(animated: false)
+            
             if (!self.navigationController!.isViewLoaded
-                || self.navigationController!.view.window == nil) {
+                /* && self.navigationController!.view.window != nil */ ){
+                print("4")
                 self.window?.rootViewController?.present(self.navigationController!,
                                                          animated: true,
                                                          completion: nil)
             }
-            
         }
+        print("5")
         return self.signInViewController!
     }
     

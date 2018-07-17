@@ -73,6 +73,9 @@ class SignUpViewController: UIViewController {
         
         self.signUp.backgroundColor = colour
         self.signUp.setTitleColor(sign_in_colour, for:.normal)
+        
+        
+        //nagigation bar
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
          self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
