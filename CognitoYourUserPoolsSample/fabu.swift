@@ -21,10 +21,26 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "image_cell", for: indexPath) as! image_cell
+        cell.photo.tag = indexPath.row
+        cell.photo.isUserInteractionEnabled = true
+        //self.view.addSubview(cell.photo)
+        //this above line makes images big dont know why
+        let tapSingle=UITapGestureRecognizer(target:self,
+                                             action:#selector(imageViewTap(_:)))
+        tapSingle.numberOfTapsRequired = 1
+        tapSingle.numberOfTouchesRequired = 1
+        cell.photo.addGestureRecognizer(tapSingle)
         cell.photo.image = photos[indexPath.row]
         return cell
     }
-    
+    func imageViewTap(_ recognizer:UITapGestureRecognizer){
+        //图片索引
+        let index = recognizer.view!.tag
+        //进入图片全屏展示
+        let previewVC = ImagePreviewVC(images: photos, index: index)
+        //self.navigationController?.setToolbarHidden(true, animated: true)
+        self.navigationController?.pushViewController(previewVC, animated: true)
+    }
     var tag_ = 0
     var type = ""
     @IBOutlet weak var title_input: UITextField!
@@ -35,20 +51,15 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.photos = []
         self.SelectedAssets = []
         let vc = BSImagePickerViewController()
-        
-        
-        
-        
-        
-        
-        
-        
+        vc.maxNumberOfSelections = 9
+        vc.selectionCharacter = "✓"
         self.bs_presentImagePickerController(vc, animated: true,
                                              select: { (asset: PHAsset) -> Void in}, deselect: { (asset: PHAsset) -> Void in}, cancel: { (assets: [PHAsset]) -> Void in}, finish: { (assets: [PHAsset]) -> Void in
                                                 for i in 0..<assets.count
             {
                 self.SelectedAssets.append(assets[i])
             }
+            
             self.convertAssetToImages()
         }, completion: nil)
     }
@@ -77,8 +88,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
                     thumbnail = result!
                 })
                 let data = UIImageJPEGRepresentation(thumbnail, 0.7)
-                let newImage = UIImage(data: data!)
                 
+                let newImage = UIImage(data: data!)
                 self.photos.append(newImage! as UIImage)
                 DispatchQueue.main.async(execute: {
                     
@@ -88,6 +99,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
             
         }
     }
+    
+    
     
     
     override func viewDidLoad() {
@@ -270,11 +283,12 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         temp._rewardType = self.button.titleLabel?.text
         temp._tag = tag_ as NSNumber
         temp._username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
-        temp._comments = 0
+        temp._comments = []
         temp._shared = 0
         temp._liked = 0
         temp._title = self.title_input.text
         temp._text = self.content.text
+        temp._bonus = Int(self.bonus_number.text!) as! NSNumber
         //profile
         
         

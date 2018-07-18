@@ -100,8 +100,8 @@ class UserDetailTableViewController : UITableViewController {
         }
         if ((temp._shared) != nil)
         {cell.shared.text = String(temp._shared as! Int)}
-        if ((temp._comments) != nil)
-        {cell.comments.text = String(temp._comments as! Int)}
+        //if ((temp._comments) != nil)
+        //{cell.comments.text = String(temp._comments?.count as! Int)}
         
         if ((temp._liked) != nil)
         {cell.liked.text = String(temp._liked as! Int)}
