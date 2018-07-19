@@ -205,27 +205,6 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mOL-Zt-XfD">
-                                            <rect key="frame" x="15" y="124" width="42" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vax-rL-J9A">
-                                            <rect key="frame" x="124" y="125" width="42" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHv-Yl-iYg">
-                                            <rect key="frame" x="232" y="124" width="42" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo-aws-small" translatesAutoresizingMaskIntoConstraints="NO" id="JNx-Qq-o0q">
                                             <rect key="frame" x="220" y="11" width="26" height="23"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -233,11 +212,8 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="comments" destination="Vax-rL-J9A" id="rfI-7L-aSN"/>
                                     <outlet property="content" destination="ZGX-5W-yZL" id="G3Q-m9-yq4"/>
-                                    <outlet property="liked" destination="aHv-Yl-iYg" id="gAp-cf-R0G"/>
                                     <outlet property="profile_picture" destination="9H1-ZM-NC2" id="oyr-eW-6rB"/>
-                                    <outlet property="shared" destination="mOL-Zt-XfD" id="e9Z-ir-9mx"/>
                                     <outlet property="tagg" destination="JNx-Qq-o0q" id="Wjg-xT-38s"/>
                                     <outlet property="time" destination="TQg-wU-VgF" id="t0S-rE-8eL"/>
                                     <outlet property="title" destination="JMf-Ce-2rS" id="2Wp-jX-xLS"/>
@@ -251,25 +227,28 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Devices" id="jB0-N5-pLO"/>
+                        <barButtonItem image="faxian" id="jB0-N5-pLO"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="bRO-mp-ylq"/>
-                        <barButtonItem title="Item" width="323" id="kHR-f3-BsP">
+                        <barButtonItem image="fabu" width="323" id="kHR-f3-BsP">
                             <connections>
                                 <segue destination="9Mz-OX-fyw" kind="show" id="Xes-D8-bLv"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Sign out" id="HWF-CT-8pJ">
+                        <barButtonItem image="wode" id="HWF-CT-8pJ">
                             <connections>
                                 <action selector="signOut:" destination="HrM-CC-Cfx" id="ANg-ba-TRf"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="RFL-ou-7mb"/>
+                    <navigationItem key="navigationItem" id="RFL-ou-7mb">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="fangdajing" id="xO4-Tm-KbX"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="xiaoxi" id="z9J-ek-bIl"/>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R26-eG-URi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2062" y="939"/>
+            <point key="canvasLocation" x="-2034" y="939"/>
         </scene>
         <!--Fabu-->
         <scene sceneID="BvJ-Xe-Z57">
@@ -540,6 +519,62 @@
             </objects>
             <point key="canvasLocation" x="-516" y="803.74812593703155"/>
         </scene>
+        <!--Item 2-->
+        <scene sceneID="4jT-i3-pnW">
+            <objects>
+                <viewController id="08p-Lx-ULD" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wSG-9m-w5P"/>
+                        <viewControllerLayoutGuide type="bottom" id="Mu9-yo-bmG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QNy-XQ-39R">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="BUO-Ug-9Bs"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dXR-vU-D7Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-89" y="2136"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="WRe-eK-pjE">
+            <objects>
+                <viewController id="MSq-ac-u4t" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wlf-GE-UH2"/>
+                        <viewControllerLayoutGuide type="bottom" id="9OC-FM-lmi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rz9-dc-KWu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="7kD-ue-rhq"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3yZ-g4-ZBe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-89" y="1474"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="wbb-wD-bRq">
+            <objects>
+                <tabBarController id="wrR-dx-OEb" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IZY-8e-e7p">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="MSq-ac-u4t" kind="relationship" relationship="viewControllers" id="FYB-Rh-HOV"/>
+                        <segue destination="08p-Lx-ULD" kind="relationship" relationship="viewControllers" id="w8U-vL-sxQ"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P3t-fc-6I8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2169" y="1704"/>
+        </scene>
         <!--Devices Detail Table View Controller-->
         <scene sceneID="pzA-6k-O6P">
             <objects>
@@ -582,7 +617,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T05-mc-sUS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2553" y="2215"/>
+            <point key="canvasLocation" x="-2506" y="2544"/>
         </scene>
         <!--SignUp-->
         <scene sceneID="be2-Yb-YLI">
@@ -826,16 +861,21 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f5x-LH-KDg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2535" y="939"/>
+            <point key="canvasLocation" x="-2890" y="939"/>
         </scene>
     </scenes>
     <resources>
         <image name="baomi" width="44" height="44"/>
         <image name="camera" width="150" height="150"/>
+        <image name="fabu" width="76" height="76"/>
         <image name="facebook" width="92" height="92"/>
+        <image name="fangdajing" width="44" height="44"/>
+        <image name="faxian" width="62" height="62"/>
         <image name="logo" width="146" height="146"/>
         <image name="logo-aws-small" width="154" height="162"/>
         <image name="weibo" width="92" height="92"/>
         <image name="weixin" width="92" height="92"/>
+        <image name="wode" width="62" height="62"/>
+        <image name="xiaoxi" width="44" height="44"/>
     </resources>
 </document>

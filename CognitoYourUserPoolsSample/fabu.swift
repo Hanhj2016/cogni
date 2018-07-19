@@ -13,7 +13,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
     var photos:[UIImage] = []
       var SelectedAssets = [PHAsset]()
     let imagePicker = UIImagePickerController()
-    
+    let comments_init = Set<String>()
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
@@ -208,10 +208,12 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         //self.view.backgroundColor = sign_in_colour
         
         //navigation bar
-        self.title = "发布"
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
+       // self.navigationController?.toolbar.tintColor = colour
+        self.navigationController?.toolbar.barTintColor = sign_in_colour
+        //self.navigationController?.toolbar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
     }
     
     
@@ -283,19 +285,24 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         temp._rewardType = self.button.titleLabel?.text
         temp._tag = tag_ as NSNumber
         temp._username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
-        temp._comments = []
-        temp._shared = 0
-        temp._liked = 0
+       // temp._comments = comments_init
+        //seems that sets in aws database cannot be set to empty array
+        // will just give value when first one comments
+        //temp._shared = 0
+        //temp._liked = 0
         temp._title = self.title_input.text
         temp._text = self.content.text
         temp._bonus = Int(self.bonus_number.text!) as! NSNumber
+        temp._reward = Int(self.bonus_number.text!) as! NSNumber
+        temp._pictures = []
+        var dude = ""//pictureid in the database
         //profile
         
         
         
-        if (temp._bonus != nil)
+        if (bonus_number.text != nil)
         {temp._bonus = Int(bonus_number.text!) as! NSNumber}
-        if (temp._reward != nil)
+        if (reward_number.text != nil)
         {temp._reward = Int(reward_number.text!) as! NSNumber}
         var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         var queryExpression = AWSDynamoDBScanExpression()
@@ -307,9 +314,15 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
                 counter = paginatedOutput.items.count + 1
                 print("counter: \(counter)")
                 temp._id = String(counter)
-                    
-                    dynamoDbObjectMapper.save(temp,completionHandler: nil)
-                    
+                
+                    for a in 0...self.photos.count-1
+                    {
+                        dude = String(temp._id!) + "_" + String(a) + ".png"
+                        uploadImage(with: UIImagePNGRepresentation(self.photos[a])!, bucket: pictures, key: dude)
+                        dude = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + dude
+                        temp._pictures!.append(dude)
+                    }
+                    dynamoDbObjectMapper.save(temp, completionHandler: nil)
                     
                     _ = self.navigationController?.popToRootViewController(animated: true)
                     

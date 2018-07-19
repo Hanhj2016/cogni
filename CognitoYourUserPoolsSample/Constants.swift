@@ -14,7 +14,7 @@
 // for the specific language governing permissions and
 // limitations under the License.
 //
-
+import AWSS3
 import Foundation
 import AWSCognitoIdentityProvider
 
@@ -22,6 +22,9 @@ let CognitoIdentityUserPoolRegion: AWSRegionType = .USEast1
 let CognitoIdentityUserPoolId = "us-east-1_OyEPKqrHG"
 let CognitoIdentityUserPoolAppClientId = "1topa7t6d5nspmikm8tpbdp7bt"
 let CognitoIdentityUserPoolAppClientSecret = "18ijf5nnejosukdfgu2u0208ko63opah0c804ef88thq89pusq58"
+let pictures = "chance-userfiles-mobilehub-653619147"
+
+
 
 let AWSCognitoUserPoolsSignInProviderKey = "UserPool"
 let colour: UIColor = UIColor(red: CGFloat((0xffd978 & 0xFF0000) >> 16) / 255.0,
@@ -53,3 +56,24 @@ let text_mid: UIColor = UIColor(red: CGFloat((0x92a2b6 & 0xFF0000) >> 16) / 255.
                                   green: CGFloat((0x92a2b6 & 0x00FF00) >> 8) / 255.0,
                                   blue: CGFloat(0x92a2b6 & 0x0000FF) / 255.0,
                                   alpha: CGFloat(1.0))
+
+
+
+
+func uploadImage(with data: Data,bucket:String,key:String) {
+    var completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?
+    let expression = AWSS3TransferUtilityUploadExpression()
+    let transferUtility = AWSS3TransferUtility.default()
+    transferUtility.uploadData(
+        data,
+        bucket: bucket,
+        key:key,
+        contentType: "image/png",
+        expression: expression,
+        completionHandler: completionHandler).continueWith { (task) -> AnyObject! in
+            if let error = task.error {
+                print("Error: \(error.localizedDescription)")
+            }
+            return nil;
+    }
+}

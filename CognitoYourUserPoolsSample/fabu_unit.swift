@@ -16,36 +16,6 @@ import UIKit
 import AWSDynamoDB
 
 
-
-
-@objcMembers
-class fabu_unit{
-    var title: String
-    var profile_picture: String // url from s3
-    var username: String
-    var tag: Int
-    var time: String
-    var text: String
-    var pictures: [String]
-    var shared: Int
-    var comments: Int
-    var liked: Int
-    var id: String
-    init(title_:String,profile_picture_:String,username_:String,tag_:Int,time_:String,text_:String,pictures_:[String],shared_:Int,comments_:Int,liked_:Int,id_:String){
-        title = title_
-        profile_picture = profile_picture_
-        username = username_
-        tag = tag_
-        time = time_
-        text = text_
-        pictures = pictures_
-        shared = shared_
-        comments = comments_
-        liked = liked_
-        id = id_
-    }
-}
-
 @objcMembers
 @objc(Posts)
 class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
@@ -53,9 +23,9 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _id: String?
     var _bonus: NSNumber?
     var _bonusType: String?
-    var _comments: Set<String>?
-    var _liked: NSNumber?
-    var _pictures: Set<String>?
+    var _comments: [String: String]?
+    var _liked: Set<String>?
+    var _pictures: [String]?
     var _profilePicture: String?
     var _reward: NSNumber?
     var _rewardType: String?

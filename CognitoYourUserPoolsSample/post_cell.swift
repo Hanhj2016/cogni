@@ -16,9 +16,6 @@ class post_cell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var content: UILabel!
-    @IBOutlet weak var shared: UILabel!
-    @IBOutlet weak var comments: UILabel!
-    @IBOutlet weak var liked: UILabel!
     @IBOutlet weak var tagg: UIImageView!
     
 

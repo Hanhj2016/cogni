@@ -37,6 +37,8 @@ class UserDetailTableViewController : UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = light
+        
         lock = NSLock()
         self.tableView.delegate = self
         self.pool = AWSCognitoIdentityUserPool(forKey: AWSCognitoUserPoolsSignInProviderKey)
@@ -64,6 +66,14 @@ class UserDetailTableViewController : UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("will appear: \(posts.count)")
+        
+        
+        let logo = UIImage(named: "name")
+        let imageView = UIImageView(image:logo)
+        self.navigationItem.titleView = imageView
+        self.navigationController?.navigationBar.tintColor = colour
+        self.navigationController?.navigationBar.barTintColor = sign_in_colour
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
         
         if(posts.count == 0)
         {refresh()}
@@ -98,13 +108,13 @@ class UserDetailTableViewController : UITableViewController {
             cell.content.frame = CGRect(x: cell.content.frame.origin.x, y: cell.content.frame.origin.y, width: cell.content.frame.width, height: greet4Height)
             cell.content.backgroundColor = UIColor.yellow
         }
-        if ((temp._shared) != nil)
-        {cell.shared.text = String(temp._shared as! Int)}
+        //if ((temp._shared) != nil)
+        //{cell.shared.text = String(temp._shared as! Int)}
         //if ((temp._comments) != nil)
         //{cell.comments.text = String(temp._comments?.count as! Int)}
         
-        if ((temp._liked) != nil)
-        {cell.liked.text = String(temp._liked as! Int)}
+        //if ((temp._liked) != nil)
+        //{cell.liked.text = String(temp._liked as! Int)}
         
         if ((temp._time) != nil)
         {//using the easy way
