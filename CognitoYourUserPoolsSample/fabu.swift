@@ -208,12 +208,10 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         //self.view.backgroundColor = sign_in_colour
         
         //navigation bar
+        self.title = "发布"
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
-       // self.navigationController?.toolbar.tintColor = colour
-        self.navigationController?.toolbar.barTintColor = sign_in_colour
-        //self.navigationController?.toolbar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
     }
     
     
@@ -294,7 +292,6 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         temp._text = self.content.text
         temp._bonus = Int(self.bonus_number.text!) as! NSNumber
         temp._reward = Int(self.bonus_number.text!) as! NSNumber
-        temp._pictures = []
         var dude = ""//pictureid in the database
         //profile
         
@@ -315,13 +312,15 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
                 print("counter: \(counter)")
                 temp._id = String(counter)
                 
+                    if self.photos.count != 0{
+                        temp._pictures = []
                     for a in 0...self.photos.count-1
                     {
                         dude = String(temp._id!) + "_" + String(a) + ".png"
                         uploadImage(with: UIImagePNGRepresentation(self.photos[a])!, bucket: pictures, key: dude)
                         dude = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + dude
                         temp._pictures!.append(dude)
-                    }
+                        }}
                     dynamoDbObjectMapper.save(temp, completionHandler: nil)
                     
                     _ = self.navigationController?.popToRootViewController(animated: true)

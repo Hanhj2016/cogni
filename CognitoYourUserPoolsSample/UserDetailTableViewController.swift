@@ -74,7 +74,8 @@ class UserDetailTableViewController : UITableViewController {
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
-        
+
+        self.navigationController?.toolbar.barTintColor = sign_in_colour
         if(posts.count == 0)
         {refresh()}
         //self.navigationController?.hidesBottomBarWhenPushed = false
