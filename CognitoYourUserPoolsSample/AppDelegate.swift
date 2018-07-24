@@ -14,7 +14,6 @@
 // for the specific language governing permissions and
 // limitations under the License.
 //
-
 import UIKit
 import AWSCognitoIdentityProvider
 import AWSDynamoDB
@@ -72,22 +71,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //****************working version*****************8//
-                var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-                var queryExpression = AWSDynamoDBScanExpression()
-                dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
-                    DispatchQueue.main.async(execute: {
-                        if let paginatedOutput = task{
-                            if (paginatedOutput.items.count < posts.count)
-                            {posts = []}
-                            for news in paginatedOutput.items {
-                                if !posts.contains(news as! ChanceWithValue)
-                                {posts.append(news as! ChanceWithValue)}
-                            }
-                        }
-                    })
-                })
+        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        var queryExpression = AWSDynamoDBScanExpression()
+        dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
+            DispatchQueue.main.async(execute: {
+                if let paginatedOutput = task{
+                    if (paginatedOutput.items.count < posts.count)
+                    {posts = []}
+                    for news in paginatedOutput.items {
+                        if !posts.contains(news as! ChanceWithValue)
+                        {posts.append(news as! ChanceWithValue)}
+                    }
+                }
+            })
+        })
         //********************************//
-         //************** TIME ******************//
+        //************** TIME ******************//
         let date = Date()
         let calendar = Calendar.current
         time.append(calendar.component(.year, from: date)) // 0
@@ -110,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pool.delegate = self
         
         
-    
+        
         
         
         return true
@@ -141,7 +140,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 // MARK:- AWSCognitoIdentityInteractiveAuthenticationDelegate protocol delegate
-
 extension AppDelegate: AWSCognitoIdentityInteractiveAuthenticationDelegate {
     
     func startPasswordAuthentication() -> AWSCognitoIdentityPasswordAuthentication {
@@ -209,7 +207,6 @@ extension AppDelegate: AWSCognitoIdentityInteractiveAuthenticationDelegate {
 }
 
 // MARK:- AWSCognitoIdentityRememberDevice protocol delegate
-
 extension AppDelegate: AWSCognitoIdentityRememberDevice {
     
     func getRememberDevice(_ rememberDeviceCompletionSource: AWSTaskCompletionSource<NSNumber>) {

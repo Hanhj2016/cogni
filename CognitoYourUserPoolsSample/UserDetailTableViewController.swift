@@ -26,8 +26,7 @@ class UserDetailTableViewController : UITableViewController, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "post_images", for: indexPath) as! post_images
-        DispatchQueue.main.async(execute: {
-            cell.photo.image = self.pics[indexPath.row]})
+        cell.photo.image = pics[indexPath.row]
         return cell
     }
     
@@ -39,7 +38,6 @@ class UserDetailTableViewController : UITableViewController, UICollectionViewDel
     var queryExpression = AWSDynamoDBScanExpression()
     var lock:NSLock?
     var pics:[UIImage] = []
-    
     lazy var refresher:UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = colour
@@ -180,9 +178,9 @@ class UserDetailTableViewController : UITableViewController, UICollectionViewDel
 //                imageView.addGestureRecognizer(tapSingle)
                 
             }
-            DispatchQueue.main.async(execute: {
-               cell.post_images.frame = CGRect(x: cell.post_images.frame.origin.x, y: cell.post_images.frame.origin.y, width: CGFloat(60 * self.pics.count), height: 60)
-            })
+            
+               cell.post_images.frame = CGRect(x: cell.post_images.frame.origin.x, y: cell.post_images.frame.origin.y, width: CGFloat(60 * pics.count), height: 60)
+            
            // pics = []
             
             
