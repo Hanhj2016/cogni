@@ -24,7 +24,7 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _bonus: NSNumber?
     var _bonusType: String?
     var _comments: [String: String]?
-    var _liked: Set<String>?
+    var _liked: [String]?
     var _pictures: [String]?
     var _profilePicture: String?
     var _reward: NSNumber?

@@ -64,6 +64,20 @@ extension UITextField {
 }
 
 
+extension UITableViewCell {
+    func setBottomBorder() {
+        let border = CALayer()
+        let width = CGFloat(20.0)
+        border.borderColor = light.cgColor
+        border.frame = CGRect(x: 0, y: self.frame.size.height - width, width: self.frame.size.width, height: self.frame.size.height)
+        
+        border.borderWidth = width
+        self.layer.addSublayer(border)
+        self.layer.masksToBounds = true
+    }
+}
+
+
 extension UILabel {
     var optimalHeight : CGFloat {
         get

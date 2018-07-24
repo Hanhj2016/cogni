@@ -28,6 +28,7 @@
 		B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817A20FF97F300207787 /* ImagePreviewVC.swift */; };
 		B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817B20FF97F400207787 /* ImagePreviewCell.swift */; };
 		B98E223520E6A01C0044BB31 /* background.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E223420E6A01C0044BB31 /* background.swift */; };
+		B9BCB04E2106877600661970 /* post_images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BCB04D2106877600661970 /* post_images.swift */; };
 		B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C1DD5520F6763B004C611B /* post_cell.swift */; };
 		B9D6951020EE90790024F6FF /* profile_picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D6950F20EE90790024F6FF /* profile_picture.swift */; };
 		B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D6951520EE924C0024F6FF /* awsconfiguration.json */; };
@@ -65,6 +66,7 @@
 		B92A817A20FF97F300207787 /* ImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewVC.swift; sourceTree = "<group>"; };
 		B92A817B20FF97F400207787 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
 		B98E223420E6A01C0044BB31 /* background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = background.swift; sourceTree = "<group>"; };
+		B9BCB04D2106877600661970 /* post_images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_images.swift; sourceTree = "<group>"; };
 		B9C1DD5520F6763B004C611B /* post_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_cell.swift; sourceTree = "<group>"; };
 		B9D6950F20EE90790024F6FF /* profile_picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile_picture.swift; sourceTree = "<group>"; };
 		B9D6951420EE924C0024F6FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/awsconfiguration.json; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				B902A60C20F3D44600331D17 /* prepare_posts.swift */,
 				17FC2F9E1E259F3200174015 /* ConfirmSignUpViewController.swift */,
 				B9C1DD5520F6763B004C611B /* post_cell.swift */,
+				B9BCB04D2106877600661970 /* post_images.swift */,
 				17FC2FA01E25A25900174015 /* ForgotPasswordViewController.swift */,
 				B9F9B53D20F7E4C100CE306F /* fabu.swift */,
 				B9F9B53B20F7A98D00CE306F /* trash_box */,
@@ -332,6 +335,7 @@
 				17FC2F9F1E259F3200174015 /* ConfirmSignUpViewController.swift in Sources */,
 				B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */,
 				17FC2F9B1E259E0500174015 /* Constants.swift in Sources */,
+				B9BCB04E2106877600661970 /* post_images.swift in Sources */,
 				B98E223520E6A01C0044BB31 /* background.swift in Sources */,
 				B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */,
 				17FC2F991E25940900174015 /* SignInViewController.swift in Sources */,

@@ -18,5 +18,8 @@ class post_cell: UITableViewCell {
     @IBOutlet weak var content: UILabel!
     @IBOutlet weak var tagg: UIImageView!
     
-
+    @IBOutlet weak var post_images: UICollectionView!
+    
+    
+    
 }

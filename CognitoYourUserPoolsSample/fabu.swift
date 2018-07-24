@@ -33,6 +33,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         cell.photo.image = photos[indexPath.row]
         return cell
     }
+    
+    
     func imageViewTap(_ recognizer:UITapGestureRecognizer){
         //图片索引
         let index = recognizer.view!.tag
@@ -62,6 +64,9 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
             
             self.convertAssetToImages()
         }, completion: nil)
+        
+        
+        //self.images.frame.width = self.photos.count * 30
     }
     
     @IBOutlet weak var choose_tag: UILabel!
@@ -294,7 +299,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         temp._reward = Int(self.bonus_number.text!) as! NSNumber
         var dude = ""//pictureid in the database
         //profile
-        
+        temp._profilePicture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + temp._username! + ".png"
         
         
         if (bonus_number.text != nil)
