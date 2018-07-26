@@ -52,9 +52,9 @@ class SignInViewController: UIViewController {
         
         //self.username.text = "用户名"
         self.username.attributedPlaceholder = NSAttributedString(string: "用户名",
-                                                               attributes: [NSForegroundColorAttributeName:colour])
+                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.password.attributedPlaceholder = NSAttributedString(string: "密码",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.username.textColor = colour
         self.password.textColor = colour
         self.weibo.setImage(UIImage(named: "weibo"), for: .normal)

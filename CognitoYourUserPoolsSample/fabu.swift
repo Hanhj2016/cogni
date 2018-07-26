@@ -35,7 +35,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
     }
     
     
-    func imageViewTap(_ recognizer:UITapGestureRecognizer){
+    @objc func imageViewTap(_ recognizer:UITapGestureRecognizer){
         //图片索引
         let index = recognizer.view!.tag
         //进入图片全屏展示
@@ -119,7 +119,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.title_input.textColor = text_light
         self.title_input.backgroundColor = light
         self.title_input.attributedPlaceholder = NSAttributedString(string: "标题",
-                                                                 attributes: [NSForegroundColorAttributeName:text_light])
+                                                                    attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:text_light])
         
         self.view.addSubview(self.yuema_tag)
         self.yuema_tag.backgroundColor = light
@@ -216,7 +216,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.title = "发布"
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
+        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
     }
     
     

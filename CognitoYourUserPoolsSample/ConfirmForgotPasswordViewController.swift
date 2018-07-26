@@ -33,12 +33,12 @@ class ConfirmForgotPasswordViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.confirmationCode.textColor = colour
         self.confirmationCode.attributedPlaceholder = NSAttributedString(string: "验证码",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                                         attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.confirmationCode.setBottomBorder()
         self.proposedPassword.isSecureTextEntry = true
         self.proposedPassword.textColor = colour
         self.proposedPassword.attributedPlaceholder = NSAttributedString(string: "新密码",
-                                                                         attributes: [NSForegroundColorAttributeName:colour])
+                                                                         attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey as NSAttributedStringKey:colour])
         self.proposedPassword.setBottomBorder()
         
         self.confirm.backgroundColor = colour
@@ -47,7 +47,7 @@ class ConfirmForgotPasswordViewController: UIViewController {
         
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
+        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
         
         // self.navigationController?.navigationItem.title = ""
         self.navigationController?.navigationBar.isTranslucent = true

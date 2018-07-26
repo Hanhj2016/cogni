@@ -12,4 +12,5 @@ target 'chain' do
     pod 'AWSDynamoDB', '~> 2.6.13'
     pod 'AWSS3', '~> 2.6.13'
     pod 'BSImagePicker', '~> 2.7'
+    pod 'Kingfisher', '~> 4.0'
 end

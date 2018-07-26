@@ -7,46 +7,59 @@
 //
 
 import UIKit
-
-class post_cell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+import Kingfisher
+class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+       // print("count:\(images.count)")
         return images.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "image_cell",
-                                                       for: indexPath) as! image_cell
+        let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell",
+                                                       for: indexPath) as! MyCollectionViewCell
+        
         cell.photo.image = images[indexPath.row]
         return cell
         
     }
     
+    func imageViewTap(_ recognizer:UITapGestureRecognizer){
+        //图片索引
+        let index = recognizer.view!.tag
+        //进入图片全屏展示
+        let previewVC = ImagePreviewVC(images: images, index: index)
+        //self.navigationController?.setToolbarHidden(true, animated: true)
+       // self.navigationController?.pushViewController(previewVC, animated: true)
+    }
     
-    
+   
     @IBOutlet weak var profile_picture: UIImageView!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var time_label: UILabel!
+    @IBOutlet weak var tagg: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var content: UILabel!
-    @IBOutlet weak var tagg: UIImageView!
     
-    @IBOutlet weak var post_images: UICollectionView!
+    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var image_collection: UICollectionView!
+   // var urls:[URL] = []
     var images:[UIImage] = []
     override func awakeFromNib() {
         super.awakeFromNib()
         
         //设置collectionView的代理
-        self.post_images.delegate = self
-        self.post_images.dataSource = self
+        self.image_collection.delegate = self
+        self.image_collection.dataSource = self
         
         // 注册CollectionViewCell
-        //self.post_images!.register(UINib(nibName:"image_cell", bundle:nil),forCellWithReuseIdentifier: "post_cell")
+        self.image_collection!.register(UINib(nibName:"MyCollectionViewCell", bundle:nil),forCellWithReuseIdentifier: "myCell")
     }
     
     
     func reloadData(temp:ChanceWithValue,time__:[Int]) {
-
+        
         
         if ((temp._username) != nil)
         {self.username.text = temp._username
@@ -55,7 +68,7 @@ class post_cell: UITableViewCell, UICollectionViewDelegate, UICollectionViewData
         }
         if ((temp._title) != nil)
         {self.title.text = temp._title
-            self.title.font = self.title.font.withSize(15)
+            self.title.font = self.title.font.withSize(17)
             self.title.textColor = text_light
             
         }
@@ -69,21 +82,26 @@ class post_cell: UITableViewCell, UICollectionViewDelegate, UICollectionViewData
         }
         
         
-        var url: URL
         if (temp._profilePicture != nil){
-            url = URL(string:temp._profilePicture!)!
+            let url = URL(string:temp._profilePicture!)!
             self.profile_picture.image = UIImage(data:try! Data(contentsOf: url))}
         //displaying pictures
+        //self.urls = []
+        self.images = []
         if (temp._pictures != nil)
         {
-           images = []
+            
+             //DispatchQueue.main.async(execute: {
             for i in 0...(temp._pictures?.count)!-1
             {
-                url = URL(string:temp._pictures![i])!
+                
+                let url = URL(string:temp._pictures![i])!
+              //  self.urls.append(url)
                 var data:NSData = try! NSData(contentsOf: url)
-                images.append(UIImage(data: data as Data)!)
+                self.images.append(UIImage(data: data as Data)!)
+               // images.append(URL(string:temp._pictures![i])!)
             }
-            
+            //})
         }
         
         
@@ -190,9 +208,16 @@ class post_cell: UITableViewCell, UICollectionViewDelegate, UICollectionViewData
         }
         
         
-        
-        self.post_images.reloadData()
-        
+        self.image_collection.backgroundColor = mid
+        self.image_collection.reloadData()
+        let contentSize = self.image_collection.collectionViewLayout.collectionViewContentSize
+         self.image_collection.collectionViewLayout.invalidateLayout()
+        collectionViewHeight.constant = contentSize.height
+    }
+    
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
     }
     
     

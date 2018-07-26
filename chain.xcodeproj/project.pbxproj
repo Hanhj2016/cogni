@@ -24,6 +24,10 @@
 		17FC2FA51E25A77600174015 /* UserDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */; };
 		17FC2FA71E25A9A200174015 /* DevicesDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2FA61E25A9A200174015 /* DevicesDetailTableViewController.swift */; };
 		B902A60D20F3D44600331D17 /* prepare_posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B902A60C20F3D44600331D17 /* prepare_posts.swift */; };
+		B91172B12107D94B00284FB5 /* MyCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B91172AF2107D94B00284FB5 /* MyCollectionViewCell.xib */; };
+		B91172B42107D9F900284FB5 /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91172B22107D9F900284FB5 /* MyTableViewCell.swift */; };
+		B91172B52107D9F900284FB5 /* MyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B91172B32107D9F900284FB5 /* MyTableViewCell.xib */; };
+		B91172B72107DE4D00284FB5 /* MyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91172B62107DE4D00284FB5 /* MyCollectionViewCell.swift */; };
 		B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */; };
 		B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817A20FF97F300207787 /* ImagePreviewVC.swift */; };
 		B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817B20FF97F400207787 /* ImagePreviewCell.swift */; };
@@ -62,6 +66,10 @@
 		AB8F26771F0FF8105FC402DD /* Pods_CognitoYourUserPoolsSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CognitoYourUserPoolsSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0A9A7D7547397979E20D70A /* Pods-chain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chain.debug.xcconfig"; path = "Pods/Target Support Files/Pods-chain/Pods-chain.debug.xcconfig"; sourceTree = "<group>"; };
 		B902A60C20F3D44600331D17 /* prepare_posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prepare_posts.swift; sourceTree = "<group>"; };
+		B91172AF2107D94B00284FB5 /* MyCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyCollectionViewCell.xib; sourceTree = "<group>"; };
+		B91172B22107D9F900284FB5 /* MyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
+		B91172B32107D9F900284FB5 /* MyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyTableViewCell.xib; sourceTree = "<group>"; };
+		B91172B62107DE4D00284FB5 /* MyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCollectionViewCell.swift; sourceTree = "<group>"; };
 		B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabu_unit.swift; sourceTree = "<group>"; };
 		B92A817A20FF97F300207787 /* ImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewVC.swift; sourceTree = "<group>"; };
 		B92A817B20FF97F400207787 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
@@ -125,6 +133,10 @@
 				B9D6951520EE924C0024F6FF /* awsconfiguration.json */,
 				17FC2F9A1E259E0500174015 /* Constants.swift */,
 				B98E223420E6A01C0044BB31 /* background.swift */,
+				B91172B22107D9F900284FB5 /* MyTableViewCell.swift */,
+				B91172B62107DE4D00284FB5 /* MyCollectionViewCell.swift */,
+				B91172B32107D9F900284FB5 /* MyTableViewCell.xib */,
+				B91172AF2107D94B00284FB5 /* MyCollectionViewCell.xib */,
 				B9E0B17820FE60F0009ED8BD /* image_cell.swift */,
 				17FC2F9C1E259E5D00174015 /* SignUpViewController.swift */,
 				B92A817B20FF97F400207787 /* ImagePreviewCell.swift */,
@@ -216,7 +228,7 @@
 					17FC2F7B1E258FC500174015 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 5BHGRFYGSS;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0940;
 					};
 				};
 			};
@@ -245,8 +257,10 @@
 			files = (
 				17FC2F8A1E258FC500174015 /* LaunchScreen.storyboard in Resources */,
 				17FC2F871E258FC500174015 /* Assets.xcassets in Resources */,
+				B91172B12107D94B00284FB5 /* MyCollectionViewCell.xib in Resources */,
 				B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */,
 				B9E0B17720FAB258009ED8BD /* 43 发布界面.jpg in Resources */,
+				B91172B52107D9F900284FB5 /* MyTableViewCell.xib in Resources */,
 				17FC2F921E25908D00174015 /* CognitoLogo.png in Resources */,
 				17FC2F851E258FC500174015 /* Main.storyboard in Resources */,
 				17FC2F951E2590D800174015 /* MFAViewController.xib in Resources */,
@@ -294,6 +308,7 @@
 				"${BUILT_PRODUCTS_DIR}/AWSUserPoolsSignIn/AWSUserPoolsSignIn.framework",
 				"${BUILT_PRODUCTS_DIR}/BSGridCollectionViewLayout/BSGridCollectionViewLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/BSImagePicker/BSImagePicker.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImageViewModeScaleAspect/UIImageViewModeScaleAspect.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -310,6 +325,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSUserPoolsSignIn.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSGridCollectionViewLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSImagePicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageViewModeScaleAspect.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,9 +340,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B91172B72107DE4D00284FB5 /* MyCollectionViewCell.swift in Sources */,
 				17FC2FA31E25A5D000174015 /* ConfirmForgotPasswordViewController.swift in Sources */,
 				17FC2FA11E25A25900174015 /* ForgotPasswordViewController.swift in Sources */,
 				B9D6951020EE90790024F6FF /* profile_picture.swift in Sources */,
+				B91172B42107D9F900284FB5 /* MyTableViewCell.swift in Sources */,
 				B9F9B53E20F7E4C100CE306F /* fabu.swift in Sources */,
 				17FC2F9D1E259E5D00174015 /* SignUpViewController.swift in Sources */,
 				B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */,
@@ -477,7 +495,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = chancechain;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -491,7 +509,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = chancechain;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

@@ -11,4 +11,5 @@ import UIKit
 class post_images: UICollectionViewCell {
     
     @IBOutlet weak var photo: UIImageView!
+
 }

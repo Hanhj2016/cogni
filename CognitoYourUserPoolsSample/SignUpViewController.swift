@@ -48,15 +48,15 @@ class SignUpViewController: UIViewController {
         // label
         // text format
         self.username.attributedPlaceholder = NSAttributedString(string: "用户名",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.password.attributedPlaceholder = NSAttributedString(string: "密码",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.phone.attributedPlaceholder = NSAttributedString(string: "手机号",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                              attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.email.attributedPlaceholder = NSAttributedString(string: "邮箱",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                              attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.confirm.attributedPlaceholder = NSAttributedString(string: "再次输入",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                                attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         
          self.username.textColor = colour
         self.password.textColor = colour
@@ -78,7 +78,7 @@ class SignUpViewController: UIViewController {
         //nagigation bar
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
-         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
+        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
         
        // self.navigationController?.navigationItem.title = ""
         self.navigationController?.navigationBar.isTranslucent = true

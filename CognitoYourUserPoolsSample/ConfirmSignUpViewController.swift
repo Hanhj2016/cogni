@@ -38,9 +38,9 @@ class ConfirmSignUpViewController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.username.attributedPlaceholder = NSAttributedString(string: "用户名",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         self.code.attributedPlaceholder = NSAttributedString(string: "验证码",
-                                                                 attributes: [NSForegroundColorAttributeName:colour])
+                                                             attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
         
         self.username.textColor = colour
         self.code.textColor = colour
@@ -56,7 +56,7 @@ class ConfirmSignUpViewController : UIViewController {
         
         self.navigationController?.navigationBar.tintColor = colour
         self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:colour]
+        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
         
         // self.navigationController?.navigationItem.title = ""
         self.navigationController?.navigationBar.isTranslucent = true
