@@ -96,16 +96,6 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <connections>
-                <outlet property="collectionViewHeight" destination="gE2-xg-g9N" id="G2d-d3-3Xp"/>
-                <outlet property="content" destination="Rcz-7S-mDV" id="hqW-LO-mMD"/>
-                <outlet property="image_collection" destination="yJO-CW-laI" id="TRt-Ww-agB"/>
-                <outlet property="profile_picture" destination="8rA-cI-knd" id="8HA-dU-w3Z"/>
-                <outlet property="tagg" destination="Hpd-A7-dzv" id="9Ra-OI-cp9"/>
-                <outlet property="time_label" destination="Vv3-8f-0g3" id="gmE-j5-r0R"/>
-                <outlet property="title" destination="zGQ-bF-erl" id="ML8-aB-yyL"/>
-                <outlet property="username" destination="XUa-uc-bFf" id="5V2-Ex-ADj"/>
-            </connections>
             <point key="canvasLocation" x="90.5" y="201.5"/>
         </tableViewCell>
     </objects>
