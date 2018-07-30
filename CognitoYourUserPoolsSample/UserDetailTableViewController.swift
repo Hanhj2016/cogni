@@ -1,6 +1,15 @@
-import Foundation
+import UIKit
 import AWSCognitoIdentityProvider
 import AWSDynamoDB
+import AWSMobileClient
+import AWSCore
+import AWSPinpoint
+import Foundation
+import AWSUserPoolsSignIn
+import AWSS3
+import Photos
+import BSImagePicker
+import Foundation
 //var temp = "start"
 class UserDetailTableViewController : UITableViewController{
     
@@ -27,14 +36,15 @@ class UserDetailTableViewController : UITableViewController{
         self.view.backgroundColor = light
         
         lock = NSLock()
-        
+       self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
-        self.tableView!.separatorInset = UIEdgeInsetsMake(0, 3, 0, 11);
+        //self.tableView!.separatorInset = UIEdgeInsetsMake(0, 3, 0, 20);
 
         self.tableView!.estimatedRowHeight = 150
         //rowHeight属性设置为UITableViewAutomaticDimension
         self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
         self.pool = AWSCognitoIdentityUserPool(forKey: AWSCognitoUserPoolsSignInProviderKey)
         if (self.user == nil) {
             self.user = self.pool?.currentUser()
@@ -82,6 +92,43 @@ class UserDetailTableViewController : UITableViewController{
         return posts.count
     }
     
+    @IBAction func like(_ sender: UIButton) {
+        let temp:ChanceWithValue = posts[sender.tag]
+        let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        if (temp._liked?.contains(user!))!
+        {
+            var temp_list:[String] = []
+            for a in temp._liked!
+            {
+                if a != user
+                {
+                    temp_list.append(a)
+                }
+            }
+           temp._liked = temp_list
+        }
+        else
+        {
+            temp._liked?.append(user!)
+        }
+        posts[sender.tag] = temp
+        dynamoDbObjectMapper.save(temp, completionHandler: nil)
+        self.tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "show_post_detail", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "show_post_detail"
+        {
+            var upcoming: post_detail = segue.destination as! post_detail
+            let indexPath = self.tableView.indexPathForSelectedRow!
+            upcoming.p = posts[indexPath.row]
+            
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyTableViewCell", for: indexPath) as! MyTableViewCell
@@ -89,8 +136,34 @@ class UserDetailTableViewController : UITableViewController{
         let temp_time:[Int] = time
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
-        
+        //cell.setBottomBorder()
         //cell.reloadData(temp:temp,time__:temp_time)
+        let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        //cell.like.addTarget(self, action: "like", for: .touchUpInside)
+        cell.like.tag = indexPath.row
+        
+        
+        
+        let origImage = UIImage(named: "dianzan")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        cell.like.setImage(tintedImage, for: .normal)
+        let like_number = (temp._liked?.count)!
+        let clicked = (temp._liked?.contains(user!))
+        if (clicked)!
+        {cell.like.setTitleColor(colour, for: .normal)
+            cell.like.tintColor = colour
+        }
+        else
+        {
+            cell.like.tintColor = text_mid
+            cell.like.setTitleColor(text_mid, for: .normal)
+            
+        }
+        if like_number != 0
+        {cell.like.setTitle("\(like_number)", for: .normal)}
+        else
+        {cell.like.setTitle("", for: .normal)}
+        
         
         if ((temp._username) != nil)
         {cell.username.text = temp._username
@@ -252,8 +325,12 @@ class UserDetailTableViewController : UITableViewController{
         cell.image_collection.collectionViewLayout.invalidateLayout()
         cell.collectionViewHeight.constant = contentSize.height
         
+        cell.tool_bar.backgroundColor = mid
+        cell.tool_bar.layer.borderColor = light.cgColor
+        cell.tool_bar.layer.borderWidth = 1
+        cell.bot_bar.backgroundColor = light
         
-        
+
         
         cell.backgroundColor = mid
         return cell

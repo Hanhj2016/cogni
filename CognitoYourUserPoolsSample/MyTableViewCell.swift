@@ -53,6 +53,16 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var image_collection: UICollectionView!
+    
+    @IBOutlet weak var tool_bar: UIView!
+    @IBOutlet weak var bot_bar: UIView!
+    @IBOutlet weak var zhanwaifenxiang: UIButton!
+    @IBOutlet weak var zhanneifenxiang: UIButton!
+    @IBOutlet weak var comments: UIButton!
+    @IBOutlet weak var like: UIButton!
+    
+    
+    
    // var urls:[URL] = []
      var myViewController: UIViewController!
     var images:[UIImage] = []

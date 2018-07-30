@@ -38,6 +38,7 @@
 		B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D6951520EE924C0024F6FF /* awsconfiguration.json */; };
 		B9E0B17720FAB258009ED8BD /* 43 发布界面.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */; };
 		B9E0B17920FE60F0009ED8BD /* image_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E0B17820FE60F0009ED8BD /* image_cell.swift */; };
+		B9F77BD4210F77060088E601 /* post_detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F77BD3210F77060088E601 /* post_detail.swift */; };
 		B9F9B53C20F7A98D00CE306F /* trash_box in Resources */ = {isa = PBXBuildFile; fileRef = B9F9B53B20F7A98D00CE306F /* trash_box */; };
 		B9F9B53E20F7E4C100CE306F /* fabu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F9B53D20F7E4C100CE306F /* fabu.swift */; };
 		C45898B3B1F82CAEBB3D2148 /* Pods_chain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E8730576EDB3203667F8E00 /* Pods_chain.framework */; };
@@ -80,6 +81,7 @@
 		B9D6951420EE924C0024F6FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/awsconfiguration.json; sourceTree = "<group>"; };
 		B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "43 发布界面.jpg"; sourceTree = "<group>"; };
 		B9E0B17820FE60F0009ED8BD /* image_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = image_cell.swift; sourceTree = "<group>"; };
+		B9F77BD3210F77060088E601 /* post_detail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_detail.swift; sourceTree = "<group>"; };
 		B9F9B53B20F7A98D00CE306F /* trash_box */ = {isa = PBXFileReference; lastKnownFileType = text; path = trash_box; sourceTree = "<group>"; };
 		B9F9B53D20F7E4C100CE306F /* fabu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabu.swift; sourceTree = "<group>"; };
 		DBEB9BB4F88788184F7DD583 /* Pods-CognitoYourUserPoolsSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CognitoYourUserPoolsSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CognitoYourUserPoolsSample/Pods-CognitoYourUserPoolsSample.debug.xcconfig"; sourceTree = "<group>"; };
@@ -133,6 +135,8 @@
 				B9D6951520EE924C0024F6FF /* awsconfiguration.json */,
 				17FC2F9A1E259E0500174015 /* Constants.swift */,
 				B98E223420E6A01C0044BB31 /* background.swift */,
+				17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */,
+				B9F77BD3210F77060088E601 /* post_detail.swift */,
 				B91172B22107D9F900284FB5 /* MyTableViewCell.swift */,
 				B91172B62107DE4D00284FB5 /* MyCollectionViewCell.swift */,
 				B91172B32107D9F900284FB5 /* MyTableViewCell.xib */,
@@ -149,7 +153,6 @@
 				B9F9B53D20F7E4C100CE306F /* fabu.swift */,
 				B9F9B53B20F7A98D00CE306F /* trash_box */,
 				17FC2FA21E25A5D000174015 /* ConfirmForgotPasswordViewController.swift */,
-				17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */,
 				17FC2FA61E25A9A200174015 /* DevicesDetailTableViewController.swift */,
 				B924E9CA20ED2E9700A0B338 /* table units */,
 			);
@@ -348,6 +351,7 @@
 				B9F9B53E20F7E4C100CE306F /* fabu.swift in Sources */,
 				17FC2F9D1E259E5D00174015 /* SignUpViewController.swift in Sources */,
 				B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */,
+				B9F77BD4210F77060088E601 /* post_detail.swift in Sources */,
 				B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */,
 				B9E0B17920FE60F0009ED8BD /* image_cell.swift in Sources */,
 				17FC2F9F1E259F3200174015 /* ConfirmSignUpViewController.swift in Sources */,

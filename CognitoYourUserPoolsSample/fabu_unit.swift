@@ -23,13 +23,16 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _id: String?
     var _bonus: NSNumber?
     var _bonusType: String?
-    var _comments: [String: String]?
+    var _commentIdList: [String]?
+    var _commentNumber: NSNumber?
+    var _getList: [String]?
     var _liked: [String]?
     var _pictures: [String]?
     var _profilePicture: String?
     var _reward: NSNumber?
     var _rewardType: String?
     var _shared: NSNumber?
+    var _sharedFrom: [String]?
     var _tag: NSNumber?
     var _text: String?
     var _time: NSNumber?
@@ -51,13 +54,16 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_id" : "Id",
             "_bonus" : "bonus",
             "_bonusType" : "bonus_type",
-            "_comments" : "comments",
+            "_commentIdList" : "commentIdList",
+            "_commentNumber" : "commentNumber",
+            "_getList" : "getList",
             "_liked" : "liked",
             "_pictures" : "pictures",
             "_profilePicture" : "profile_picture",
             "_reward" : "reward",
             "_rewardType" : "reward_type",
             "_shared" : "shared",
+            "_sharedFrom" : "sharedFrom",
             "_tag" : "tag",
             "_text" : "text",
             "_time" : "time",
@@ -65,6 +71,7 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_username" : "username",
         ]
     }
+
 
     
     func create() {
