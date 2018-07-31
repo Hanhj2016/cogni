@@ -292,7 +292,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         //seems that sets in aws database cannot be set to empty array
         // will just give value when first one comments
         //temp._shared = 0
-        //temp._liked = 0
+        //temp._liked = []
         temp._title = self.title_input.text
         temp._text = self.content.text
         temp._bonus = Int(self.bonus_number.text!) as! NSNumber

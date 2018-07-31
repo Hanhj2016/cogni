@@ -17,7 +17,7 @@ import AWSDynamoDB
 
 
 @objcMembers
-@objc(Posts)
+@objc(ChanceWithValue)
 class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _id: String?
@@ -98,4 +98,38 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
         })
     }
     
+}
+
+
+@objcMembers
+@objc(CommentTable)
+class CommentTable: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+    
+    var _commentId: String?
+    var _chanceId: String?
+    var _commentText: String?
+    var _upTime: String?
+    var _userId: String?
+    var _userPic: String?
+    
+    class func dynamoDBTableName() -> String {
+        
+        return "chance-mobilehub-653619147-commentTable"
+    }
+    
+    class func hashKeyAttribute() -> String {
+        
+        return "_commentId"
+    }
+    
+    override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
+        return [
+            "_commentId" : "commentId",
+            "_chanceId" : "chanceId",
+            "_commentText" : "commentText",
+            "_upTime" : "upTime",
+            "_userId" : "userId",
+            "_userPic" : "userPic",
+        ]
+    }
 }

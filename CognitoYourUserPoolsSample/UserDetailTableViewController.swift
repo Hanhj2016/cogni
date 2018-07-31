@@ -95,6 +95,7 @@ class UserDetailTableViewController : UITableViewController{
     @IBAction func like(_ sender: UIButton) {
         let temp:ChanceWithValue = posts[sender.tag]
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        if temp._liked != nil{
         if (temp._liked?.contains(user!))!
         {
             var temp_list:[String] = []
@@ -110,6 +111,10 @@ class UserDetailTableViewController : UITableViewController{
         else
         {
             temp._liked?.append(user!)
+            }}
+        else
+        {
+            temp._liked = [user] as! [String]
         }
         posts[sender.tag] = temp
         dynamoDbObjectMapper.save(temp, completionHandler: nil)
@@ -126,7 +131,7 @@ class UserDetailTableViewController : UITableViewController{
             var upcoming: post_detail = segue.destination as! post_detail
             let indexPath = self.tableView.indexPathForSelectedRow!
             upcoming.p = posts[indexPath.row]
-            
+
         }
     }
     
@@ -147,6 +152,7 @@ class UserDetailTableViewController : UITableViewController{
         let origImage = UIImage(named: "dianzan")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         cell.like.setImage(tintedImage, for: .normal)
+        if temp._liked != nil{
         let like_number = (temp._liked?.count)!
         let clicked = (temp._liked?.contains(user!))
         if (clicked)!
@@ -157,13 +163,18 @@ class UserDetailTableViewController : UITableViewController{
         {
             cell.like.tintColor = text_mid
             cell.like.setTitleColor(text_mid, for: .normal)
-            
+
         }
         if like_number != 0
         {cell.like.setTitle("\(like_number)", for: .normal)}
         else
         {cell.like.setTitle("", for: .normal)}
-        
+        }
+        else
+        {
+            cell.like.tintColor = text_mid
+            cell.like.setTitle("", for: .normal)
+        }
         
         if ((temp._username) != nil)
         {cell.username.text = temp._username
@@ -180,8 +191,11 @@ class UserDetailTableViewController : UITableViewController{
         {cell.content.text = temp._text
             cell.content.font = cell.content.font.withSize(14)
             cell.content.textColor = text_light
-            let greet4Height = cell.content.optimalHeight
-            cell.content.frame = CGRect(x: cell.content.frame.origin.x, y: cell.content.frame.origin.y, width: cell.content.frame.width, height: greet4Height)
+            cell.content.numberOfLines = 0
+            cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
+            cell.content.sizeToFit()
+//let greet4Height = cell.content.optimalHeight
+            //cell.content.frame = CGRect(x: cell.content.frame.origin.x, y: cell.content.frame.origin.y, width: 100, height: cell.content.frame.height)
             cell.content.backgroundColor = mid
         }
         
