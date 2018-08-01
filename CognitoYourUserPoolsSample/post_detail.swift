@@ -52,6 +52,9 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     @IBOutlet weak var like_number: UIButton!
     @IBOutlet weak var get: UIButton!
     
+    @IBOutlet weak var bot_share: UIButton!
+    @IBOutlet weak var bot_comment: UIButton!
+    @IBOutlet weak var bot_like: UIButton!
     
     
     var p: ChanceWithValue = ChanceWithValue()
@@ -134,28 +137,6 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     }
     
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        DispatchQueue.main.async(execute: {
-//            if self.p._commentIdList != nil
-//            {
-//                for comment_id in self.p._commentIdList!{
-//                    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-//                    dynamoDbObjectMapper.load(CommentTable.self, hashKey: comment_id, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
-//                        if let error = task.error as? NSError {
-//                            print("The request failed. Error: \(error)")
-//                        } else if let resultBook = task.result as? CommentTable {
-//                            print("in")
-//                            self.comments.append(resultBook)
-//                        }
-//                        print("116: \(self.comments.count)")
-//                        return nil
-//                    })
-//                    print(self.comments.count)
-//                }
-//            }
-//        })
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,9 +147,10 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         
 
+        tableView!.estimatedRowHeight = 150
+        tableView!.rowHeight = UITableViewAutomaticDimension
         
-        
-        print("out: \(comments.count)")
+        //print("out: \(comments.count)")
         
         
         self.top_view.backgroundColor = mid
@@ -389,24 +371,37 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         else
         {self.comment_number.setTitle("评论 0", for: .normal)}
         
-        
-        print("bot: \(self.comments.count)")
+        self.tableView.backgroundColor = mid
+        //print("bot: \(self.comments.count)")
         if #available(iOS 10.0, *) {
             tableView.refreshControl = refresher
         } else {
             tableView.addSubview(refresher)
         }
-        while (self.comments.count == 0)
-        {
-            self.refresh()
-        }
         self.refresh()
-        
+        if p._commentNumber != nil
+        {
+        while (self.comments.count < p._commentNumber as! Int)
+        {
+            //self.refresh()
+        }
+        }
+        self.bot_like.backgroundColor = sign_in_colour
+        self.bot_comment.backgroundColor = sign_in_colour
+        self.bot_share.backgroundColor = sign_in_colour
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(true, animated: true)
+    }
     
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setToolbarHidden(false, animated: true)
+        
+    }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -431,10 +426,115 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             cell.profile_picture.layer.borderColor = UIColor.white.cgColor
             cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
             cell.profile_picture.clipsToBounds = true
-            print("438")
+            //print("438")
         }
-        print("439")
         
+        
+        if ((comments[index]._userId) != nil)
+        {cell.username.text = comments[index]._userId
+            cell.username.textColor = text_light
+            cell.username.font = cell.username.font.withSize(17)
+        }
+        //print("439")
+        if ((comments[index]._commentText) != nil)
+        {cell.content.text = comments[index]._commentText
+            cell.content.font = cell.content.font.withSize(14)
+            cell.content.textColor = text_light
+            cell.content.numberOfLines = 0
+            cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
+            cell.content.sizeToFit()
+            cell.content.backgroundColor = mid
+        }
+        
+        
+        
+        if ((comments[index]._upTime) != nil)
+        {//using the easy way
+            
+            let date = Date()
+            let calendar = Calendar.current
+            var time__:[Int] = []
+            time__.append(calendar.component(.year, from: date)) // 0
+            time__.append(calendar.component(.month, from: date)) // 1
+            time__.append(calendar.component(.day, from: date)) //2
+            time__.append(calendar.component(.hour, from: date)) // 3
+            time__.append(calendar.component(.minute, from: date)) // 4
+            time__.append(calendar.component(.second, from: date)) // 5
+            
+            var output = ""
+            let _time = Int(comments[index]._upTime!)
+            let second = _time! % 100
+            var Rem = _time! / 100
+            let Minute = Rem % 100
+            Rem = Rem / 100
+            let hour = Rem % 100
+            Rem = Rem / 100
+            let day = Rem % 100
+            Rem = Rem / 100
+            let month = Rem % 100
+            Rem = Rem / 100
+            let year = (Rem % 100)%100
+            var a = time__[0] % 100
+            //   print("year:\(year)..month:\(month)..day:\(day)")
+            
+            if year == a
+            {
+                if day == time__[2]
+                {
+                    if hour == time__[3]
+                    {
+                        if Minute == time__[4]
+                        {output = "\(time__[5]-second) 秒前"}
+                        else if time__[4] - Minute == 1
+                        {
+                            if (time__[5]+60-second <= 60)
+                            {output = "\(time__[5]+60-second) 秒前"}
+                            else
+                            {output = "1分钟前"}
+                            
+                        }
+                        else
+                        {output = "\(time__[4]-Minute) 分钟前"}
+                    }
+                    else if time__[3] - hour == 1
+                    {
+                        if time__[4]+60-Minute <= 60
+                        {output = "\(time__[4]+60-Minute) 分钟前"}
+                        else
+                        {output = "\(hour):\(Minute)"}
+                    }
+                    else
+                    {
+                        output = "\(hour):\(Minute)"
+                    }
+                }
+                else if time__[2] == (day + 1)
+                {
+                    output = "昨天\(hour):\(Minute)"
+                }
+                else if time__[2] == day + 2
+                {
+                    output = "前天\(hour):\(Minute)"
+                }
+                else
+                {
+                    output = "\(month)月\(day)日"
+                }
+            }
+            else
+            {output = "\(year)/\(month)/\(day)"}
+            
+            cell.time.font = cell.time.font.withSize(13)
+            cell.time.text = output
+            cell.time.textColor = text_mid
+            
+            
+            
+            
+        }
+        
+        
+        cell.backgroundColor = mid
         
         return cell
     }
