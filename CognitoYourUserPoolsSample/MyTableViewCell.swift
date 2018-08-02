@@ -61,6 +61,10 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
     @IBOutlet weak var comments: UIButton!
     @IBOutlet weak var like: UIButton!
     
+    @IBOutlet weak var share: UIButton!
+    
+    
+    
     
     
    // var urls:[URL] = []

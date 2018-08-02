@@ -242,10 +242,16 @@
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8VK-Vy-eUA">
                                                             <rect key="frame" x="0.0" y="0.0" width="125.5" height="36"/>
                                                             <state key="normal" image="zhanneifenxiang"/>
+                                                            <connections>
+                                                                <action selector="share:" destination="HrM-CC-Cfx" eventType="touchUpInside" id="70l-FU-fNG"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Xd-Ni-DEa">
                                                             <rect key="frame" x="125.5" y="0.0" width="126" height="36"/>
                                                             <state key="normal" image="liuyan"/>
+                                                            <connections>
+                                                                <action selector="comments:" destination="HrM-CC-Cfx" eventType="touchUpInside" id="rP2-d9-dRX"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5x-Qk-5i0">
                                                             <rect key="frame" x="251.5" y="0.0" width="125.5" height="36"/>
@@ -320,6 +326,7 @@
                                     <outlet property="image_collection" destination="Jax-Qr-pQE" id="rkA-GH-1BD"/>
                                     <outlet property="like" destination="a5x-Qk-5i0" id="1dG-XS-28P"/>
                                     <outlet property="profile_picture" destination="pSs-4a-aQ4" id="BvM-Bc-iWN"/>
+                                    <outlet property="share" destination="8VK-Vy-eUA" id="DnW-Ix-tOm"/>
                                     <outlet property="tagg" destination="29N-40-rDX" id="Jne-IC-VFV"/>
                                     <outlet property="time_label" destination="Q8h-29-9st" id="Kle-Gq-L5B"/>
                                     <outlet property="title" destination="oVX-w1-555" id="PMq-y9-FAb"/>
@@ -360,6 +367,8 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="U6Q-ka-p8q" kind="show" identifier="show_post_detail" id="uJr-NK-880"/>
+                        <segue destination="U6Q-ka-p8q" kind="show" identifier="comment" id="fh5-D9-aIU"/>
+                        <segue destination="U6Q-ka-p8q" kind="show" identifier="share" id="Zee-ZJ-mLf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R26-eG-URi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -392,6 +401,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="9Mz-OX-fyw" id="Vmw-xU-H6E"/>
+                                </connections>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ARI-ln-wcL">
                                 <rect key="frame" x="21" y="132" width="343" height="150"/>
@@ -401,6 +413,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="9Mz-OX-fyw" id="YOX-c4-j9U"/>
+                                </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="asd-Vy-ehk">
                                 <rect key="frame" x="45" y="367" width="60" height="60"/>
@@ -446,6 +461,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="9Mz-OX-fyw" id="egZ-Aq-p3S"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bux-aU-iDk">
                                 <rect key="frame" x="21" y="543" width="343" height="40"/>
@@ -455,6 +473,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="9Mz-OX-fyw" id="cRd-As-2Ln"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M2e-UB-nvR">
                                 <rect key="frame" x="21" y="620" width="343" height="30"/>
@@ -664,6 +685,9 @@
                                                 <state key="normal" title=" 评论" image="liuyan">
                                                     <color key="titleColor" red="0.47843137250000001" green="0.51764705879999995" blue="0.58431372550000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="comment_clicked:" destination="U6Q-ka-p8q" eventType="touchUpInside" id="C8c-AO-nKv"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Wr-Cs-b3O">
                                                 <rect key="frame" x="250.5" y="0.0" width="124.5" height="50"/>
@@ -687,11 +711,43 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fXP-ax-TBl">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fbc-0L-0Tp">
-                                        <rect key="frame" x="0.0" y="346.5" width="375" height="274"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XDW-xj-fe6">
+                                        <rect key="frame" x="15" y="646.5" width="345" height="40"/>
+                                        <subviews>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bqa-04-1pb">
+                                                <rect key="frame" x="15" y="0.0" width="270" height="40"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0V8-Hu-tgw">
+                                                <rect key="frame" x="290" y="0.0" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="40" id="lfF-aP-hDW"/>
+                                                </constraints>
+                                                <state key="normal" title="发送"/>
+                                                <connections>
+                                                    <action selector="send:" destination="U6Q-ka-p8q" eventType="touchUpInside" id="l6p-oI-UOR"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="274" id="MMW-eG-MME"/>
+                                            <constraint firstAttribute="bottom" secondItem="0V8-Hu-tgw" secondAttribute="bottom" id="6Ff-h1-ERF"/>
+                                            <constraint firstItem="0V8-Hu-tgw" firstAttribute="top" secondItem="XDW-xj-fe6" secondAttribute="top" id="CjQ-kn-LHR"/>
+                                            <constraint firstAttribute="bottom" secondItem="bqa-04-1pb" secondAttribute="bottom" id="JB6-yT-oTf"/>
+                                            <constraint firstItem="bqa-04-1pb" firstAttribute="leading" secondItem="XDW-xj-fe6" secondAttribute="leading" constant="15" id="KD1-s8-JDp"/>
+                                            <constraint firstAttribute="trailing" secondItem="bqa-04-1pb" secondAttribute="trailing" constant="60" id="MGi-Ow-OwQ"/>
+                                            <constraint firstItem="bqa-04-1pb" firstAttribute="top" secondItem="XDW-xj-fe6" secondAttribute="top" id="OmA-tO-d5k"/>
+                                            <constraint firstAttribute="height" constant="40" id="Zhz-K4-eZj"/>
+                                            <constraint firstAttribute="trailing" secondItem="0V8-Hu-tgw" secondAttribute="trailing" constant="15" id="nDI-PF-AwE"/>
+                                        </constraints>
+                                    </view>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fbc-0L-0Tp">
+                                        <rect key="frame" x="0.0" y="346.5" width="375" height="300"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="300" id="MMW-eG-MME"/>
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="comment_cell" rowHeight="200" id="Aeh-LH-YuW" customClass="comment_cell" customModule="chain" customModuleProvider="target">
@@ -898,8 +954,11 @@
                                     <constraint firstItem="Fbc-0L-0Tp" firstAttribute="centerX" secondItem="fXP-ax-TBl" secondAttribute="centerX" id="I1n-q4-t8D"/>
                                     <constraint firstItem="Fbc-0L-0Tp" firstAttribute="leading" secondItem="fXP-ax-TBl" secondAttribute="leading" id="J5K-GC-FzL"/>
                                     <constraint firstItem="kU0-fT-8rb" firstAttribute="top" secondItem="c0E-eI-fsB" secondAttribute="bottom" constant="40" id="Km5-JZ-GEI"/>
+                                    <constraint firstAttribute="trailing" secondItem="XDW-xj-fe6" secondAttribute="trailing" constant="15" id="MEt-I0-VJi"/>
+                                    <constraint firstItem="XDW-xj-fe6" firstAttribute="leading" secondItem="fXP-ax-TBl" secondAttribute="leading" constant="15" id="MzN-OY-ZX1"/>
                                     <constraint firstAttribute="trailing" secondItem="kU0-fT-8rb" secondAttribute="trailing" id="P2Q-nX-Hyz"/>
                                     <constraint firstItem="Fbc-0L-0Tp" firstAttribute="top" secondItem="kU0-fT-8rb" secondAttribute="bottom" constant="2" id="PcC-Ch-aVi"/>
+                                    <constraint firstItem="Fbc-0L-0Tp" firstAttribute="bottom" secondItem="XDW-xj-fe6" secondAttribute="top" id="WFa-id-qS9"/>
                                     <constraint firstItem="JMk-1e-woT" firstAttribute="leading" secondItem="fXP-ax-TBl" secondAttribute="leading" id="aMd-3R-dpf"/>
                                     <constraint firstItem="JMk-1e-woT" firstAttribute="top" secondItem="fXP-ax-TBl" secondAttribute="top" id="h3g-xx-8uf"/>
                                 </constraints>
@@ -917,6 +976,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bot_bar" destination="WT4-XA-nHo" id="c4I-ZB-vLU"/>
                         <outlet property="bot_comment" destination="HqI-lF-cem" id="qx4-Mo-r73"/>
                         <outlet property="bot_like" destination="5Wr-Cs-b3O" id="Mwt-jl-1AH"/>
                         <outlet property="bot_share" destination="4hp-Vv-efP" id="Zqa-XM-2ut"/>
@@ -925,9 +985,12 @@
                         <outlet property="content" destination="sJt-n9-eAj" id="8jx-2x-R6V"/>
                         <outlet property="get" destination="JOO-Ie-NS1" id="ccg-ZN-GoK"/>
                         <outlet property="image_collection" destination="c0E-eI-fsB" id="PHa-gX-icF"/>
+                        <outlet property="input" destination="bqa-04-1pb" id="M7C-FQ-5aC"/>
+                        <outlet property="input_view" destination="XDW-xj-fe6" id="J7d-IN-1Km"/>
                         <outlet property="like_number" destination="daU-Zv-xHe" id="Yy3-fO-Axn"/>
                         <outlet property="profile_picture" destination="9Od-kQ-8pL" id="dLh-fp-6ks"/>
                         <outlet property="scrollView" destination="fXP-ax-TBl" id="qWI-tY-Kvd"/>
+                        <outlet property="send" destination="0V8-Hu-tgw" id="7VV-r4-MqN"/>
                         <outlet property="share_number" destination="XAr-8e-DcP" id="HHl-nY-82c"/>
                         <outlet property="tableView" destination="Fbc-0L-0Tp" id="wbL-oy-7zh"/>
                         <outlet property="tagg" destination="n85-6j-UKB" id="4yn-5O-82O"/>
@@ -1332,4 +1395,7 @@
         <image name="zhanneifenxiang" width="36" height="36"/>
         <image name="zhanwaifenxiang" width="40" height="40"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Zee-ZJ-mLf"/>
+    </inferredMetricsTieBreakers>
 </document>

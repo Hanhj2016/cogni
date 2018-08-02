@@ -24,7 +24,6 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _bonus: NSNumber?
     var _bonusType: String?
     var _commentIdList: [String]?
-    var _commentNumber: NSNumber?
     var _getList: [String]?
     var _liked: [String]?
     var _pictures: [String]?
@@ -55,7 +54,6 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_bonus" : "bonus",
             "_bonusType" : "bonus_type",
             "_commentIdList" : "commentIdList",
-            "_commentNumber" : "commentNumber",
             "_getList" : "getList",
             "_liked" : "liked",
             "_pictures" : "pictures",

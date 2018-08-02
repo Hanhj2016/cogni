@@ -9,11 +9,16 @@ import AWSUserPoolsSignIn
 import AWSS3
 import Photos
 import BSImagePicker
-class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UICollectionViewDelegate,UICollectionViewDataSource {
+class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate {
     var photos:[UIImage] = []
       var SelectedAssets = [PHAsset]()
     let imagePicker = UIImagePickerController()
     let comments_init = Set<String>()
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
@@ -106,10 +111,17 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
     }
     
     
-    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            print(keyboardHeight)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        self.hideKeyboardWhenTappedAround()
         self.imagePicker.delegate = self
         self.images.layer.cornerRadius = 5.0
         self.images.backgroundColor = light
@@ -312,9 +324,9 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
             DispatchQueue.main.async(execute: {
                 if let paginatedOutput = task{
                     
-                print(paginatedOutput.items.count)
+             //   print(paginatedOutput.items.count)
                 counter = paginatedOutput.items.count + 1
-                print("counter: \(counter)")
+               // print("counter: \(counter)")
                 temp._id = String(counter)
                 
                     if self.photos.count != 0{

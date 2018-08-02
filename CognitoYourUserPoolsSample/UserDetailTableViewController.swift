@@ -20,7 +20,9 @@ class UserDetailTableViewController : UITableViewController{
     var queryExpression = AWSDynamoDBScanExpression()
     var lock:NSLock?
     var pics:[UIImage] = []
-    
+    var comment_click = false
+    var share_click = false
+    //var small = 0
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var image_collection: UICollectionView!
@@ -96,32 +98,61 @@ class UserDetailTableViewController : UITableViewController{
         let temp:ChanceWithValue = posts[sender.tag]
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
         if temp._liked != nil{
-        if (temp._liked?.contains(user!))!
-        {
-            var temp_list:[String] = []
-            for a in temp._liked!
+            if (temp._liked?.contains(user!))!
             {
-                if a != user
+                var temp_list:[String] = []
+                for a in temp._liked!
                 {
-                    temp_list.append(a)
+                    if a != user
+                    {
+                        temp_list.append(a)
+                    }
                 }
+                if temp_list.count != 0
+                {temp._liked = temp_list}
+                else
+                {temp._liked = nil}
             }
-           temp._liked = temp_list
-        }
-        else
-        {
-            temp._liked?.append(user!)
+            else
+            {
+                temp._liked?.append(user!)
             }}
         else
         {
-            temp._liked = [user] as! [String]
+            temp._liked = [user] as? [String]
         }
         posts[sender.tag] = temp
-        dynamoDbObjectMapper.save(temp, completionHandler: nil)
-        self.tableView.reloadData()
+        DispatchQueue.main.async(execute: {
+            self.tableView.reloadData()})
+        dynamoDbObjectMapper.save(temp, completionHandler: {
+            (error: Error?) -> Void in
+            
+            if let error = error {
+                print("Amazon DynamoDB Save Error: \(error)")
+                return
+            }
+            print("An item was saved.")
+        })
+        
+    }
+    
+    @IBAction func comments(_ sender: Any) {
+       // small = 1
+        self.comment_click = true
+         self.performSegue(withIdentifier: "comment", sender: sender)
+        
+        
+    }
+    @IBAction func share(_ sender: Any) {
+       // small = 1
+        self.share_click = true
+         self.performSegue(withIdentifier: "share", sender: sender)
+        
+        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //if small == 0
         self.performSegue(withIdentifier: "show_post_detail", sender: self)
     }
     
@@ -131,8 +162,22 @@ class UserDetailTableViewController : UITableViewController{
             var upcoming: post_detail = segue.destination as! post_detail
             let indexPath = self.tableView.indexPathForSelectedRow!
             upcoming.p = posts[indexPath.row]
+            
 
         }
+        else if segue.identifier == "comment" || segue.identifier == "share"
+        {
+            var upcoming: post_detail = segue.destination as! post_detail
+            let s = sender as! UIButton
+            upcoming.p = posts[s.tag]
+            upcoming.share_click = self.share_click
+            upcoming.comment_click = self.comment_click
+            
+        }
+        
+        
+        
+        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,7 +191,8 @@ class UserDetailTableViewController : UITableViewController{
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
         //cell.like.addTarget(self, action: "like", for: .touchUpInside)
         cell.like.tag = indexPath.row
-        
+        cell.comments.tag = indexPath.row
+        cell.share.tag = indexPath.row
         
         
         let origImage = UIImage(named: "dianzan")
@@ -176,6 +222,11 @@ class UserDetailTableViewController : UITableViewController{
             cell.like.setTitle("", for: .normal)
         }
         
+        
+        if temp._commentIdList != nil && (temp._commentIdList?.count)! > 0
+        {
+            cell.comments.setTitle("\((temp._commentIdList?.count)!)", for: .normal)
+        }
         if ((temp._username) != nil)
         {cell.username.text = temp._username
             cell.username.textColor = text_light

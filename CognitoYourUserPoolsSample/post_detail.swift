@@ -55,6 +55,13 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     @IBOutlet weak var bot_share: UIButton!
     @IBOutlet weak var bot_comment: UIButton!
     @IBOutlet weak var bot_like: UIButton!
+    @IBOutlet weak var bot_bar: UIView!
+    
+    @IBOutlet weak var input_view: UIView!
+    @IBOutlet weak var input: UITextView!
+    @IBOutlet weak var send: UIButton!
+    var comment_click = false
+    var share_click = false
     
     
     var p: ChanceWithValue = ChanceWithValue()
@@ -73,6 +80,76 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     }()
     
     
+    func get_time() -> String{
+        let date = Date()
+        let calendar = Calendar.current
+        let year  = calendar.component(.year, from: date) // 0
+        let month = calendar.component(.month, from: date) // 1
+        let day = calendar.component(.day, from: date) //2
+        let hour = calendar.component(.hour, from: date) // 3
+        let minute = calendar.component(.minute, from: date) // 4
+        let second = calendar.component(.second, from: date) // 5
+        let temp_time1 = Int(year * 10000000000 + month * 100000000 + day * 1000000)
+        let temp_time2 = Int(hour * 10000 + minute * 100 + second)
+        let temp_time = (temp_time1 + temp_time2)
+        return String(temp_time)
+    }
+    
+    
+    @IBAction func send(_ sender: Any) {
+        self.view.endEditing(true)
+        if (self.input.text != nil)
+        {
+            var temp_comment:CommentTable = CommentTable()
+            
+            
+            var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            var queryExpression = AWSDynamoDBScanExpression()
+            dynamoDbObjectMapper.scan(CommentTable.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
+                DispatchQueue.main.async(execute: {
+                    if let paginatedOutput = task{
+                        
+                        //print(paginatedOutput.items.count)
+                       let counter = paginatedOutput.items.count + 1
+                        //print("counter: \(counter)")
+                        temp_comment._chanceId = self.p._id
+                        temp_comment._commentId = String(counter)
+                        temp_comment._commentText = self.input.text
+                        temp_comment._upTime = self.get_time()
+                        temp_comment._userId = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+                        temp_comment._userPic = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + temp_comment._userId! + ".png"
+                        dynamoDbObjectMapper.save(temp_comment, completionHandler: nil)
+                        if self.p._commentIdList != nil{
+                            self.p._commentIdList!.append(String(counter))}
+                        else {self.p._commentIdList = []
+                            self.p._commentIdList!.append(String(counter))
+                        }
+                        var dynamoDbObjectMapper2 = AWSDynamoDBObjectMapper.default()
+                        dynamoDbObjectMapper2.save(self.p, completionHandler: nil)
+                        
+                    }
+                })
+            })
+        }
+        self.tableView.reloadData()
+    }
+    
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        scrollView.setContentOffset(CGPoint(x:0,y:0), animated: true)
+    }
+    
+    @IBAction func comment_clicked(_ sender: Any) {
+        scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
+        self.input.becomeFirstResponder()
+    
+    
+    //print("clicked")
+    }
+    
+    
+    
+    
     
     
     
@@ -87,7 +164,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                         print("The request failed. Error: \(error)")
                     } else if let resultBook = task.result as? CommentTable {
                         print("in")
-                        if self.comments.count < self.p._commentNumber as! Int
+                        if self.comments.count < (self.p._commentIdList?.count)!
                         {self.comments.append(resultBook)}
                     }
                     return nil
@@ -140,6 +217,10 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.addSubview(self.bot_bar)
+        self.hideKeyboardWhenTappedAround()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         //self.tableView.backgroundColor = light
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         self.tableView!.delegate = self
@@ -363,11 +444,15 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         else
         {self.share_number.setTitle("转发 0", for: .normal)}
         
-        
+        var comment_number = 0
+        if self.p._commentIdList != nil
+        {
+            comment_number = (p._commentIdList?.count)!
+        }
         self.comment_number.backgroundColor = mid
         self.comment_number.tintColor = text_mid
-        if self.p._commentNumber != nil
-        {self.comment_number.setTitle("评论 \(self.p._commentNumber!)", for: .normal)}
+        if self.p._commentIdList != nil
+        {self.comment_number.setTitle("评论 \(comment_number)", for: .normal)}
         else
         {self.comment_number.setTitle("评论 0", for: .normal)}
         
@@ -379,9 +464,9 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             tableView.addSubview(refresher)
         }
         self.refresh()
-        if p._commentNumber != nil
+        if p._commentIdList != nil
         {
-        while (self.comments.count < p._commentNumber as! Int)
+        while (self.comments.count < p._commentIdList?.count as! Int)
         {
             //self.refresh()
         }
@@ -389,6 +474,20 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.bot_like.backgroundColor = sign_in_colour
         self.bot_comment.backgroundColor = sign_in_colour
         self.bot_share.backgroundColor = sign_in_colour
+        
+//        if (share_click || comment_click)
+//        {
+//            scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
+//            self.input.becomeFirstResponder()
+//            share_click = false
+//            comment_click = false
+//        }
+        DispatchQueue.main.async(execute: {
+            if self.comment_click
+            {self.comment_clicked(self)}
+            if self.share_click
+            {self.comment_clicked(self)}
+        })
         
     }
     
