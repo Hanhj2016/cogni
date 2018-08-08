@@ -28,7 +28,14 @@ class UserDetailTableViewController : UITableViewController{
     @IBOutlet weak var image_collection: UICollectionView!
     lazy var refresher:UIRefreshControl = {
         let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = colour
+        refreshControl.tintColor = UIColor.clear
+        let refreshImage = UIImageView()
+        refreshImage.image = UIImage(named: "jake")
+        refreshControl.backgroundColor = UIColor.clear
+        refreshControl.addSubview(refreshImage)
+        refreshImage.frame = refreshControl.bounds.offsetBy(dx: self.view.frame.size.width / 2 - 20, dy: 20)
+            refreshImage.frame.size.width = 40 // Whatever width you want
+            refreshImage.frame.size.height = 40
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         return refreshControl
     }()
@@ -47,6 +54,7 @@ class UserDetailTableViewController : UITableViewController{
         //rowHeight属性设置为UITableViewAutomaticDimension
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
+        
         self.pool = AWSCognitoIdentityUserPool(forKey: AWSCognitoUserPoolsSignInProviderKey)
         if (self.user == nil) {
             self.user = self.pool?.currentUser()
@@ -57,6 +65,11 @@ class UserDetailTableViewController : UITableViewController{
             tableView.addSubview(refresher)
         }
         self.refresh()
+//        while posts.count == 0
+//        {
+//            self.refresh()
+//        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -123,7 +136,9 @@ class UserDetailTableViewController : UITableViewController{
         }
         posts[sender.tag] = temp
         DispatchQueue.main.async(execute: {
-            self.tableView.reloadData()})
+            let indexPath = IndexPath(item: sender.tag, section: 0)
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        })
         dynamoDbObjectMapper.save(temp, completionHandler: {
             (error: Error?) -> Void in
             
@@ -144,9 +159,8 @@ class UserDetailTableViewController : UITableViewController{
         
     }
     @IBAction func share(_ sender: Any) {
-       // small = 1
-        self.share_click = true
-         self.performSegue(withIdentifier: "share", sender: sender)
+       
+         self.performSegue(withIdentifier: "pyq_share", sender: sender)
         
         
     }
@@ -159,11 +173,32 @@ class UserDetailTableViewController : UITableViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "show_post_detail"
         {
+            
             var upcoming: post_detail = segue.destination as! post_detail
             let indexPath = self.tableView.indexPathForSelectedRow!
             upcoming.p = posts[indexPath.row]
             
 
+        }
+        else if segue.identifier == "share_detail"
+        {
+            var upcoming: post_detail = segue.destination as! post_detail
+          let s = sender as! UIButton
+            let temp = posts[s.tag]
+            let id = temp._sharedFrom![0]
+            let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                if let error = task.error as? NSError {
+                    print("The request failed. Error: \(error)")
+                } else if let resultBook = task.result as? ChanceWithValue {
+                    upcoming.p = resultBook
+                    
+                }
+                return nil
+            })
+            
+            
+            
         }
         else if segue.identifier == "comment" || segue.identifier == "share"
         {
@@ -172,6 +207,28 @@ class UserDetailTableViewController : UITableViewController{
             upcoming.p = posts[s.tag]
             upcoming.share_click = self.share_click
             upcoming.comment_click = self.comment_click
+            
+        }
+        else if segue.identifier == "pyq_share"
+        {
+            var upcoming: share = segue.destination as! share
+            let s = sender as! UIButton
+            let temp = posts[s.tag]
+            if temp._sharedFrom == nil{
+            upcoming.profile_picture_link = temp._profilePicture!
+            upcoming.username_ = "@" + temp._username!
+            upcoming.title_ = temp._title!
+            upcoming.id = temp._id!
+                upcoming.tag = Int(temp._tag!)}
+            else
+            {
+                upcoming.profile_picture_link = temp._sharedFrom![3]
+                upcoming.username_ =  temp._sharedFrom![1]
+                upcoming.title_ = temp._sharedFrom![2]
+                upcoming.id = temp._sharedFrom![0]
+                upcoming.tag = Int(temp._tag!)
+                upcoming.share_from = temp._id!
+            }
             
         }
         
@@ -186,14 +243,11 @@ class UserDetailTableViewController : UITableViewController{
         let temp_time:[Int] = time
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
-        //cell.setBottomBorder()
-        //cell.reloadData(temp:temp,time__:temp_time)
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
-        //cell.like.addTarget(self, action: "like", for: .touchUpInside)
         cell.like.tag = indexPath.row
         cell.comments.tag = indexPath.row
         cell.share.tag = indexPath.row
-        
+        cell.share_detail.tag = indexPath.row
         
         let origImage = UIImage(named: "dianzan")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -223,10 +277,26 @@ class UserDetailTableViewController : UITableViewController{
         }
         
         
-        if temp._commentIdList != nil && (temp._commentIdList?.count)! > 0
+        if (temp._commentIdList) != nil && (temp._commentIdList?.count)! > 0
         {
             cell.comments.setTitle("\((temp._commentIdList?.count)!)", for: .normal)
         }
+        else
+        {
+            cell.comments.setTitle("", for: .normal)
+        }
+        
+        if (temp._shared) != nil
+        {
+            cell.share.setTitle("\((temp._shared)!)", for: .normal)
+        }
+        else
+        {
+            cell.share.setTitle("", for: .normal)
+        }
+        
+        
+        
         if ((temp._username) != nil)
         {cell.username.text = temp._username
             cell.username.textColor = text_light
@@ -238,6 +308,7 @@ class UserDetailTableViewController : UITableViewController{
             cell.title.textColor = text_light
             
         }
+    
         if ((temp._text) != nil)
         {cell.content.text = temp._text
             cell.content.font = cell.content.font.withSize(14)
@@ -245,9 +316,10 @@ class UserDetailTableViewController : UITableViewController{
             cell.content.numberOfLines = 0
             cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
             cell.content.sizeToFit()
-//let greet4Height = cell.content.optimalHeight
-            //cell.content.frame = CGRect(x: cell.content.frame.origin.x, y: cell.content.frame.origin.y, width: 100, height: cell.content.frame.height)
             cell.content.backgroundColor = mid
+        }
+        else{
+            cell.content.isHidden = true
         }
         
         
@@ -257,33 +329,21 @@ class UserDetailTableViewController : UITableViewController{
         cell.images = []
         if (temp._pictures != nil)&&(temp._pictures?.count != 0)
         {
-            
-            //DispatchQueue.main.async(execute: {
             for i in 0...(temp._pictures?.count)!-1
             {
                 
                 let url = URL(string:temp._pictures![i])!
-                //  self.urls.append(url)
                 var data:NSData = try! NSData(contentsOf: url)
                 let image = UIImage(data: data as Data)!
                 cell.images.append(image)
                 
             }
-            
-            
-            
-            
-            
-            //})
         }
         
         
         
         if ((temp._time) != nil)
-        {//using the easy way
-            
-            
-            
+        {
             var output = ""
             let _time = temp._time as! Int
             let second = _time % 100
@@ -298,8 +358,6 @@ class UserDetailTableViewController : UITableViewController{
             Rem = Rem / 100
             let year = (Rem % 100)%100
             var a = time[0] % 100
-            //   print("year:\(year)..month:\(month)..day:\(day)")
-            
             if year == a
             {
                 if day == time[2]
@@ -350,10 +408,6 @@ class UserDetailTableViewController : UITableViewController{
             cell.time_label.font = cell.time_label.font.withSize(13)
             cell.time_label.text = output
             cell.time_label.textColor = text_mid
-            
-            
-            
-            
         }
         
         if ((temp._tag) != nil)
@@ -372,7 +426,6 @@ class UserDetailTableViewController : UITableViewController{
         {
             let url = URL(string: temp._profilePicture!)
             let data = try? Data(contentsOf: url!)
-            // self.profile_picture.image = UIImage(data: data!)
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
             cell.profile_picture.layer.borderColor = UIColor.white.cgColor
@@ -389,6 +442,32 @@ class UserDetailTableViewController : UITableViewController{
         let contentSize = cell.image_collection.collectionViewLayout.collectionViewContentSize
         cell.image_collection.collectionViewLayout.invalidateLayout()
         cell.collectionViewHeight.constant = contentSize.height
+        if temp._sharedFrom == nil //no share
+        {
+            cell.share_view.isHidden = true
+            }
+        else
+        {
+            cell.share_view.isHidden = false
+            print("height: \(cell.share_view.frame.height)")
+            cell.collectionViewHeight.constant = 130
+            let url = URL(string:temp._sharedFrom![3])!
+            cell.share_profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+            cell.share_title.text = temp._sharedFrom![2]
+            cell.share_username.text = temp._sharedFrom![1]
+            cell.share_view.backgroundColor = sign_in_colour
+            cell.share_username.textColor = text_light
+           cell.share_title.textColor = text_light
+           cell.share_title.font = cell.share_title.font.withSize(14)
+            cell.share_title.numberOfLines = 0
+            cell.share_title.lineBreakMode = NSLineBreakMode.byWordWrapping
+            cell.share_title.sizeToFit()
+            //let tap = UITapGestureRecognizer(target:self,action:#selector(bigButtonTapped(_:)))
+            //cell.share_view.addGestureRecognizer(tap)
+            
+        }
+        
+        
         
         cell.tool_bar.backgroundColor = mid
         cell.tool_bar.layer.borderColor = light.cgColor
@@ -401,6 +480,20 @@ class UserDetailTableViewController : UITableViewController{
         return cell
     }
     
+    
+    @IBAction func share_detail(_ sender: Any) {
+        //print("row: \((sender as! UIButton).tag)")
+        self.performSegue(withIdentifier: "share_detail", sender: sender)
+    }
+    
+    
+    
+    
+     @objc func bigButtonTapped(_ recognizer:UITapGestureRecognizer) {
+        //print("bigButtonTapped")
+        self.performSegue(withIdentifier: "share_detail", sender: self)
+    }
+    
     // MARK: - IBActions
     
     @IBAction func signOut(_ sender: AnyObject) {
@@ -410,6 +503,29 @@ class UserDetailTableViewController : UITableViewController{
         self.tableView.reloadData()
         self.refresh()
     }
+    
+    
+    func sort_posts(){
+        var id_list:[Int] = []
+        for a in posts
+        {
+            id_list.append(Int(a._id!)!)
+        }
+        id_list.sort(by: >)
+        var temp_list:[ChanceWithValue] = []
+        for a in 0...posts.count - 1
+        {
+            for b in posts
+            {
+                if b._id == String(id_list[a])
+                {
+                    temp_list.append(b)
+                }
+            }
+        }
+        posts = temp_list
+    }
+    
     
     @objc func refresh() {
         
@@ -440,6 +556,7 @@ class UserDetailTableViewController : UITableViewController{
                         {posts.append(news as! ChanceWithValue)}
                     }
                 }
+                self.sort_posts()
             })
         })
         

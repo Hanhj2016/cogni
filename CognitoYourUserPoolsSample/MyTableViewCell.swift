@@ -63,7 +63,21 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
     
     @IBOutlet weak var share: UIButton!
     
+    @IBOutlet weak var share_view: UIView!
+    @IBOutlet weak var share_profile_picture: UIImageView!
     
+    @IBOutlet weak var share_username: UILabel!
+    @IBOutlet weak var share_title: UILabel!
+    
+    @IBOutlet weak var share_detail: UIButton!
+    
+   // @IBOutlet weak var share_view: UIView!
+    
+  //  @IBOutlet weak var share_profile_picture: UIImageView!
+    
+ //   @IBOutlet weak var share_username: UILabel!
+    
+//    @IBOutlet weak var share_title: UILabel!
     
     
     

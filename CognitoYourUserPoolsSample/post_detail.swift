@@ -19,7 +19,7 @@ import BSImagePicker
 import Foundation
 
 class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource {
-
+    
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var top_view: UIView!
@@ -60,9 +60,20 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     @IBOutlet weak var input_view: UIView!
     @IBOutlet weak var input: UITextView!
     @IBOutlet weak var send: UIButton!
+    
+    @IBOutlet weak var share_view: UIView!
+    @IBOutlet weak var share_profile_picture: UIImageView!
+    
+    @IBOutlet weak var share_username: UILabel!
+    @IBOutlet weak var share_title: UILabel!
+    @IBOutlet weak var table_height: NSLayoutConstraint!
+    
+    
+    
+    
     var comment_click = false
     var share_click = false
-    
+    let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
     
     var p: ChanceWithValue = ChanceWithValue()
     let screenHeight = UIScreen.main.bounds.height
@@ -71,7 +82,28 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     var comments:[CommentTable] = []
     
     
-    
+    @IBAction func share_detail(_ sender: Any) {
+        print("in")
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "post_detail") as! post_detail
+        let id = p._sharedFrom![0]
+        
+        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? ChanceWithValue {
+                nextViewController.p = resultBook
+                
+            }
+            return nil
+        })
+        nextViewController.navigationController?.navigationBar.isHidden = false
+        self.navigationController!.pushViewController(nextViewController, animated: true)
+        //self.present(nextViewController, animated:true, completion:nil)
+        
+    }
     lazy var refresher:UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = colour
@@ -95,10 +127,45 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         return String(temp_time)
     }
     
+    @IBAction func share(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "detail_share", sender: sender)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "detail_share"
+        {
+            var upcoming: share = segue.destination as! share
+            let s = sender as! UIButton
+            let temp = p
+            if temp._sharedFrom == nil{
+                upcoming.profile_picture_link = temp._profilePicture!
+                upcoming.username_ = "@" + temp._username!
+                upcoming.title_ = temp._title!
+                upcoming.id = temp._id!
+                upcoming.tag = Int(temp._tag!)}
+            else
+            {
+                upcoming.profile_picture_link = temp._sharedFrom![3]
+                upcoming.username_ =  temp._sharedFrom![1]
+                upcoming.title_ = temp._sharedFrom![2]
+                upcoming.id = temp._sharedFrom![0]
+                upcoming.tag = Int(temp._tag!)
+                upcoming.share_from = temp._id!
+            }
+            
+        }
+        
+        
+        
+        
+    }
     
     @IBAction func send(_ sender: Any) {
         self.view.endEditing(true)
-        if (self.input.text != nil)
+        let text = self.input.text
+        if (text != "")
         {
             var temp_comment:CommentTable = CommentTable()
             
@@ -110,14 +177,15 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                     if let paginatedOutput = task{
                         
                         //print(paginatedOutput.items.count)
-                       let counter = paginatedOutput.items.count + 1
+                        let counter = paginatedOutput.items.count + 1
                         //print("counter: \(counter)")
                         temp_comment._chanceId = self.p._id
                         temp_comment._commentId = String(counter)
-                        temp_comment._commentText = self.input.text
+                        temp_comment._commentText = text
                         temp_comment._upTime = self.get_time()
                         temp_comment._userId = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
                         temp_comment._userPic = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + temp_comment._userId! + ".png"
+                        
                         dynamoDbObjectMapper.save(temp_comment, completionHandler: nil)
                         if self.p._commentIdList != nil{
                             self.p._commentIdList!.append(String(counter))}
@@ -126,27 +194,99 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                         }
                         var dynamoDbObjectMapper2 = AWSDynamoDBObjectMapper.default()
                         dynamoDbObjectMapper2.save(self.p, completionHandler: nil)
-                        
+                        self.refresh()
+                        self.tableView.reloadData()
                     }
                 })
             })
         }
-        self.tableView.reloadData()
+        self.input.text = ""
+        self.input_view.isHidden = true
+        
     }
     
     
     @objc func keyboardWillHide(notification: NSNotification) {
         scrollView.setContentOffset(CGPoint(x:0,y:0), animated: true)
+        
+    }
+    
+    @objc func keyboardWillAppear(notification: NSNotification) {
+        //print("after height: \(self.input_view.frame.maxY)")
+        //print("after top height: \(self.top_view_height)")
+       // if (self.top_view_height.constant > 200)
+        scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
+//        else
+//        {scrollView.setContentOffset(CGPoint(x:0,y:150), animated: true)}
     }
     
     @IBAction func comment_clicked(_ sender: Any) {
-        scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
+        //scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
+        self.input_view.isHidden = false
         self.input.becomeFirstResponder()
-    
-    
-    //print("clicked")
+        
+        
+        //print("clicked")
     }
     
+    @IBAction func like_clicked(_ sender: Any) {
+        let temp:ChanceWithValue = self.p
+        var contain = false
+        let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        if temp._liked != nil{
+            if (temp._liked?.contains(user!))!
+            {
+                var temp_list:[String] = []
+                for a in temp._liked!
+                {
+                    if a != user
+                    {
+                        temp_list.append(a)
+                    }
+                }
+                if temp_list.count != 0
+                {temp._liked = temp_list}
+                else
+                {temp._liked = nil}
+                contain = false
+            }
+            else
+            {
+                temp._liked?.append(user!)
+                contain = true
+            }}
+        else
+        {
+            temp._liked = [user] as? [String]
+            contain = true
+        }
+        self.p = temp
+        DispatchQueue.main.async(execute: {
+            if  contain{
+                self.bot_like.setTitleColor(colour, for: .normal)
+                self.bot_like.tintColor = colour
+                self.bot_like.setTitle("取消", for: .normal)
+            }
+            else{
+                self.bot_like.setTitleColor(text_mid, for: .normal)
+                self.bot_like.tintColor = text_mid
+                self.bot_like.setTitle("点赞", for: .normal)
+            }
+            
+            })
+        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDbObjectMapper.save(temp, completionHandler: {
+            (error: Error?) -> Void in
+            
+            if let error = error {
+                print("Amazon DynamoDB Save Error: \(error)")
+                return
+            }
+            print("An item was saved.")
+        })
+        
+        
+    }
     
     
     
@@ -163,19 +303,32 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                     if let error = task.error as? NSError {
                         print("The request failed. Error: \(error)")
                     } else if let resultBook = task.result as? CommentTable {
-                        print("in")
+                        //print("in")
                         if self.comments.count < (self.p._commentIdList?.count)!
-                        {self.comments.append(resultBook)}
+                        {
+                            if !self.comments.contains(resultBook)
+                            {self.comments.append(resultBook)}
+                            //print("comment number: \(self.comments.count)")
+                        }
                     }
                     return nil
                 })
             }
         }
-        print("158: \(self.comments.count)")
+        
+        DispatchQueue.main.async(execute: {
+            //self.title = self.user?.username
+            self.tableView.reloadData()
+            if self.comments.count > 0{
+                self.sort_comments()}
+        })
+        
+        
+        //print("158: \(self.comments.count)")
         
         //***********************
         
-
+        
         
         self.refresher.endRefreshing()
         
@@ -217,17 +370,34 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        while(p._username == nil)
+        {
+        }
         self.view.addSubview(self.bot_bar)
         self.hideKeyboardWhenTappedAround()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: .UIKeyboardWillShow, object: nil)
         //self.tableView.backgroundColor = light
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         self.tableView!.delegate = self
         //self.tableView!.dataSource = self as! UITableViewDataSource
+        self.scrollView.backgroundColor = mid
+        self.view.backgroundColor = mid
         
         
-
+        self.input_view.backgroundColor = sign_in_colour
+        self.input.backgroundColor = sign_in_colour
+        self.send.backgroundColor = sign_in_colour
+        
+        self.input_view.layer.cornerRadius = 5.0
+        self.input.layer.cornerRadius = 5.0
+        self.send.layer.cornerRadius = 5.0
+        
+        self.input.textColor = text_light
+        self.send.tintColor = colour
+        
+        
+        
         tableView!.estimatedRowHeight = 150
         tableView!.rowHeight = UITableViewAutomaticDimension
         
@@ -257,8 +427,8 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         tableView.delegate = self
         tableView.dataSource = self
         scrollView.bounces = false
-        tableView.bounces = false
-        tableView.isScrollEnabled = false
+        tableView.bounces = true
+        tableView.isScrollEnabled = true
         // Do any additional setup after loading the view.
         
         
@@ -282,6 +452,10 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             self.content.lineBreakMode = NSLineBreakMode.byWordWrapping
             self.content.sizeToFit()
             self.content.backgroundColor = mid
+        }
+        else
+        {
+            self.content.isHidden = true
         }
         
         
@@ -426,7 +600,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.image_collection.collectionViewLayout.invalidateLayout()
         self.collectionViewHeight.constant = contentSize.height
         self.top_view_height.constant = 70 + text_content_size + contentSize.height + 80
-    self.image_collection.backgroundColor = mid
+        self.image_collection.backgroundColor = mid
         
         self.tool_bar.backgroundColor = mid
         self.like_number.backgroundColor = mid
@@ -434,7 +608,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         if self.p._liked != nil
         {self.like_number.setTitle("赞 \((self.p._liked?.count)!)", for: .normal)}
         else
-          {self.like_number.setTitle("赞 0", for: .normal)}
+        {self.like_number.setTitle("赞 0", for: .normal)}
         
         
         self.share_number.backgroundColor = mid
@@ -466,22 +640,57 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.refresh()
         if p._commentIdList != nil
         {
-        while (self.comments.count < p._commentIdList?.count as! Int)
-        {
-            //self.refresh()
-        }
+            while (self.comments.count < p._commentIdList?.count as! Int)
+            {
+                //self.refresh()
+            }
         }
         self.bot_like.backgroundColor = sign_in_colour
+        let origImage = UIImage(named: "dianzan")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        self.bot_like.setImage(tintedImage, for: .normal)
+        if (p._liked != nil){
+        if (p._liked?.contains(user!))!
+        {
+            self.bot_like.setTitleColor(colour, for: .normal)
+            self.bot_like.tintColor = colour
+            self.bot_like.setTitle("取消", for: .normal)
+        }
+        else
+        {
+            self.bot_like.setTitleColor(text_mid, for: .normal)
+            self.bot_like.tintColor = text_mid
+            self.bot_like.setTitle("点赞", for: .normal)
+        }
+        }
+        
         self.bot_comment.backgroundColor = sign_in_colour
         self.bot_share.backgroundColor = sign_in_colour
+         //print("before top height: \(self.top_view_height)")
         
-//        if (share_click || comment_click)
-//        {
-//            scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
-//            self.input.becomeFirstResponder()
-//            share_click = false
-//            comment_click = false
-//        }
+        if p._sharedFrom == nil //no share
+        {
+            self.share_view.isHidden = true
+        }
+        else
+        {
+            self.share_view.isHidden = false
+           
+            self.collectionViewHeight.constant = 130
+            let url = URL(string:p._sharedFrom![3])!
+            self.share_profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+            self.share_title.text = p._sharedFrom![2]
+            self.share_username.text = p._sharedFrom![1]
+            self.share_username.textColor = text_light
+            self.share_view.backgroundColor = sign_in_colour
+            self.share_title.textColor = text_light
+            self.share_title.font = self.share_title.font.withSize(14)
+            self.share_title.numberOfLines = 0
+            self.share_title.lineBreakMode = NSLineBreakMode.byWordWrapping
+            self.share_title.sizeToFit()
+        }
+        
+        
         DispatchQueue.main.async(execute: {
             if self.comment_click
             {self.comment_clicked(self)}
@@ -489,15 +698,47 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             {self.comment_clicked(self)}
         })
         
+        //print(" Collect Height: \(collectionViewHeight)")
+        //print("tool bar bot: \(tool_bar.frame.maxY)")
+        self.table_height.constant = screenHeight - 180 - collectionViewHeight.constant - 140
+        
+        
+        
+        
     }
+    
+    func sort_comments(){
+        var id_list:[Int] = []
+        for a in comments
+        {
+            id_list.append(Int(a._commentId!)!)
+        }
+        id_list.sort(by: >)
+        var temp_list:[CommentTable] = []
+        
+        for a in 0...comments.count - 1
+        {
+            for b in comments
+            {
+                if b._commentId == String(id_list[a])
+                {
+                    temp_list.append(b)
+                }
+            }
+        }
+        comments = temp_list
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: true)
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+       self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.setToolbarHidden(false, animated: true)
         
     }
@@ -505,7 +746,12 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         return 1
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = self.tableView.indexPathForSelectedRow!.row
+        self.input_view.isHidden = false
+        self.input.becomeFirstResponder()
+        self.input.text = "回复 \(comments[row]._userId!) ："
+    }
     //displayed cell number
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.comments.count
@@ -518,7 +764,8 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         if ((comments[index]._userPic != nil))
         {
             let url = URL(string: comments[index]._userPic!)
-            let data = try? Data(contentsOf: url!)
+            do{
+            let data = try? Data(contentsOf: url!)}
             cell.profile_picture.image = UIImage(data:try! Data(contentsOf: url!))
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
@@ -637,39 +884,11 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         return cell
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let yOffset = scrollView.contentOffset.y
-        
-        if scrollView == self.scrollView {
-            if yOffset >= scrollViewContentHeight - screenHeight {
-                scrollView.isScrollEnabled = false
-                tableView.isScrollEnabled = true
-            }
-        }
-        
-        if scrollView == self.tableView {
-            if yOffset <= 0 {
-                self.scrollView.isScrollEnabled = true
-                self.tableView.isScrollEnabled = false
-            }
-        }
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

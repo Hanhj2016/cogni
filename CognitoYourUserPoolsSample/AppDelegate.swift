@@ -71,20 +71,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //****************working version*****************8//
-        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        var queryExpression = AWSDynamoDBScanExpression()
-        dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
-            DispatchQueue.main.async(execute: {
-                if let paginatedOutput = task{
-                    if (paginatedOutput.items.count < posts.count)
-                    {posts = []}
-                    for news in paginatedOutput.items {
-                        if !posts.contains(news as! ChanceWithValue)
-                        {posts.append(news as! ChanceWithValue)}
-                    }
-                }
-            })
-        })
+//        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        var queryExpression = AWSDynamoDBScanExpression()
+//        dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
+//            DispatchQueue.main.async(execute: {
+//                if let paginatedOutput = task{
+//                    if (paginatedOutput.items.count < posts.count)
+//                    {posts = []}
+//                    for news in paginatedOutput.items {
+//                        if !posts.contains(news as! ChanceWithValue)
+//                        {posts.append(news as! ChanceWithValue)}
+//                    }
+//                }
+//            })
+//        })
         //********************************//
         //************** TIME ******************//
         let date = Date()

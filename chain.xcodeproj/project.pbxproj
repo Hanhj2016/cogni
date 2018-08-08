@@ -34,6 +34,7 @@
 		B98E223520E6A01C0044BB31 /* background.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E223420E6A01C0044BB31 /* background.swift */; };
 		B9BCB04E2106877600661970 /* post_images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BCB04D2106877600661970 /* post_images.swift */; };
 		B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C1DD5520F6763B004C611B /* post_cell.swift */; };
+		B9C95E642117B1DD00E6DA06 /* share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C95E632117B1DD00E6DA06 /* share.swift */; };
 		B9D6951020EE90790024F6FF /* profile_picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D6950F20EE90790024F6FF /* profile_picture.swift */; };
 		B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D6951520EE924C0024F6FF /* awsconfiguration.json */; };
 		B9E0B17720FAB258009ED8BD /* 43 发布界面.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */; };
@@ -78,6 +79,7 @@
 		B98E223420E6A01C0044BB31 /* background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = background.swift; sourceTree = "<group>"; };
 		B9BCB04D2106877600661970 /* post_images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_images.swift; sourceTree = "<group>"; };
 		B9C1DD5520F6763B004C611B /* post_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_cell.swift; sourceTree = "<group>"; };
+		B9C95E632117B1DD00E6DA06 /* share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = share.swift; sourceTree = "<group>"; };
 		B9D6950F20EE90790024F6FF /* profile_picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile_picture.swift; sourceTree = "<group>"; };
 		B9D6951420EE924C0024F6FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/awsconfiguration.json; sourceTree = "<group>"; };
 		B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "43 发布界面.jpg"; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				B9D6951520EE924C0024F6FF /* awsconfiguration.json */,
 				17FC2F9A1E259E0500174015 /* Constants.swift */,
 				B98E223420E6A01C0044BB31 /* background.swift */,
+				B9C95E632117B1DD00E6DA06 /* share.swift */,
 				17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */,
 				B9F77BD3210F77060088E601 /* post_detail.swift */,
 				B9F98AE72110B6D500E4CEDB /* comment_cell.swift */,
@@ -365,6 +368,7 @@
 				B98E223520E6A01C0044BB31 /* background.swift in Sources */,
 				B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */,
 				17FC2F991E25940900174015 /* SignInViewController.swift in Sources */,
+				B9C95E642117B1DD00E6DA06 /* share.swift in Sources */,
 				17FC2F971E25928900174015 /* MFAViewController.swift in Sources */,
 				17FC2FA71E25A9A200174015 /* DevicesDetailTableViewController.swift in Sources */,
 				17FC2F801E258FC500174015 /* AppDelegate.swift in Sources */,
