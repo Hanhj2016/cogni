@@ -23,7 +23,7 @@ import AWSPinpoint
 import Foundation
 import AWSS3
 //var temp_Post:Posts = Posts()
-var posts:[ChanceWithValue] = []
+
 var time:[Int] = []
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
         // Warn user if configuration not updated
         if (CognitoIdentityUserPoolId == "YOUR_USER_POOL_ID") {
             let alertController = UIAlertController(title: "Invalid Configuration",

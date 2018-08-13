@@ -131,3 +131,59 @@ class CommentTable: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
         ]
     }
 }
+
+
+@objcMembers
+@objc(UserPool)
+class UserPool: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+    
+    var _userId: String?
+    var _career: String?
+    var _chanceId: String?
+    var _chanceIdList: [String]?
+    var _gender: String?
+    var _name: String?
+    var _nickName: String?
+    var _resume: String?
+    var _walletAddress: String?
+    var _beiGuanZhu: [String]?
+    var _candyCurrency: String?
+    var _cryptoCurrency: String?
+    var _gottenList: [String]?
+    var _guanZhu: [String]?
+    var _numofChance: String?
+    var _profilePic: String?
+    var _shengWang: String?
+    
+    class func dynamoDBTableName() -> String {
+        
+        return "chance-mobilehub-653619147-UserPool"
+    }
+    
+    class func hashKeyAttribute() -> String {
+        
+        return "_userId"
+    }
+    
+    override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
+        return [
+            "_userId" : "userId",
+            "_career" : "Career",
+            "_chanceId" : "ChanceId",
+            "_chanceIdList" : "ChanceIdList",
+            "_gender" : "Gender",
+            "_name" : "Name",
+            "_nickName" : "NickName",
+            "_resume" : "Resume",
+            "_walletAddress" : "WalletAddress",
+            "_beiGuanZhu" : "beiGuanZhu",
+            "_candyCurrency" : "candyCurrency",
+            "_cryptoCurrency" : "cryptoCurrency",
+            "_gottenList" : "gottenList",
+            "_guanZhu" : "guanZhu",
+            "_numofChance" : "numofChance",
+            "_profilePic" : "profilePic",
+            "_shengWang" : "shengWang",
+        ]
+    }
+}

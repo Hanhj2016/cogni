@@ -11,7 +11,7 @@ import Photos
 import BSImagePicker
 import Foundation
 //var temp = "start"
-class UserDetailTableViewController : UITableViewController{
+class UserDetailTableViewController : UITableViewController {
     
     var response: AWSCognitoIdentityUserGetDetailsResponse?
     var user: AWSCognitoIdentityUser?
@@ -22,10 +22,26 @@ class UserDetailTableViewController : UITableViewController{
     var pics:[UIImage] = []
     var comment_click = false
     var share_click = false
+    var posts:[ChanceWithValue] = []
+    var post_key_list:[String] = []
+    var all = true
+
     //var small = 0
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var image_collection: UICollectionView!
+    
+    
+    init(list:[String]){
+        self.post_key_list = list
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+    }
+    
+   
     lazy var refresher:UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor.clear
@@ -40,10 +56,24 @@ class UserDetailTableViewController : UITableViewController{
         return refreshControl
     }()
     
+
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        //custom logic goes here
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = light
         
+        
+        var title_image = UIImageView()
+        title_image.image = UIImage(named:"name")
+        title_image.frame = CGRect(x:0, y:0, width:60, height:30)
+        title_image.clipsToBounds = true
+        title_image.contentMode = UIViewContentMode.scaleAspectFit
+        self.navigationItem.titleView = title_image
         lock = NSLock()
        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         self.tableView!.delegate = self
@@ -81,13 +111,11 @@ class UserDetailTableViewController : UITableViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
-        let logo = UIImage(named: "name")
-        let imageView = UIImageView(image:logo)
-        self.navigationItem.titleView = imageView
-        self.navigationController?.navigationBar.tintColor = colour
-        self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
+//
+//        let logo = UIImage(named: "name")
+//        let imageView = UIImageView(image:logo)
+//        self.navigationItem.titleView = imageView
+     //   self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
         
         self.navigationController?.toolbar.barTintColor = sign_in_colour
         if(posts.count == 0)
@@ -196,9 +224,23 @@ class UserDetailTableViewController : UITableViewController{
                 }
                 return nil
             })
+        }
+        else if segue.identifier == "wode"
+        {
+            var upcoming: personal_info = segue.destination as! personal_info
+          
+            let username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
             
-            
-            
+            let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            dynamoDbObjectMapper.load(UserPool.self, hashKey: username, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                if let error = task.error as? NSError {
+                    print("The request failed. Error: \(error)")
+                } else if let resultBook = task.result as? UserPool {
+                    upcoming.p = resultBook
+                    
+                }
+                return nil
+            })
         }
         else if segue.identifier == "comment" || segue.identifier == "share"
         {
@@ -239,6 +281,7 @@ class UserDetailTableViewController : UITableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyTableViewCell", for: indexPath) as! MyTableViewCell
+       // tableView.register(MyTableViewCell.self, forCellReuseIdentifier: "MyTableViewCell")
         let temp:ChanceWithValue = posts[indexPath.row]
         let temp_time:[Int] = time
         cell.frame = tableView.bounds
@@ -310,7 +353,8 @@ class UserDetailTableViewController : UITableViewController{
         }
     
         if ((temp._text) != nil)
-        {cell.content.text = temp._text
+        {   cell.content.isHidden = false
+            cell.content.text = temp._text
             cell.content.font = cell.content.font.withSize(14)
             cell.content.textColor = text_light
             cell.content.numberOfLines = 0
@@ -496,13 +540,28 @@ class UserDetailTableViewController : UITableViewController{
     
     // MARK: - IBActions
     
-    @IBAction func signOut(_ sender: AnyObject) {
+//
+//    @IBAction func signOut(_ sender: Any) {
+//        self.user?.signOut()
+//        //self.title = nil
+//        self.response = nil
+//        //self.tableView.reloadData()
+//        self.refresh()
+//    }
+//    
+       func signOut() {
         self.user?.signOut()
         self.title = nil
         self.response = nil
         self.tableView.reloadData()
         self.refresh()
     }
+    
+    
+    @IBAction func wode(_ sender: Any) {
+        self.performSegue(withIdentifier: "wode", sender: sender)
+    }
+    
     
     
     func sort_posts(){
@@ -513,6 +572,7 @@ class UserDetailTableViewController : UITableViewController{
         }
         id_list.sort(by: >)
         var temp_list:[ChanceWithValue] = []
+        
         for a in 0...posts.count - 1
         {
             for b in posts
@@ -543,22 +603,45 @@ class UserDetailTableViewController : UITableViewController{
         
         
         
-        //***********************
+        //*********************** ALL***********************
+        if (all == true){
         var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         var queryExpression = AWSDynamoDBScanExpression()
         dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
             DispatchQueue.main.async(execute: {
                 if let paginatedOutput = task{
-                    if (paginatedOutput.items.count < posts.count)
-                    {posts = []}
+                    if (paginatedOutput.items.count < self.posts.count)
+                    {self.posts = []}
                     for news in paginatedOutput.items {
-                        if !posts.contains(news as! ChanceWithValue)
-                        {posts.append(news as! ChanceWithValue)}
+                        if !self.posts.contains(news as! ChanceWithValue)
+                        {self.posts.append(news as! ChanceWithValue)}
                     }
                 }
-                self.sort_posts()
+                if self.posts.count > 0
+                {self.sort_posts()}
             })
-        })
+        })}
+        else
+        {
+            var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            var queryExpression = AWSDynamoDBScanExpression()
+            
+            var temp_list:[ChanceWithValue] = []
+            for a in post_key_list{
+            dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: a, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                if let error = task.error as? NSError {
+                    print("The request failed. Error: \(error)")
+                } else if let resultBook = task.result as? ChanceWithValue {
+                    
+                    if !self.posts.contains(resultBook as! ChanceWithValue)
+                    {self.posts.append(resultBook as! ChanceWithValue)}
+                }
+                return nil
+            })
+            }
+            
+            
+        }
         
         
         

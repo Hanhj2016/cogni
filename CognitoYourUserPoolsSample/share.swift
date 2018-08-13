@@ -108,6 +108,19 @@ class share: UIViewController {
                     // print("counter: \(counter)")
                     temp._id = String(counter)
                     
+                    dynamoDbObjectMapper.load(UserPool.self, hashKey: temp._username, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                        if let error = task.error as? NSError {
+                            print("The request failed. Error: \(error)")
+                        } else if let resultBook = task.result as? UserPool {
+                            if resultBook._chanceIdList != nil{
+                                resultBook._chanceIdList?.append(temp._id!)}
+                            else
+                            {resultBook._chanceIdList = [temp._id] as! [String]}
+                            dynamoDbObjectMapper.save(resultBook,completionHandler:nil)
+                        }
+                        return nil
+                    })
+                    
                     temp._sharedFrom = ["\(self.id)","\(self.username_)","\(self.title_)","\(self.profile_picture_link)"]
                     dynamoDbObjectMapper.save(temp, completionHandler: nil)
                     

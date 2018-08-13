@@ -154,6 +154,7 @@ class SignUpViewController: UIViewController {
                 } else if let result = task.result  {
                     // handle the case where user has to confirm his identity via email / SMS
                     if (result.user.confirmedStatus != AWSCognitoIdentityUserStatus.confirmed) {
+                        
                         strongSelf.sentTo = result.codeDeliveryDetails?.destination
                         strongSelf.performSegue(withIdentifier: "confirmSignUpSegue", sender:sender)
                     } else {

@@ -83,7 +83,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     
     
     @IBAction func share_detail(_ sender: Any) {
-        print("in")
+        //print("in")
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "post_detail") as! post_detail
@@ -212,12 +212,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     }
     
     @objc func keyboardWillAppear(notification: NSNotification) {
-        //print("after height: \(self.input_view.frame.maxY)")
-        //print("after top height: \(self.top_view_height)")
-       // if (self.top_view_height.constant > 200)
         scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
-//        else
-//        {scrollView.setContentOffset(CGPoint(x:0,y:150), animated: true)}
     }
     
     @IBAction func comment_clicked(_ sender: Any) {
@@ -372,7 +367,9 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         super.viewDidLoad()
         while(p._username == nil)
         {
+            print("post_detail: wasting time here man")
         }
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
         self.view.addSubview(self.bot_bar)
         self.hideKeyboardWhenTappedAround()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
