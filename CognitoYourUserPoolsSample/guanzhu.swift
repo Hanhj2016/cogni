@@ -24,9 +24,10 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
         var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         var queryExpression = AWSDynamoDBScanExpression()
         let temp:UserPool = p
+        var add = 0
         let user = guanzhu_list[sender.tag]
         if temp._guanZhu != nil{
-            if (temp._guanZhu?.contains(user))!
+            if (temp._guanZhu?.contains(user))! //被关注: 减少
             {
                 var temp_list:[String] = []
                 for a in temp._guanZhu!
@@ -40,21 +41,24 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
                 {temp._guanZhu = temp_list}
                 else
                 {temp._guanZhu = nil}
+                add = 0
             }
             else
-            {
+            {   //没被关注：增加
+                add = 1
                 temp._guanZhu?.append(user)
             }}
         else
-        {
+        {//没被关注：增加
+            add = 1
             temp._guanZhu = [user] as? [String]
         }
         p = temp
 
-//        DispatchQueue.main.async(execute: {
-//            let indexPath = IndexPath(item: sender.tag, section: 0)
-//            self.tableView.reloadRows(at: [indexPath], with: .fade)
-//        })
+        DispatchQueue.main.async(execute: {
+            let indexPath = IndexPath(item: sender.tag, section: 0)
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        })
         
         dynamoDbObjectMapper.save(temp, completionHandler: {
             (error: Error?) -> Void in
@@ -66,22 +70,60 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
             print("An item was saved.")
         })
         
+        dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? UserPool {
+                
+                if add == 1
+                {
+                   if resultBook._beiGuanZhu == nil
+                   {resultBook._beiGuanZhu = [self.p._userId] as! [String]}else
+                   {resultBook._beiGuanZhu!.append(self.p._userId!)}
+                    
+                }
+                else if resultBook._beiGuanZhu?.count == 1
+                {
+                    resultBook._beiGuanZhu = nil
+                }
+                else
+                {
+                    var temp:[String] = []
+                    for a in resultBook._beiGuanZhu!
+                    {
+                        if a != self.p._userId
+                        {
+                            temp.append(a)
+                        }
+                    }
+                    resultBook._beiGuanZhu = temp
+                    
+                }
+                dynamoDbObjectMapper.save(resultBook, completionHandler: {
+                    (error: Error?) -> Void in
+                    
+                    if let error = error {
+                        print("Amazon DynamoDB Save Error: \(error)")
+                        return
+                    }
+                    print("An item was saved.")
+                })
+                
+            }
+            return nil
+        })
+        
         
     }
     
     @IBOutlet weak var tableView: UITableView!
     var p:UserPool = UserPool()
     var guanzhu_list:[String] = []
-    
+    var users:[UserPool] = []
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
    
-        if p._guanZhu != nil
-        {
-            return (guanzhu_list.count)}
-        else
-        { //print(p)
-            return 0}
+       return self.guanzhu_list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,7 +155,7 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
                     
                     cell.name.text = resultBook._userId
                     cell.name.textColor = text_light
-                        if (self.p._guanZhu?.contains(resultBook._userId!))!
+                        if (self.p._guanZhu != nil && (self.p._guanZhu?.contains(resultBook._userId!))!)
                         {
                             cell.guanzhu.setImage(UIImage(named:"yiguanzhu"), for: .normal)
                             cell.guanzhu.setTitle("已关注", for: .normal)
@@ -121,7 +163,7 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
                         }
                         else
                         {
-                            cell.guanzhu.setTitleColor(light, for: .normal)
+                            cell.guanzhu.setTitleColor(text_light, for: .normal)
                             cell.guanzhu.setTitle("关注", for: .normal)
                         }
                     
@@ -142,6 +184,7 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.backgroundColor = mid
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         // Do any additional setup after loading the view.
     }
 

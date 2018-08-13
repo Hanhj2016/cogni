@@ -114,7 +114,13 @@ var renwu_list:[String] = []
             var upcoming: guanzhu = segue.destination as! guanzhu
             if title_name == "我的关注"
             {
-                upcoming.guanzhu_list = p._guanZhu!
+                
+                
+                
+                if p._guanZhu != nil
+                {upcoming.guanzhu_list = p._guanZhu!}
+                else
+                {upcoming.guanzhu_list = []}
                 upcoming.p = self.p
                 
             }
