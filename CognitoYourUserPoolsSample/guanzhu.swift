@@ -125,6 +125,33 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
    
        return self.guanzhu_list.count
     }
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //if small == 0
+        self.performSegue(withIdentifier: "other_zhuye_from_guanzhu", sender: self)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "other_zhuye_from_guanzhu"
+        {
+            var upcoming: other_zhuye = segue.destination as! other_zhuye
+            let indexPath = self.tableView.indexPathForSelectedRow!
+            var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            var queryExpression = AWSDynamoDBScanExpression()
+            //print("name")
+            let name = guanzhu_list[indexPath.row]
+            dynamoDbObjectMapper.load(UserPool.self, hashKey: name, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                if let error = task.error as? NSError {
+                    print("The request failed. Error: \(error)")
+                } else if let resultBook = task.result as? UserPool {
+                    upcoming.p = resultBook
+                }
+                return nil
+            }
+            )
+        }
+    }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "wodeguanzhu", for: indexPath) as! guanzhu_cell

@@ -31,6 +31,7 @@
 		B91A14EB21212F9800CCD686 /* zhuye.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14EA21212F9800CCD686 /* zhuye.swift */; };
 		B91A14ED2121ECAB00CCD686 /* guanzhu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14EC2121ECAB00CCD686 /* guanzhu.swift */; };
 		B91A14EF2121F32B00CCD686 /* guanzhu_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14EE2121F32B00CCD686 /* guanzhu_cell.swift */; };
+		B91A14F1212219A700CCD686 /* other_zhuye.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14F0212219A700CCD686 /* other_zhuye.swift */; };
 		B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */; };
 		B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817A20FF97F300207787 /* ImagePreviewVC.swift */; };
 		B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817B20FF97F400207787 /* ImagePreviewCell.swift */; };
@@ -83,6 +84,7 @@
 		B91A14EA21212F9800CCD686 /* zhuye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zhuye.swift; sourceTree = "<group>"; };
 		B91A14EC2121ECAB00CCD686 /* guanzhu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = guanzhu.swift; sourceTree = "<group>"; };
 		B91A14EE2121F32B00CCD686 /* guanzhu_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = guanzhu_cell.swift; sourceTree = "<group>"; };
+		B91A14F0212219A700CCD686 /* other_zhuye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = other_zhuye.swift; sourceTree = "<group>"; };
 		B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabu_unit.swift; sourceTree = "<group>"; };
 		B92A817A20FF97F300207787 /* ImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewVC.swift; sourceTree = "<group>"; };
 		B92A817B20FF97F400207787 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				B91A14EC2121ECAB00CCD686 /* guanzhu.swift */,
 				B91A14EE2121F32B00CCD686 /* guanzhu_cell.swift */,
 				B9445E2B211C9A4C0053F2BC /* info_cell.swift */,
+				B91A14F0212219A700CCD686 /* other_zhuye.swift */,
 				B91A14EA21212F9800CCD686 /* zhuye.swift */,
 				B9C95E632117B1DD00E6DA06 /* share.swift */,
 				B9445E29211C9A210053F2BC /* change_info.swift */,
@@ -379,6 +382,7 @@
 				17FC2F9D1E259E5D00174015 /* SignUpViewController.swift in Sources */,
 				B91A14EB21212F9800CCD686 /* zhuye.swift in Sources */,
 				B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */,
+				B91A14F1212219A700CCD686 /* other_zhuye.swift in Sources */,
 				B9F77BD4210F77060088E601 /* post_detail.swift in Sources */,
 				B91A14ED2121ECAB00CCD686 /* guanzhu.swift in Sources */,
 				B9445E2A211C9A210053F2BC /* change_info.swift in Sources */,
