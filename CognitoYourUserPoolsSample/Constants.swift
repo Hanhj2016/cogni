@@ -57,6 +57,28 @@ let text_mid: UIColor = UIColor(red: CGFloat((0x92a2b6 & 0xFF0000) >> 16) / 255.
                                   blue: CGFloat(0x92a2b6 & 0x0000FF) / 255.0,
                                   alpha: CGFloat(1.0))
 
+let text_grey: UIColor = UIColor(red: CGFloat((0x898989 & 0xFF0000) >> 16) / 255.0,
+                                green: CGFloat((0x898989 & 0x00FF00) >> 8) / 255.0,
+                                blue: CGFloat(0x898989 & 0x0000FF) / 255.0,
+                                alpha: CGFloat(1.0))
+
+let blue: UIColor = UIColor(red: CGFloat((0x40a3ff & 0xFF0000) >> 16) / 255.0,
+                                 green: CGFloat((0x40a3ff & 0x00FF00) >> 8) / 255.0,
+                                 blue: CGFloat(0x40a3ff & 0x0000FF) / 255.0,
+                                 alpha: CGFloat(1.0))
+let background_grey: UIColor = UIColor(red: CGFloat((0xececec & 0xFF0000) >> 16) / 255.0,
+                            green: CGFloat((0xececec & 0x00FF00) >> 8) / 255.0,
+                            blue: CGFloat(0xececec & 0x0000FF) / 255.0,
+                            alpha: CGFloat(1.0))
+
+let input_background_grey: UIColor = UIColor(red: CGFloat((0xf9f9f9 & 0xFF0000) >> 16) / 255.0,
+                                       green: CGFloat((0xf9f9f9 & 0x00FF00) >> 8) / 255.0,
+                                       blue: CGFloat(0xf9f9f9 & 0x0000FF) / 255.0,
+                                       alpha: CGFloat(1.0))
+let image_grey: UIColor = UIColor(red: CGFloat((0x7a7a7a & 0xFF0000) >> 16) / 255.0,
+                                             green: CGFloat((0x7a7a7a & 0x00FF00) >> 8) / 255.0,
+                                             blue: CGFloat(0x7a7a7a & 0x0000FF) / 255.0,
+                                             alpha: CGFloat(1.0))
 
 
 

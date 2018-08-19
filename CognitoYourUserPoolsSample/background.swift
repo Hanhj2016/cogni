@@ -21,6 +21,18 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
+
+extension UITableView {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        self.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.endEditing(true)
+    }
+}
 extension String {
     func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
@@ -36,7 +48,6 @@ extension String {
         return ceil(boundingBox.width)
     }
 }
-
 
 
 extension UIView {

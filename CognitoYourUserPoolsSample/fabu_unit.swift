@@ -147,10 +147,11 @@ class UserPool: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _resume: String?
     var _walletAddress: String?
     var _beiGuanZhu: [String]?
-    var _candyCurrency: String?
-    var _cryptoCurrency: String?
+    var _candyCurrency: NSNumber?
+    var _cryptoCurrency: NSNumber?
     var _gottenList: [String]?
     var _guanZhu: [String]?
+    var _myEmail: String?
     var _numofChance: String?
     var _profilePic: String?
     var _shengWang: String?
@@ -181,9 +182,81 @@ class UserPool: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_cryptoCurrency" : "cryptoCurrency",
             "_gottenList" : "gottenList",
             "_guanZhu" : "guanZhu",
+            "_myEmail" : "myEmail",
             "_numofChance" : "numofChance",
             "_profilePic" : "profilePic",
             "_shengWang" : "shengWang",
         ]
     }
+}
+
+@objcMembers
+@objc(ChattingList)
+class ChattingList: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+    
+    var _user1: String?
+    var _user2: String?
+    var _chattingText: [String]?
+    var _chattingTime: [String]?
+    var _srList: [String]?
+    
+    class func dynamoDBTableName() -> String {
+        
+        return "chance-mobilehub-653619147-chattingList"
+    }
+    
+    class func hashKeyAttribute() -> String {
+        
+        return "_user1"
+    }
+    
+    class func rangeKeyAttribute() -> String {
+        
+        return "_user2"
+    }
+    
+    override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
+        return [
+            "_user1" : "user1",
+            "_user2" : "user2",
+            "_chattingText" : "chattingText",
+            "_chattingTime" : "chattingTime",
+            "_srList" : "srList",
+        ]
+    }
+}
+
+@objcMembers
+@objc(UserChat)
+class UserChat: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+    
+    var _userId: String?
+    var _chattingList: [String]?
+    var _lastSentence: [String: String]?
+    var _lastTime: [String: String]?
+    var _totalUnread: NSNumber?
+    var _unRead: [String: String]?
+    
+    class func dynamoDBTableName() -> String {
+        
+        return "chance-mobilehub-653619147-userChat"
+    }
+    
+    class func hashKeyAttribute() -> String {
+        
+        return "_userId"
+    }
+    
+    override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
+        return [
+            "_userId" : "userId",
+            "_chattingList" : "chattingList",
+            "_lastSentence" : "lastSentence",
+            "_lastTime" : "lastTime",
+            "_totalUnread" : "totalUnread",
+            "_unRead" : "unRead",
+        ]
+    }
+    
+    
 }

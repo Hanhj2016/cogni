@@ -45,11 +45,61 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
             cell.info.becomeFirstResponder()
         }
     }
+//
+//    @objc func keyboardWillHide(notification: NSNotification) {
+//        table.setContentOffset(CGPoint(x:0,y:0), animated: true)
+//        let row = self.table.indexPathForSelectedRow!.row
+//        let indexPath = self.table.indexPathForSelectedRow!
+//        let cell = self.table.cellForRow(at: indexPath) as! info_cell
+//        if row == 1
+//        {p._nickName = cell.info.text}
+//        if row == 2
+//        {p._chanceId = cell.info.text}
+//        if row == 3
+//        {p._walletAddress = cell.info.text}
+//        if row == 4
+//        {
+//            p._name = cell.info.text
+//        }
+//        if row == 5
+//        {p._gender = cell.info.text}
+//        if row == 6
+//        {p._career = cell.info.text}
+//        if row == 7
+//        {p._resume = cell.info.text}
+//
+//    }
+//
+//    @objc func keyboardWillAppear(notification: NSNotification) {
+//
+//        let row = self.table.indexPathForSelectedRow!.row
+//
+//        if row == 6
+//        {table.setContentOffset(CGPoint(x:0,y:30), animated: true)}
+//        else if row == 7
+//        {
+//            let indexPath = self.table.indexPathForSelectedRow!
+//            let cell = self.table.cellForRow(at: indexPath) as! info_cell
+//            table.setContentOffset(CGPoint(x:0,y:60 + cell.image_height.constant), animated: true)}
+//    }
+//
     
-    @objc func keyboardWillHide(notification: NSNotification) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        let row = textView.tag
+        
+        if row == 6
+        {table.setContentOffset(CGPoint(x:0,y:30), animated: true)}
+        else if row == 7
+        {
+            let indexPath = IndexPath(item: row, section: 0)
+            let cell = self.table.cellForRow(at: indexPath) as! info_cell
+            table.setContentOffset(CGPoint(x:0,y:60 + cell.image_height.constant), animated: true)}
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
         table.setContentOffset(CGPoint(x:0,y:0), animated: true)
-        let row = self.table.indexPathForSelectedRow!.row
-        let indexPath = self.table.indexPathForSelectedRow!
+        let row = textView.tag
+        let indexPath = IndexPath(item: row, section: 0)
         let cell = self.table.cellForRow(at: indexPath) as! info_cell
         if row == 1
         {p._nickName = cell.info.text}
@@ -67,18 +117,6 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
         {p._career = cell.info.text}
         if row == 7
         {p._resume = cell.info.text}
-        
-    }
-    
-    @objc func keyboardWillAppear(notification: NSNotification) {
-        let row = self.table.indexPathForSelectedRow!.row
-        if row == 6
-        {table.setContentOffset(CGPoint(x:0,y:30), animated: true)}
-        else if row == 7
-        {
-            let indexPath = self.table.indexPathForSelectedRow!
-            let cell = self.table.cellForRow(at: indexPath) as! info_cell
-            table.setContentOffset(CGPoint(x:0,y:60 + cell.image_height.constant), animated: true)}
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -94,8 +132,8 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "info_cell", for: indexPath) as! info_cell
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: .UIKeyboardWillShow, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: .UIKeyboardWillShow, object: nil)
         cell.info.delegate = self
         cell.info.returnKeyType = UIReturnKeyType.done
         cell.textLabel?.textColor = text_light
@@ -106,6 +144,7 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
         cell.layer.borderColor = text_mid.cgColor
         cell.info.textColor = text_mid
         cell.info.backgroundColor = mid
+        cell.info.tag = indexPath.row
         if indexPath.row == 0
         {
             //print("nimei")
@@ -196,7 +235,7 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
         while(p._userId == nil)
         {
         }
-        
+        self.hideKeyboardWhenTappedAround()
         if p._profilePic != nil{
         let url = URL(string: p._profilePic!)
             let data = try? Data(contentsOf: url!)

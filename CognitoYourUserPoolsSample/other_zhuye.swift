@@ -199,6 +199,7 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var send_message: UIButton!
     
     @IBAction func send_message(_ sender: Any) {
+        performSegue(withIdentifier: "chat_from_zhuye", sender: self)
     }
     
     @IBOutlet weak var his_guanzhu: UIButton!
@@ -274,6 +275,26 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 upcoming.tag = Int(temp._tag!)
                 upcoming.share_from = temp._id!
             }
+            
+        }
+        else if segue.identifier == "chat_from_zhuye"
+        {
+            var upcoming: chat = segue.destination as! chat
+            upcoming.target = p._userId!
+            upcoming.user = user!
+            var url = URL(string:p._profilePic!)!
+            upcoming.target_image = UIImage(data:try! Data(contentsOf: url))!
+            let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                if let error = task.error as? NSError {
+                    print("The request failed. Error: \(error)")
+                } else if let resultBook = task.result as? UserPool {
+                    url = URL(string:resultBook._profilePic!)!
+                    upcoming.user_image = UIImage(data:try! Data(contentsOf: url))!
+                    
+                }
+                return nil
+            })
             
         }
         
