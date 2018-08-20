@@ -34,6 +34,10 @@
 		B91A14F1212219A700CCD686 /* other_zhuye.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14F0212219A700CCD686 /* other_zhuye.swift */; };
 		B91A14F32123416400CCD686 /* chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14F22123416400CCD686 /* chat.swift */; };
 		B91A14F521237A5C00CCD686 /* chat_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14F421237A5B00CCD686 /* chat_cell.swift */; };
+		B91A14F7212A2C5D00CCD686 /* messagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14F6212A2C5D00CCD686 /* messagesViewController.swift */; };
+		B91A14F9212A362D00CCD686 /* message_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14F8212A362D00CCD686 /* message_cell.swift */; };
+		B91A14FB212A5A3100CCD686 /* chat_message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14FA212A5A3100CCD686 /* chat_message.swift */; };
+		B91A14FD212A5A5400CCD686 /* chat_message_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A14FC212A5A5400CCD686 /* chat_message_cell.swift */; };
 		B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */; };
 		B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817A20FF97F300207787 /* ImagePreviewVC.swift */; };
 		B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817B20FF97F400207787 /* ImagePreviewCell.swift */; };
@@ -89,6 +93,10 @@
 		B91A14F0212219A700CCD686 /* other_zhuye.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = other_zhuye.swift; sourceTree = "<group>"; };
 		B91A14F22123416400CCD686 /* chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat.swift; sourceTree = "<group>"; };
 		B91A14F421237A5B00CCD686 /* chat_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat_cell.swift; sourceTree = "<group>"; };
+		B91A14F6212A2C5D00CCD686 /* messagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = messagesViewController.swift; sourceTree = "<group>"; };
+		B91A14F8212A362D00CCD686 /* message_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = message_cell.swift; sourceTree = "<group>"; };
+		B91A14FA212A5A3100CCD686 /* chat_message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat_message.swift; sourceTree = "<group>"; };
+		B91A14FC212A5A5400CCD686 /* chat_message_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat_message_cell.swift; sourceTree = "<group>"; };
 		B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabu_unit.swift; sourceTree = "<group>"; };
 		B92A817A20FF97F300207787 /* ImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewVC.swift; sourceTree = "<group>"; };
 		B92A817B20FF97F400207787 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
@@ -158,6 +166,11 @@
 				17FC2F981E25940900174015 /* SignInViewController.swift */,
 				B9D6951520EE924C0024F6FF /* awsconfiguration.json */,
 				17FC2F9A1E259E0500174015 /* Constants.swift */,
+				B91A14F6212A2C5D00CCD686 /* messagesViewController.swift */,
+				B91A14FC212A5A5400CCD686 /* chat_message_cell.swift */,
+				B91A14FA212A5A3100CCD686 /* chat_message.swift */,
+				B91A14F8212A362D00CCD686 /* message_cell.swift */,
+				B9C95E67211BC1A900E6DA06 /* setting.swift */,
 				B91A14F421237A5B00CCD686 /* chat_cell.swift */,
 				B91A14F22123416400CCD686 /* chat.swift */,
 				B98E223420E6A01C0044BB31 /* background.swift */,
@@ -169,7 +182,6 @@
 				B9C95E632117B1DD00E6DA06 /* share.swift */,
 				B9445E29211C9A210053F2BC /* change_info.swift */,
 				17FC2FA41E25A77600174015 /* UserDetailTableViewController.swift */,
-				B9C95E67211BC1A900E6DA06 /* setting.swift */,
 				B9F77BD3210F77060088E601 /* post_detail.swift */,
 				B9C95E65211B860100E6DA06 /* personal_info.swift */,
 				B9F98AE72110B6D500E4CEDB /* comment_cell.swift */,
@@ -396,11 +408,13 @@
 				B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */,
 				B9445E2C211C9A4C0053F2BC /* info_cell.swift in Sources */,
 				B91A14EF2121F32B00CCD686 /* guanzhu_cell.swift in Sources */,
+				B91A14FD212A5A5400CCD686 /* chat_message_cell.swift in Sources */,
 				B9E0B17920FE60F0009ED8BD /* image_cell.swift in Sources */,
 				B91A14F32123416400CCD686 /* chat.swift in Sources */,
 				17FC2F9F1E259F3200174015 /* ConfirmSignUpViewController.swift in Sources */,
 				B9C95E68211BC1A900E6DA06 /* setting.swift in Sources */,
 				B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */,
+				B91A14F7212A2C5D00CCD686 /* messagesViewController.swift in Sources */,
 				17FC2F9B1E259E0500174015 /* Constants.swift in Sources */,
 				B9BCB04E2106877600661970 /* post_images.swift in Sources */,
 				B9F98AE82110B6D500E4CEDB /* comment_cell.swift in Sources */,
@@ -408,10 +422,12 @@
 				B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */,
 				17FC2F991E25940900174015 /* SignInViewController.swift in Sources */,
 				B9C95E66211B860100E6DA06 /* personal_info.swift in Sources */,
+				B91A14F9212A362D00CCD686 /* message_cell.swift in Sources */,
 				B9C95E642117B1DD00E6DA06 /* share.swift in Sources */,
 				17FC2F971E25928900174015 /* MFAViewController.swift in Sources */,
 				17FC2FA71E25A9A200174015 /* DevicesDetailTableViewController.swift in Sources */,
 				17FC2F801E258FC500174015 /* AppDelegate.swift in Sources */,
+				B91A14FB212A5A3100CCD686 /* chat_message.swift in Sources */,
 				17FC2FA51E25A77600174015 /* UserDetailTableViewController.swift in Sources */,
 				B902A60D20F3D44600331D17 /* prepare_posts.swift in Sources */,
 			);

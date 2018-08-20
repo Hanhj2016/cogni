@@ -18,10 +18,10 @@ import AWSS3
 import Photos
 import BSImagePicker
 import Foundation
-
+//@objc(chat)
 class chat: UIViewController,UITableViewDelegate,UITableViewDataSource {
 
-    
+    var myTimer:Timer = Timer()
     var target = ""
     var user = ""
     var user_image:UIImage = UIImage()
@@ -40,6 +40,19 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     @IBAction func choose_image(_ sender: Any) {
     }
+//    init(user:String, target:String,user_image:UIImage,target_image:UIImage){
+//        self.user = user
+//        self.target = target
+//        self.user_image = user_image
+//        self.target_image = target_image
+//        
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//    
     
     func remove(from:[String],target:String) -> [String]{
         var temp:[String] = []
@@ -323,11 +336,11 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 if hour == time_[3]
                 {
                     if Minute == time_[4]
-                    {output = "\(time_[5]-second) 秒前"}
+                    {output = "刚刚"}//output = "\(time_[5]-second) 秒前"}
                     else if time_[4] - Minute == 1
                     {
                         if (time_[5]+60-second <= 60)
-                        {output = "\(time_[5]+60-second) 秒前"}
+                        {output = "刚刚"}//output = "\(time_[5]+60-second) 秒前"}
                         else
                         {output = "1分钟前"}
                         
@@ -561,12 +574,17 @@ tableView.delegate = self
             }
         }
         
-        var myTimer = Timer(timeInterval: 1.0, target: self, selector: "refresh", userInfo: nil, repeats: true)
+        myTimer = Timer(timeInterval: 1.0, target: self, selector: "refresh", userInfo: nil, repeats: true)
         RunLoop.main.add(myTimer, forMode: RunLoopMode.defaultRunLoopMode)
 
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        myTimer.invalidate()
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -619,7 +637,7 @@ tableView.delegate = self
             return nil
         })
         task.waitUntilFinished()
-        if p._chattingTime != nil{
+        if p._chattingTime != nil && pull_down == 1{
             tableView.reloadData()
             DispatchQueue.main.async {
                 let indexPath = IndexPath(row: (self.tableView.numberOfRows(inSection: 0)) - 1 , section: 0)

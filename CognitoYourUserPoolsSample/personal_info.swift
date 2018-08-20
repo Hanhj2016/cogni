@@ -77,6 +77,13 @@ var renwu_list:[String] = []
         
     }
     
+    @IBAction func messages(_ sender: Any) {
+        title_name = "我的消息"
+        performSegue(withIdentifier: "messages", sender: self)
+    }
+    
+    
+    
     @IBAction func guanzhu(_ sender: Any) {
         title_name = "我的关注"
         performSegue(withIdentifier: "guanzhu", sender: self)
@@ -125,6 +132,19 @@ var renwu_list:[String] = []
                 
             }
         }
+        if segue.identifier == "messages"
+        {
+            var upcoming: messagesViewController = segue.destination as! messagesViewController
+            if title_name == "我的消息"
+            {
+                upcoming.user = (AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username)!
+                
+                
+                
+                
+            }
+        }
+        
         
     }
     
