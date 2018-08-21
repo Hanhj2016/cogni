@@ -11,6 +11,8 @@ import Photos
 import BSImagePicker
 import Foundation
 //var temp = "start"
+
+
 class UserDetailTableViewController : UITableViewController {
     
     var response: AWSCognitoIdentityUserGetDetailsResponse?
@@ -25,7 +27,16 @@ class UserDetailTableViewController : UITableViewController {
     var posts:[ChanceWithValue] = []
     var post_key_list:[String] = []
     var all = true
-
+    var myTimer:Timer = Timer()
+    @IBOutlet weak var xiaoxi: UIButton!
+    @IBAction func xiaoxi(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "xinxi") as! chat_message
+        new_chat.user = (AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username)!
+        self.navigationController?.pushViewController(new_chat, animated: true)
+    }
+    
+    
     //var small = 0
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     
@@ -57,6 +68,47 @@ class UserDetailTableViewController : UITableViewController {
     }()
     
 
+    func load_UserChat(key:String) -> UserChat{
+        var temp:UserChat = UserChat()
+        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        var aiya = dynamoDbObjectMapper.load(UserChat.self, hashKey: key, rangeKey:nil)
+        aiya.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? UserChat {
+                temp = resultBook
+            }
+            return nil
+        })
+        aiya.waitUntilFinished()
+        if aiya.isCancelled
+        {print("cancelled")}
+        if aiya.isCompleted
+        {print("completed")}
+        if aiya.isFaulted
+        {print("faulted")}
+        //print(aiya.result)
+        return temp
+    }
+    
+    
+    @IBOutlet weak var notification: UIImageView!
+    
+    @objc func reload_notification(){
+        let username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        
+        let temp_chat = load_UserChat(key: username!)
+        if temp_chat._totalUnread != nil || temp_chat._totalUnread != 0
+        {
+            notification.isHidden = true
+        }
+        else
+        {
+            notification.isHidden = false
+            notification.backgroundColor = UIColor.red
+        }
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -65,15 +117,9 @@ class UserDetailTableViewController : UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = light
+        self.view.backgroundColor = sign_in_colour
         
         
-        var title_image = UIImageView()
-        title_image.image = UIImage(named:"name")
-        title_image.frame = CGRect(x:0, y:0, width:60, height:30)
-        title_image.clipsToBounds = true
-        title_image.contentMode = UIViewContentMode.scaleAspectFit
-        self.navigationItem.titleView = title_image
         lock = NSLock()
        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.none
         self.tableView!.delegate = self
@@ -95,28 +141,22 @@ class UserDetailTableViewController : UITableViewController {
             tableView.addSubview(refresher)
         }
         self.refresh()
-//        while posts.count == 0
-//        {
-//            self.refresh()
-//        }
         
+        myTimer = Timer(timeInterval: 1.0, target: self, selector: "reload_notification", userInfo: nil, repeats: true)
+        RunLoop.main.add(myTimer, forMode: RunLoopMode.defaultRunLoopMode)
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setToolbarHidden(true, animated: true)
-        
+        self.navigationController?.navigationBar.isHidden = false
+        myTimer.invalidate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//
-//        let logo = UIImage(named: "name")
-//        let imageView = UIImageView(image:logo)
-//        self.navigationItem.titleView = imageView
-     //   self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
-        
+        self.navigationController?.navigationBar.isHidden = true
         self.navigationController?.toolbar.barTintColor = sign_in_colour
         if(posts.count == 0)
         {refresh()}
@@ -279,11 +319,26 @@ class UserDetailTableViewController : UITableViewController {
         
     }
     
+
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyTableViewCell", for: indexPath) as! MyTableViewCell
-       // tableView.register(MyTableViewCell.self, forCellReuseIdentifier: "MyTableViewCell")
         let temp:ChanceWithValue = posts[indexPath.row]
         let temp_time:[Int] = time
+        
+        
+        let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
+        tap.username = temp._username!
+        tap.cancelsTouchesInView = true
+        cell.profile_picture.isUserInteractionEnabled = true
+       cell.profile_picture.addGestureRecognizer(tap)
+        
+        cell.username.isUserInteractionEnabled = true
+        cell.username.addGestureRecognizer(tap)
+        
+        //self.view.addSubview(cell.profile_picture)
+        
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
@@ -291,7 +346,7 @@ class UserDetailTableViewController : UITableViewController {
         cell.comments.tag = indexPath.row
         cell.share.tag = indexPath.row
         cell.share_detail.tag = indexPath.row
-        
+        cell.image_collection.backgroundColor = light
         let origImage = UIImage(named: "dianzan")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         cell.like.setImage(tintedImage, for: .normal)
@@ -481,7 +536,7 @@ class UserDetailTableViewController : UITableViewController {
         
         
         
-        cell.image_collection.backgroundColor = mid
+        //cell.image_collection.backgroundColor = mid
         cell.image_collection.reloadData()
         let contentSize = cell.image_collection.collectionViewLayout.collectionViewContentSize
         cell.image_collection.collectionViewLayout.invalidateLayout()
@@ -606,21 +661,27 @@ class UserDetailTableViewController : UITableViewController {
         //*********************** ALL***********************
         if (all == true){
         var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        var queryExpression = AWSDynamoDBScanExpression()
-        dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
-            DispatchQueue.main.async(execute: {
-                if let paginatedOutput = task{
-                    if (paginatedOutput.items.count < self.posts.count)
-                    {self.posts = []}
-                    for news in paginatedOutput.items {
-                        if !self.posts.contains(news as! ChanceWithValue)
-                        {self.posts.append(news as! ChanceWithValue)}
+        var queryExpression = AWSDynamoDBScanExpression()            
+            let heihei = dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression)
+            heihei.continueWith(block: { (task:AWSTask<AWSDynamoDBPaginatedOutput>!) -> Any? in
+                DispatchQueue.main.async(execute: {
+                    if let paginatedOutput = task.result{
+                        if (paginatedOutput.items.count < self.posts.count)
+                        {self.posts = []}
+                        for news in paginatedOutput.items {
+                            if !self.posts.contains(news as! ChanceWithValue)
+                            {self.posts.append(news as! ChanceWithValue)}
+                        }
                     }
-                }
-                if self.posts.count > 0
-                {self.sort_posts()}
+                    if self.posts.count > 0
+                    {self.sort_posts()}
+                })
+
+
             })
-        })}
+            heihei.waitUntilFinished()
+            
+        }
         else
         {
             var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()

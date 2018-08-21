@@ -384,6 +384,7 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         
         
+        
         if (p._beiGuanZhu != nil){
             if (p._beiGuanZhu?.contains(user!))!
             {
@@ -393,10 +394,16 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             }
             else
             {
+               // print("396")
                 self.guanzhu.setTitleColor(colour, for: .normal)
                 self.guanzhu.setTitle("关注", for: .normal)
                 self.did_follow = 0
             }
+        }
+        else{
+            self.guanzhu.setTitleColor(colour, for: .normal)
+            self.guanzhu.setTitle("关注", for: .normal)
+            self.did_follow = 0
         }
         
         ////////////////// table

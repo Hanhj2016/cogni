@@ -5,9 +5,22 @@
 //  Created by xuechuan mi on 2018-06-29.
 //  Copyright © 2018 Dubal, Rohan. All rights reserved.
 //
-
-import Foundation
 import UIKit
+import AWSCognitoIdentityProvider
+import AWSDynamoDB
+import AWSMobileClient
+import AWSCore
+import AWSPinpoint
+import Foundation
+import AWSUserPoolsSignIn
+import AWSS3
+import Photos
+import BSImagePicker
+import Foundation
+
+class MyTapGesture: UITapGestureRecognizer {
+    var username = String()
+}
 
 
 extension UIViewController {
@@ -19,6 +32,28 @@ extension UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    @objc func show_zhuye(sender : MyTapGesture){
+        //print("tapped")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "other_zhuye") as! other_zhuye
+        
+        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        var queryExpression = AWSDynamoDBScanExpression()
+        //print("name")
+        let heihei = dynamoDbObjectMapper.load(UserPool.self, hashKey: sender.username, rangeKey:nil)
+        heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? UserPool {
+                new_chat.p = resultBook
+            }
+            return nil
+        }
+        )
+        heihei.waitUntilFinished()
+        self.navigationController?.pushViewController(new_chat, animated: true)
     }
 }
 
