@@ -45,45 +45,7 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
             cell.info.becomeFirstResponder()
         }
     }
-//
-//    @objc func keyboardWillHide(notification: NSNotification) {
-//        table.setContentOffset(CGPoint(x:0,y:0), animated: true)
-//        let row = self.table.indexPathForSelectedRow!.row
-//        let indexPath = self.table.indexPathForSelectedRow!
-//        let cell = self.table.cellForRow(at: indexPath) as! info_cell
-//        if row == 1
-//        {p._nickName = cell.info.text}
-//        if row == 2
-//        {p._chanceId = cell.info.text}
-//        if row == 3
-//        {p._walletAddress = cell.info.text}
-//        if row == 4
-//        {
-//            p._name = cell.info.text
-//        }
-//        if row == 5
-//        {p._gender = cell.info.text}
-//        if row == 6
-//        {p._career = cell.info.text}
-//        if row == 7
-//        {p._resume = cell.info.text}
-//
-//    }
-//
-//    @objc func keyboardWillAppear(notification: NSNotification) {
-//
-//        let row = self.table.indexPathForSelectedRow!.row
-//
-//        if row == 6
-//        {table.setContentOffset(CGPoint(x:0,y:30), animated: true)}
-//        else if row == 7
-//        {
-//            let indexPath = self.table.indexPathForSelectedRow!
-//            let cell = self.table.cellForRow(at: indexPath) as! info_cell
-//            table.setContentOffset(CGPoint(x:0,y:60 + cell.image_height.constant), animated: true)}
-//    }
-//
-    
+
     func textViewDidBeginEditing(_ textView: UITextView) {
         let row = textView.tag
         
@@ -279,7 +241,7 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
 @objc extension change_info{
 public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
     if "public.image" == info[UIImagePickerControllerMediaType] as? String {
-        print("in")
+        //print("in")
         let image: UIImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         let dude = String(p._userId!) + ".png"
         print(dude)

@@ -18,7 +18,7 @@
 import Foundation
 import AWSCognitoIdentityProvider
 
-class ConfirmForgotPasswordViewController: UIViewController {
+class ConfirmForgotPasswordViewController: UIViewController,UITextFieldDelegate {
     
     var user: AWSCognitoIdentityUser?
     
@@ -29,37 +29,35 @@ class ConfirmForgotPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addBackground()
+        self.confirmationCode.delegate = self
+        self.proposedPassword.delegate = self
+        self.hideKeyboardWhenTappedAround()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
     }
     override func viewWillAppear(_ animated: Bool) {
         self.confirmationCode.textColor = colour
-        self.confirmationCode.attributedPlaceholder = NSAttributedString(string: "验证码",
-                                                                         attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
+        self.confirmationCode.add_placeholder(text: "验证码", color: colour)
         self.confirmationCode.setBottomBorder()
         self.proposedPassword.isSecureTextEntry = true
         self.proposedPassword.textColor = colour
-        self.proposedPassword.attributedPlaceholder = NSAttributedString(string: "新密码",
-                                                                         attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey as NSAttributedStringKey:colour])
+        self.proposedPassword.add_placeholder(text: "新密码", color: colour)
         self.proposedPassword.setBottomBorder()
         
         self.confirm.backgroundColor = colour
         self.confirm.setTitleColor(sign_in_colour, for:.normal)
         
         
-        self.navigationController?.navigationBar.tintColor = colour
-        self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
-        
-        // self.navigationController?.navigationItem.title = ""
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+       self.navigationController?.navigationBar.isHidden = false
     }
     // MARK: - IBActions
     
     @IBAction func updatePassword(_ sender: AnyObject) {
         guard let confirmationCodeValue = self.confirmationCode.text, !confirmationCodeValue.isEmpty else {
-            let alertController = UIAlertController(title: "Password Field Empty",
-                                                    message: "Please enter a password of your choice.",
+            let alertController = UIAlertController(title: "信息不足",
+                                                    message: "请输入新密码",
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)

@@ -27,12 +27,13 @@ import AWSS3
 
 
 
-class SignInViewController: UIViewController {
+class SignInViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
     var passwordAuthenticationCompletion: AWSTaskCompletionSource<AWSCognitoIdentityPasswordAuthenticationDetails>?
     var usernameText: String?
 
+    @IBOutlet weak var big_eye: UIButton!
     var show_pass: Bool!
     
     @IBOutlet weak var forget_password: UIButton!
@@ -44,22 +45,35 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var sign_in: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        show_pass = true
+        show_pass = false
+        self.hideKeyboardWhenTappedAround()
+        self.big_eye.setImage(UIImage(named: "baomi"), for: .normal)
         self.view.addBackground()
+        self.username.delegate = self
+        self.password.delegate = self
+        
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
+
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //self.username.text = "用户名"
-        self.username.attributedPlaceholder = NSAttributedString(string: "用户名",
-                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
-        self.password.attributedPlaceholder = NSAttributedString(string: "密码",
-                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
+       self.navigationController?.navigationBar.isHidden = true
+        self.username.add_placeholder(text: "用户名", color: colour)
+        self.password.add_placeholder(text: "密码", color: colour)
         self.username.textColor = colour
         self.password.textColor = colour
         self.weibo.setImage(UIImage(named: "weibo"), for: .normal)
         self.wechat.setImage(UIImage(named: "weixin"), for: .normal)
         self.facebook.setImage(UIImage(named: "facebook"), for: .normal)
+        self.weibo.isHidden = true
+        self.facebook.isHidden = true
+        self.wechat.isHidden = true
         self.forget_password.tintColor = colour
         self.sign_up.tintColor = colour
         self.sign_in.backgroundColor = colour
@@ -67,17 +81,20 @@ class SignInViewController: UIViewController {
         self.username.setBottomBorder()
         self.password.setBottomBorder()
         //self.navigationController?.navigationItem.title = ""
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.navigationBar.isHidden = true 
     }
     
     
 
     @IBAction func show_password(_ sender: UIButton) {
         if(show_pass == true) {
-            self.password.isSecureTextEntry = false
-            show_pass = false
-        } else {
             self.password.isSecureTextEntry = true
+            self.big_eye.setImage(UIImage(named: "baomi"), for: .normal)
+            show_pass = false
+            
+        } else {
+            self.password.isSecureTextEntry = false
+            self.big_eye.setImage(UIImage(named: "gongkai"), for: .normal)
             show_pass = true
         }
         

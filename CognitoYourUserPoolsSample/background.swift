@@ -30,6 +30,12 @@ extension UIViewController {
         view.addGestureRecognizer(tap)
     }
     
+    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
+    
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -66,6 +72,30 @@ extension UITableView {
     
     @objc func dismissKeyboard() {
         self.endEditing(true)
+    }
+}
+
+extension UIView {
+    func currentFirstResponder() -> UIResponder? {
+        if self.isFirstResponder {
+            return self
+        }
+        
+        for view in self.subviews {
+            if let responder = view.currentFirstResponder() {
+                return responder
+            }
+        }
+        
+        return nil
+    }
+}
+
+extension UITextField {
+    func add_placeholder(text:String,color:UIColor){
+        var attributes = [NSAttributedStringKey : Any]()
+        attributes = [.foregroundColor: color]
+        self.attributedPlaceholder =  NSAttributedString(string: text,attributes:attributes)
     }
 }
 extension String {

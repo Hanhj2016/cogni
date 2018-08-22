@@ -18,7 +18,7 @@
 import Foundation
 import AWSCognitoIdentityProvider
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController,UITextFieldDelegate {
     
     var pool: AWSCognitoIdentityUserPool?
     var sentTo: String?
@@ -35,29 +35,52 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var head_label: UILabel!
     
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y = (self.navigationController?.navigationBar.frame.maxY)!
+        
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            let x = self.view.currentFirstResponder()
+            if x == self.email
+            {
+                let y = self.email.frame.maxY
+                //print("maxy: \(y)")
+                let offset = self.view.frame.height - y - keyboardHeight - 10
+                self.view.frame.origin.y = offset
+                
+            }
+            //self.view.frame.origin.y = 0 - keyboardHeight
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.pool = AWSCognitoIdentityUserPool.init(forKey: AWSCognitoUserPoolsSignInProviderKey)
          self.view.addBackground()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        self.hideKeyboardWhenTappedAround()
     }
     
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
     override func viewWillAppear(_ animated: Bool) {
         
-        // text box colour
-        // label
-        // text format
-        self.username.attributedPlaceholder = NSAttributedString(string: "用户名",
-                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
-        self.password.attributedPlaceholder = NSAttributedString(string: "密码",
-                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
-        self.phone.attributedPlaceholder = NSAttributedString(string: "手机号",
-                                                              attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
-        self.email.attributedPlaceholder = NSAttributedString(string: "邮箱",
-                                                              attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
-        self.confirm.attributedPlaceholder = NSAttributedString(string: "再次输入",
-                                                                attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
-        
+      
+        self.username.add_placeholder(text: "用户名", color: colour)
+        self.password.add_placeholder(text: "密码", color: colour)
+        self.phone.add_placeholder(text: "手机号", color: colour)
+        self.email.add_placeholder(text: "邮箱", color: colour)
+        self.confirm.add_placeholder(text: "再次输入", color: colour)
+        self.username.delegate = self
+        self.password.delegate = self
+        self.email.delegate = self
+        self.confirm.delegate = self
          self.username.textColor = colour
         self.password.textColor = colour
         self.phone.textColor = colour
@@ -75,15 +98,8 @@ class SignUpViewController: UIViewController {
         self.signUp.setTitleColor(sign_in_colour, for:.normal)
         
         
-        //nagigation bar
-        self.navigationController?.navigationBar.tintColor = colour
-        self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
-        
-       // self.navigationController?.navigationItem.title = ""
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+       self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -123,11 +139,21 @@ class SignUpViewController: UIViewController {
         
         var attributes = [AWSCognitoIdentityUserAttributeType]()
         
-        if let phoneValue = self.phone.text, !phoneValue.isEmpty {
+        if let phoneValue = self.phone.text, !phoneValue.isEmpty
+        {
             let phone = AWSCognitoIdentityUserAttributeType()
             phone?.name = "phone_number"
             phone?.value = phoneValue
             attributes.append(phone!)
+        }else {
+            let alertController = UIAlertController(title: "嘿嘿嘿",
+                                                    message: "输个电话号码吧",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
         }
         
         if let emailValue = self.email.text, !emailValue.isEmpty {
@@ -135,6 +161,16 @@ class SignUpViewController: UIViewController {
             email?.name = "email"
             email?.value = emailValue
             attributes.append(email!)
+        }else{
+                let alertController = UIAlertController(title: "嘿嘿嘿",
+                                                        message: "输个邮箱吧",
+                                                        preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alertController.addAction(okAction)
+                
+                self.present(alertController, animated: true, completion:  nil)
+                return
+            
         }
         
         

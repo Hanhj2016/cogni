@@ -43,15 +43,6 @@ class UserDetailTableViewController : UITableViewController {
     @IBOutlet weak var image_collection: UICollectionView!
     
     
-    init(list:[String]){
-        self.post_key_list = list
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-    }
-    
    
     lazy var refresher:UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -152,6 +143,7 @@ class UserDetailTableViewController : UITableViewController {
         self.navigationController?.setToolbarHidden(true, animated: true)
         self.navigationController?.navigationBar.isHidden = false
         myTimer.invalidate()
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
     }
     
     override func viewWillAppear(_ animated: Bool) {

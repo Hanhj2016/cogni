@@ -37,21 +37,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
-        // Warn user if configuration not updated
+        // Override point for customization after application launch.
         if (CognitoIdentityUserPoolId == "YOUR_USER_POOL_ID") {
             let alertController = UIAlertController(title: "Invalid Configuration",
                                                     message: "Please configure user pool constants in Constants.swift file.",
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
-            let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "us-east-1:8ea6ccf7-195c-4c3f-a228-dce153794dbd")
-            let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
-            let objectMapperConfiguration = AWSDynamoDBObjectMapperConfiguration()
-            
-            AWSDynamoDBObjectMapper.register(with: configuration!, objectMapperConfiguration: objectMapperConfiguration, forKey: "USEast1DynamoDBObjectMapper")
             
             self.window?.rootViewController!.present(alertController, animated: true, completion:  nil)
         }
@@ -70,23 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // initialize user pool client
         AWSCognitoIdentityUserPool.register(with: serviceConfiguration, userPoolConfiguration: poolConfiguration, forKey: AWSCognitoUserPoolsSignInProviderKey)
         
+        // fetch the user pool client we initialized in above step
+        let pool = AWSCognitoIdentityUserPool(forKey: AWSCognitoUserPoolsSignInProviderKey)
+        self.storyboard = UIStoryboard(name: "Main", bundle: nil)
+        pool.delegate = self
         
-        //****************working version*****************8//
-//        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-//        var queryExpression = AWSDynamoDBScanExpression()
-//        dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
-//            DispatchQueue.main.async(execute: {
-//                if let paginatedOutput = task{
-//                    if (paginatedOutput.items.count < posts.count)
-//                    {posts = []}
-//                    for news in paginatedOutput.items {
-//                        if !posts.contains(news as! ChanceWithValue)
-//                        {posts.append(news as! ChanceWithValue)}
-//                    }
-//                }
-//            })
-//        })
-        //********************************//
+        
         //************** TIME ******************//
         let date = Date()
         let calendar = Calendar.current
@@ -97,20 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         time.append(calendar.component(.minute, from: date)) // 4
         time.append(calendar.component(.second, from: date)) // 5
         //************** TIME ******************//
-        
-        
-        
-        
-        
-        
-        // fetch the user pool client we initialized in above step
-        let pool = AWSCognitoIdentityUserPool(forKey: AWSCognitoUserPoolsSignInProviderKey)
-        //while (posts.count == 0){}
-        self.storyboard = UIStoryboard(name: "Main", bundle: nil)
-        pool.delegate = self
-        
-        
-        
         
         
         return true

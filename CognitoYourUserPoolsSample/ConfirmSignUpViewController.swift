@@ -18,7 +18,7 @@
 import Foundation
 import AWSCognitoIdentityProvider
 
-class ConfirmSignUpViewController : UIViewController {
+class ConfirmSignUpViewController : UIViewController,UITextFieldDelegate {
     
     var sentTo: String?
     var user: AWSCognitoIdentityUser?
@@ -34,13 +34,20 @@ class ConfirmSignUpViewController : UIViewController {
         self.username.text = self.user!.username;
         //self.sentToLabel.text = "Code sent to: \(self.sentTo!)"
         self.view.addBackground()
+        self.code.delegate = self
+        self.username.delegate = self
+        self.hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.username.attributedPlaceholder = NSAttributedString(string: "用户名",
-                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
-        self.code.attributedPlaceholder = NSAttributedString(string: "验证码",
-                                                             attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
+        self.username.add_placeholder(text: "用户名", color: colour)
+        self.code.add_placeholder(text: "验证码", color: colour)
+        
         
         self.username.textColor = colour
         self.code.textColor = colour
@@ -53,23 +60,16 @@ class ConfirmSignUpViewController : UIViewController {
         self.confirm.backgroundColor = colour
         self.confirm.setTitleColor(sign_in_colour, for:.normal)
         
-        
-        self.navigationController?.navigationBar.tintColor = colour
-        self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
-        
-        // self.navigationController?.navigationItem.title = ""
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+       
+        self.navigationController?.navigationBar.isHidden = false
     }
     // MARK: IBActions
     
     // handle confirm sign up
     @IBAction func confirm(_ sender: AnyObject) {
         guard let confirmationCodeValue = self.code.text, !confirmationCodeValue.isEmpty else {
-            let alertController = UIAlertController(title: "Confirmation code missing.",
-                                                    message: "Please enter a valid confirmation code.",
+            let alertController = UIAlertController(title: "嘿嘿嘿",
+                                                    message: "验证码不对啊",
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -110,8 +110,8 @@ class ConfirmSignUpViewController : UIViewController {
                     
                     self?.present(alertController, animated: true, completion:  nil)
                 } else if let result = task.result {
-                    let alertController = UIAlertController(title: "Code Resent",
-                                                            message: "Code resent to \(result.codeDeliveryDetails?.destination! ?? " no message")",
+                    let alertController = UIAlertController(title: "验证码已发送",
+                                                            message: "已发送至 \(result.codeDeliveryDetails?.destination! ?? " no message")",
                         preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
                     alertController.addAction(okAction)

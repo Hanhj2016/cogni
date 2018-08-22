@@ -15,10 +15,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
     let imagePicker = UIImagePickerController()
     let comments_init = Set<String>()
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
-    }
+   
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
@@ -87,6 +84,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
     @IBOutlet weak var button: dropDownBtn!
     @IBOutlet weak var images: UICollectionView!
     
+    @IBOutlet weak var button2: dropDownBtn!
+    
     func convertAssetToImages() -> Void {
         if SelectedAssets.count != 0{
             for i in 0..<SelectedAssets.count{
@@ -110,17 +109,38 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         }
     }
     
+    @objc func keyboardWillHide(notification: NSNotification) {
+        self.view.frame.origin.y = (self.navigationController?.navigationBar.frame.maxY)!
+        
+    }
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
-            print(keyboardHeight)
+            let x = self.view.currentFirstResponder()
+            if x == self.reward_number || x == self.bonus_number
+            {
+                let y = self.reward_number.frame.maxY
+                //print("maxy: \(y)")
+                let offset = self.view.frame.height - y - keyboardHeight
+                self.view.frame.origin.y = offset
+                
+            }
+            //self.view.frame.origin.y = 0 - keyboardHeight
         }
     }
+//
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        if textField == self.reward_number
+//        {
+//
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         self.hideKeyboardWhenTappedAround()
         self.imagePicker.delegate = self
         self.images.layer.cornerRadius = 5.0
@@ -130,9 +150,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.view.backgroundColor = mid
         self.title_input.textColor = text_light
         self.title_input.backgroundColor = light
-        self.title_input.attributedPlaceholder = NSAttributedString(string: "标题",
-                                                                    attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:text_light])
-        
+        self.title_input.add_placeholder(text: "标题", color: text_mid)
+    
         self.view.addSubview(self.yuema_tag)
         self.yuema_tag.backgroundColor = light
         self.view.addSubview(self.huodong_tag)
@@ -181,12 +200,21 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.bonus_number.rightViewMode = UITextFieldViewMode.always
         
         
+        self.button2.layer.cornerRadius = 5.0
+        self.button2.backgroundColor = colour
+        self.button2.tintColor = sign_in_colour
+        self.button2.setTitle("cc", for: .normal)
+        //self.view.addSubview(button2)
+        self.button2.dropView.dropDownOptions = ["cc","btc", "eth"]//, "Magenta", "White", "Black", "Pink"]
+        //self.button2.isHidden = true
+    
         self.button.layer.cornerRadius = 5.0
         self.button.backgroundColor = colour
         self.button.tintColor = sign_in_colour
-       self.button.setTitle("CC ▼", for: .normal)
-        self.view.addSubview(button)
-        self.button.dropView.dropDownOptions = ["Blue", "Green"]//, "Magenta", "White", "Black", "Pink"]
+       self.button.setTitle("cc", for: .normal)
+        //self.view.addSubview(button)
+        self.button.dropView.dropDownOptions = ["cc","btc", "Green"]//, "Magenta", "White", "Black", "Pink"]
+      
         
         self.confirm.backgroundColor = colour
         self.confirm.setTitleColor(sign_in_colour, for:.normal)
@@ -200,10 +228,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.navigationController?.setToolbarHidden(false, animated: true)
         
     }
-//    func textViewDidChange(_ textView: UITextView) {
-//        placeholderLabel.isHidden = !textView.text.isEmpty
-//    }
-//    
+  
     override func viewDidLayoutSubviews() {
         self.yuema_tag.layer.cornerRadius = 0.5 * self.yuema_tag.bounds.size.width
         self.yuema_tag.clipsToBounds = true
@@ -298,6 +323,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         let temp_time2 = Int(hour * 10000 + minute * 100 + second)
         temp._time = (temp_time1 + temp_time2) as NSNumber
         temp._rewardType = self.button.titleLabel?.text
+        temp._bonusType = self.button2.titleLabel?.text
         temp._tag = tag_ as NSNumber
         temp._username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
        // temp._comments = comments_init

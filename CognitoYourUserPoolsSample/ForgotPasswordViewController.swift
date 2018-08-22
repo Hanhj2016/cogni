@@ -18,7 +18,7 @@
 import Foundation
 import AWSCognitoIdentityProvider
 
-class ForgotPasswordViewController: UIViewController {
+class ForgotPasswordViewController: UIViewController,UITextFieldDelegate {
     
     var pool: AWSCognitoIdentityUserPool?
     var user: AWSCognitoIdentityUser?
@@ -29,13 +29,17 @@ class ForgotPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addBackground()
+        self.username.delegate = self
+        self.hideKeyboardWhenTappedAround()
         self.pool = AWSCognitoIdentityUserPool(forKey: AWSCognitoUserPoolsSignInProviderKey)
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
     override func viewWillAppear(_ animated: Bool) {
         self.username.textColor = colour
-        self.username.attributedPlaceholder = NSAttributedString(string: "用户名",
-                                                                 attributes: [kCTForegroundColorAttributeName as NSAttributedStringKey:colour])
+       self.username.add_placeholder(text: "用户名", color: colour)
         self.username.setBottomBorder()
         
         
@@ -43,14 +47,7 @@ class ForgotPasswordViewController: UIViewController {
         self.forgotpassword.setTitleColor(sign_in_colour, for:.normal)
         
         
-        self.navigationController?.navigationBar.tintColor = colour
-        self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
-        
-        // self.navigationController?.navigationItem.title = ""
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.navigationBar.isHidden = false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -65,8 +62,8 @@ class ForgotPasswordViewController: UIViewController {
     @IBAction func forgotPassword(_ sender: AnyObject) {
         guard let username = self.username.text, !username.isEmpty else {
 
-            let alertController = UIAlertController(title: "Missing UserName",
-                                                    message: "Please enter a valid user name.",
+            let alertController = UIAlertController(title: "用户名错误",
+                                                    message: "用户名不存在",
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
