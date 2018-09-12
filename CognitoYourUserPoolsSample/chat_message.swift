@@ -21,6 +21,8 @@ import Foundation
 
 
 class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if p._chattingList?.count == nil || p._chattingList?.count ==
             0
@@ -36,11 +38,19 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
         cell.layer.borderWidth = 0.2
         cell.layer.borderColor = text_mid.cgColor
         let name = p._chattingList![row]
-        print(name)
-        let profile_picture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + name + ".png"
-        let url = URL(string: profile_picture)
-        let data = try? Data(contentsOf: url!)
-        cell.profile_picture.image = UIImage(data:data!)
+        //print(name)
+        let profile_picture = name + ".png"
+        
+        //downloadImage(key_: profile_picture, destination: cell.profile_picture)
+
+            if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
+                cell.profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: profile_picture, destination: cell.profile_picture)
+            }
+        
+        
         cell.profile_picture.layer.borderWidth = 1.0
         cell.profile_picture.layer.masksToBounds = false
         cell.profile_picture.layer.borderColor = UIColor.white.cgColor
@@ -56,14 +66,21 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
         else
         {
             cell.notification.isHidden = false
-        cell.notification.layer.cornerRadius = cell.notification.frame.height/2
-        cell.notification.backgroundColor = UIColor.red
-        cell.notification.textColor = text_light
+            cell.notification.backgroundColor = UIColor.red
+            cell.notification.layer.cornerRadius = cell.notification.frame.height/2
+            cell.notification.layer.borderWidth = 1.0
+            cell.notification.layer.masksToBounds = false
+            cell.notification.layer.borderColor = UIColor.red.cgColor
+            cell.notification.clipsToBounds = true
+            cell.notification.textColor = text_light
         }
         cell.name.textColor = sign_in_colour
         cell.name.text = name
         cell.name.font = cell.name.font.withSize(16)
-        cell.last_sentence.text = p._lastSentence?[name]
+        if !(p._lastSentence?[name]?.hasPrefix(chat_image_preset))!{
+            cell.last_sentence.text = p._lastSentence?[name]}
+        else
+        {cell.last_sentence.text = "[图片]"}
         cell.last_sentence.textColor = text_grey
         cell.last_sentence.font = cell.last_sentence.font.withSize(14)
         
@@ -181,23 +198,31 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = indexPath.row
         let target = p._chattingList![row]
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "chat") as! chat
+        
+        
         var profile_picture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + target + ".png"
-        var url = URL(string: profile_picture)
-        var data = try? Data(contentsOf: url!)
-        let target_image = UIImage(data:data!)
+     
+            
+            if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
+                new_chat.target_image = cachedVersion
+            }
+        
+    
         profile_picture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + user + ".png"
-       url = URL(string: profile_picture)
-         data = try? Data(contentsOf: url!)
-        let user_image = UIImage(data:data!)
+        if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
+            new_chat.user_image  = cachedVersion
+        }
+        
 //
 //        let new_chat = chat(user: user, target: target, user_image: user_image!, target_image: target_image!)
        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        var new_chat = storyboard.instantiateViewController(withIdentifier: "chat") as! chat
+        
         new_chat.user = user
         new_chat.target = target
-        new_chat.user_image = user_image!
-        new_chat.target_image = target_image!
+       
         self.navigationController?.pushViewController(new_chat, animated: true)
     }
     
@@ -210,6 +235,14 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 print("The request failed. Error: \(error)")
             } else if let resultBook = task.result as? UserChat {
                 temp = resultBook
+                
+               let temp_list = temp._chattingList
+                var empty:[String] = []
+                for a in 0...(temp_list?.count)! - 1
+                {
+                    empty.append(temp_list![(temp_list?.count)! - 1 - a])
+                }
+                temp._chattingList = empty
             }
             return nil
         })
@@ -230,14 +263,6 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }

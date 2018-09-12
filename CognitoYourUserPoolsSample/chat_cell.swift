@@ -23,6 +23,10 @@ class chat_cell: UITableViewCell {
     @IBOutlet weak var chat: UITextView!
     @IBOutlet weak var chat_left_to_image_right: NSLayoutConstraint!
     @IBOutlet weak var chat_height: NSLayoutConstraint!
+    
+    @IBOutlet weak var picture: UIImageView!
+    
+    
     var show_time = 0
     override func awakeFromNib() {
         super.awakeFromNib()

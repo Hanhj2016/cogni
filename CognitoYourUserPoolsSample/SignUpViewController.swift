@@ -18,6 +18,7 @@
 import Foundation
 import AWSCognitoIdentityProvider
 
+var user_email = ""
 class SignUpViewController: UIViewController,UITextFieldDelegate {
     
     var pool: AWSCognitoIdentityUserPool?
@@ -74,7 +75,7 @@ class SignUpViewController: UIViewController,UITextFieldDelegate {
       
         self.username.add_placeholder(text: "用户名", color: colour)
         self.password.add_placeholder(text: "密码", color: colour)
-        self.phone.add_placeholder(text: "手机号", color: colour)
+        self.phone.add_placeholder(text: "区域码加电话号码：比如+155555555", color: colour)
         self.email.add_placeholder(text: "邮箱", color: colour)
         self.confirm.add_placeholder(text: "再次输入", color: colour)
         self.username.delegate = self
@@ -161,6 +162,8 @@ class SignUpViewController: UIViewController,UITextFieldDelegate {
             email?.name = "email"
             email?.value = emailValue
             attributes.append(email!)
+            user_email = emailValue
+            print(user_email)
         }else{
                 let alertController = UIAlertController(title: "嘿嘿嘿",
                                                         message: "输个邮箱吧",

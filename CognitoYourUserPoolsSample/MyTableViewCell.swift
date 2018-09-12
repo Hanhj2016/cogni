@@ -22,8 +22,6 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
         cell.photo.image = images[indexPath.row]
         cell.photo.tag = indexPath.row
         cell.photo.isUserInteractionEnabled = true
-        //self.myViewController.view.addSubview(cell.photo)
-       // this above line makes images big dont know why
         let tapSingle=UITapGestureRecognizer(target:self,
                                              action:#selector(imageViewTap(_:)))
         tapSingle.numberOfTapsRequired = 1
@@ -71,17 +69,6 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
     
     @IBOutlet weak var share_detail: UIButton!
     
-   // @IBOutlet weak var share_view: UIView!
-    
-  //  @IBOutlet weak var share_profile_picture: UIImageView!
-    
- //   @IBOutlet weak var share_username: UILabel!
-    
-//    @IBOutlet weak var share_title: UILabel!
-    
-    
-    
-   // var urls:[URL] = []
      var myViewController: UIViewController!
     var images:[UIImage] = []
     override func awakeFromNib() {

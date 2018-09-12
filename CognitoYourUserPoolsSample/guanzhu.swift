@@ -140,15 +140,20 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
             var queryExpression = AWSDynamoDBScanExpression()
             //print("name")
             let name = guanzhu_list[indexPath.row]
-            dynamoDbObjectMapper.load(UserPool.self, hashKey: name, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            print(name)
+            var nimei:UserPool = UserPool()
+            let heihei = dynamoDbObjectMapper.load(UserPool.self, hashKey: name, rangeKey:nil)
+                heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
                 if let error = task.error as? NSError {
                     print("The request failed. Error: \(error)")
                 } else if let resultBook = task.result as? UserPool {
-                    upcoming.p = resultBook
+                    nimei = resultBook
                 }
                 return nil
-            }
-            )
+            })
+            heihei.waitUntilFinished()
+            print(upcoming.p)
+            upcoming.p = nimei
         }
     }
     
@@ -167,18 +172,29 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
                     print("The request failed. Error: \(error)")
                 } else if let resultBook = task.result as? UserPool {
                     DispatchQueue.main.async(execute: {
-                    if ((resultBook._profilePic != nil))
-                    {
-                        let url = URL(string: resultBook._profilePic!)
-                        let data = try? Data(contentsOf: url!)
+    
+                        
+                        let message = "\(resultBook._userId!).png"
+                        if (resultBook._profilePic != nil){
+                            
+                            if let cachedVersion = imageCache.object(forKey: message as NSString) {
+                                cell.profile_picture.image = cachedVersion
+                            }
+                            else{
+                                downloadImage(key_: message, destination: cell.profile_picture)
+                            }
+                        }
+                        else
+                        {cell.profile_picture.image = UIImage(named: "girl")}
+                        
+                        
                         cell.profile_picture.layer.borderWidth = 1.0
                         cell.profile_picture.layer.masksToBounds = false
                         cell.profile_picture.layer.borderColor = UIColor.white.cgColor
                         //print("width: \(self.profile_picture.frame.size.width)")
                         cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
                         cell.profile_picture.clipsToBounds = true
-                        cell.profile_picture.image = UIImage(data: data!)
-                    }
+                        
                     
                     cell.name.text = resultBook._userId
                     cell.name.textColor = text_light

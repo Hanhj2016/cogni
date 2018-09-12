@@ -59,21 +59,39 @@ var renwu_list:[String] = []
     var title_name = ""
     @IBAction func jihui(_ sender: Any) {
         title_name = "我的机会"
-        performSegue(withIdentifier: "zhuye", sender: self)
-        //self.navigationController?.setToolbarHidden(true, animated: true)
+        
+        //performSegue(withIdentifier: "zhuye", sender: self)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "zhuye") as! zhuye
+        new_chat.p = self.p
+        new_chat.title = "我的机会"
+        self.navigationController?.pushViewController(new_chat, animated: true)
+        
         
     }
     
     @IBAction func fabu(_ sender: Any) {
         title_name = "我的发布"
-        performSegue(withIdentifier: "zhuye", sender: self)
+        
+        //performSegue(withIdentifier: "zhuye", sender: self)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "wode_fabu") as! wode_fabu
+        new_chat.p = self.p
+        new_chat.title = "我的发布"
+     self.navigationController?.pushViewController(new_chat, animated: true)
+        
+        
     }
     
     
     @IBAction func renwu(_ sender: Any) {
-        title_name = "我的任务"
-        
-        performSegue(withIdentifier: "zhuye", sender: self)
+//        title_name = "我的任务"
+//
+//        performSegue(withIdentifier: "zhuye", sender: self)
         
     }
     
@@ -82,6 +100,16 @@ var renwu_list:[String] = []
         performSegue(withIdentifier: "messages", sender: self)
     }
     
+    @IBAction func qianbao(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "qianbao") as! qianbao
+       
+        new_chat.number = Double(p._candyCurrency!)
+       new_chat.frozen = Double(p._frozenwallet!)
+       new_chat.avail = Double(p._availableWallet!)
+        self.navigationController?.pushViewController(new_chat, animated: true)
+    }
     
     
     @IBAction func guanzhu(_ sender: Any) {
@@ -93,7 +121,7 @@ var renwu_list:[String] = []
         if segue.identifier == "zhuye"
         {
             var upcoming: zhuye = segue.destination as! zhuye
-            upcoming.all = false
+            //upcoming.all = false
             upcoming.title = title_name
             if title_name == "我的机会"{
             if p._gottenList != nil
@@ -107,9 +135,6 @@ var renwu_list:[String] = []
                 {upcoming.post_key_list = []}}
             if title_name == "我的任务"
             {
-                
-                
-               
                 
                 upcoming.p = self.p
                 upcoming.post_key_list = renwu_list
@@ -154,23 +179,40 @@ var renwu_list:[String] = []
         
         self.view.backgroundColor = sign_in_colour
         //////////////////////////////top/////////////////////////////
-        while(p._userId == nil)
+        //print("182")
+        while (p._userId == nil)
         {
+            
         }
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
+       // UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
         self.top_view.backgroundColor = mid
         if ((p._profilePic != nil))
         {
-            let url = URL(string: p._profilePic!)
-            let data = try? Data(contentsOf: url!)
+//
+            let heihei = p._userId!
+           // print(heihei)
+           // downloadImage(key_: "\(p._userId!).png", destination: self.profile_picture)
             self.profile_picture.layer.borderWidth = 1.0
             self.profile_picture.layer.masksToBounds = false
             self.profile_picture.layer.borderColor = UIColor.white.cgColor
-            //print("width: \(self.profile_picture.frame.size.width)")
             self.profile_picture.layer.cornerRadius = self.profile_picture.frame.size.width / 2
             self.profile_picture.clipsToBounds = true
-            self.profile_picture.image = UIImage(data: data!)
+            
         }
+        
+        
+        if (p._userId != nil){
+            
+            if let cachedVersion = imageCache.object(forKey: "\(p._userId!).png" as NSString) {
+                self.profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: "\(p._userId!).png", destination: self.profile_picture)
+            }
+        }
+        else
+        {self.profile_picture.image = UIImage(named: "girl")}
+        
         
         self.username.text = p._userId
         self.username.textColor = text_light
@@ -187,7 +229,7 @@ var renwu_list:[String] = []
             self.resume.text = "简介：" + p._resume!}
         else
         {self.resume.isHidden = true}
-        self.reputation.setTitle("声望: \(p._shengWang)", for: .normal)
+        self.reputation.setTitle("声望: \(p._shengWang!)", for: .normal)
         self.reputation.backgroundColor = colour
         self.reputation.layer.cornerRadius = self.reputation.frame.height / 2
         self.reputation.setTitleColor(sign_in_colour, for: .normal)

@@ -21,21 +21,25 @@ import AWSDynamoDB
 class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _id: String?
-    var _bonus: NSNumber?
-    var _bonusType: String?
     var _commentIdList: [String]?
+    var _completeList: [String]?
+    var _confirmList: [String]?
+    var _fuFei: NSNumber?
+    var _fuFeiType: String?
     var _getList: [String]?
     var _liked: [String]?
     var _pictures: [String]?
     var _profilePicture: String?
-    var _reward: NSNumber?
-    var _rewardType: String?
+    var _renShu: NSNumber?
     var _shared: NSNumber?
     var _sharedFrom: [String]?
+    var _shouFei: NSNumber?
+    var _shouFeiType: String?
     var _tag: NSNumber?
     var _text: String?
     var _time: NSNumber?
     var _title: String?
+    var _unConfirmList: [String]?
     var _username: String?
     
     class func dynamoDBTableName() -> String {
@@ -51,51 +55,28 @@ class ChanceWithValue: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
         return [
             "_id" : "Id",
-            "_bonus" : "bonus",
-            "_bonusType" : "bonus_type",
             "_commentIdList" : "commentIdList",
+            "_completeList" : "completeList",
+            "_confirmList" : "confirmList",
+            "_fuFei" : "fuFei",
+            "_fuFeiType" : "fuFei_type",
             "_getList" : "getList",
             "_liked" : "liked",
             "_pictures" : "pictures",
             "_profilePicture" : "profile_picture",
-            "_reward" : "reward",
-            "_rewardType" : "reward_type",
+            "_renShu" : "renShu",
             "_shared" : "shared",
             "_sharedFrom" : "sharedFrom",
+            "_shouFei" : "shouFei",
+            "_shouFeiType" : "shouFei_type",
             "_tag" : "tag",
             "_text" : "text",
             "_time" : "time",
             "_title" : "title",
+            "_unConfirmList" : "unConfirmList",
             "_username" : "username",
         ]
     }
-
-
-    
-    func create() {
-        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        
-        // Create data object using data models you downloaded from Mobile Hub
-        let newsItem: ChanceWithValue = ChanceWithValue()
-        let username: String? = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
-        let un: String = username!
-        print (un)
-        newsItem._id = "init"
-        newsItem._time = 0
-        newsItem._username = un
-        //newsItem._comments = 0
-        //Save a new item
-        dynamoDbObjectMapper.save(newsItem, completionHandler: {
-            (error: Error?) -> Void in
-            
-            if let error = error {
-                print("Amazon DynamoDB Save Error: \(error)")
-                return
-            }
-            print("An item was saved.")
-        })
-    }
-    
 }
 
 
@@ -146,15 +127,22 @@ class UserPool: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _nickName: String?
     var _resume: String?
     var _walletAddress: String?
+    var _availableWallet: NSNumber?
     var _beiGuanZhu: [String]?
     var _candyCurrency: NSNumber?
+    var _consecutiveLogin: NSNumber?
     var _cryptoCurrency: NSNumber?
+    var _frozenwallet: NSNumber?
     var _gottenList: [String]?
     var _guanZhu: [String]?
+    var _lastComfirm: String?
+    var _lastFabu: String?
+    var _lastGet: String?
+    var _lastLogin: String?
+    var _lastZhuan: String?
     var _myEmail: String?
-    var _numofChance: String?
     var _profilePic: String?
-    var _shengWang: String?
+    var _shengWang: NSNumber?
     
     class func dynamoDBTableName() -> String {
         
@@ -177,18 +165,26 @@ class UserPool: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_nickName" : "NickName",
             "_resume" : "Resume",
             "_walletAddress" : "WalletAddress",
+            "_availableWallet" : "availableWallet",
             "_beiGuanZhu" : "beiGuanZhu",
             "_candyCurrency" : "candyCurrency",
+            "_consecutiveLogin" : "consecutiveLogin",
             "_cryptoCurrency" : "cryptoCurrency",
+            "_frozenwallet" : "frozenwallet",
             "_gottenList" : "gottenList",
             "_guanZhu" : "guanZhu",
+            "_lastComfirm" : "lastComfirm",
+            "_lastFabu" : "lastFabu",
+            "_lastGet" : "lastGet",
+            "_lastLogin" : "lastLogin",
+            "_lastZhuan" : "lastZhuan",
             "_myEmail" : "myEmail",
-            "_numofChance" : "numofChance",
             "_profilePic" : "profilePic",
             "_shengWang" : "shengWang",
         ]
     }
 }
+
 
 @objcMembers
 @objc(ChattingList)

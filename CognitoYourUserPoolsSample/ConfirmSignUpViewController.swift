@@ -15,8 +15,18 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 import AWSCognitoIdentityProvider
+import AWSDynamoDB
+import AWSMobileClient
+import AWSCore
+import AWSPinpoint
+import Foundation
+import AWSUserPoolsSignIn
+import AWSS3
+import Photos
+import BSImagePicker
+import Foundation
 
 class ConfirmSignUpViewController : UIViewController,UITextFieldDelegate {
     
@@ -89,6 +99,34 @@ class ConfirmSignUpViewController : UIViewController,UITextFieldDelegate {
                     
                     strongSelf.present(alertController, animated: true, completion:  nil)
                 } else {
+                    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+                    var p:UserPool = UserPool()
+                    p._userId = self?.user?.username
+                    p._myEmail = user_email
+                    let dude = p._userId! + ".png"
+                    p._profilePic = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + dude
+                   
+                    
+                    p._shengWang = 0
+                    p._candyCurrency = 0
+                    p._cryptoCurrency = 0
+                    p._availableWallet = 0
+                    p._frozenwallet = 0
+                    let date = Date()
+                    let calendar = Calendar.current
+                    let rand = (calendar.component(.second, from:date)) % 2
+                    var pic_name = ""
+                    if rand == 1
+                    {
+                        pic_name = "boy"
+                    }
+                    else
+                    {
+                        pic_name = "girl"
+                    }
+                    uploadImage(with: UIImagePNGRepresentation(UIImage(named: pic_name)!)!, bucket: pictures, key: dude)
+                    dynamoDbObjectMapper.save(p,completionHandler:nil)
+                    
                     let _ = strongSelf.navigationController?.popToRootViewController(animated: true)
                 }
             })

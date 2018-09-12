@@ -24,6 +24,9 @@ import Foundation
 import AWSS3
 //var temp_Post:Posts = Posts()
 
+
+
+let imageCache = NSCache<NSString, UIImage>()
 var time:[Int] = []
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -171,35 +174,39 @@ extension AppDelegate: AWSCognitoIdentityInteractiveAuthenticationDelegate {
         return self.mfaViewController!
     }
     
-    func startRememberDevice() -> AWSCognitoIdentityRememberDevice {
-        return self
-    }
+//    func startRememberDevice() -> AWSCognitoIdentityRememberDevice {
+//        return self
+//    }
 }
 
 // MARK:- AWSCognitoIdentityRememberDevice protocol delegate
 extension AppDelegate: AWSCognitoIdentityRememberDevice {
-    
     func getRememberDevice(_ rememberDeviceCompletionSource: AWSTaskCompletionSource<NSNumber>) {
-        self.rememberDeviceCompletionSource = rememberDeviceCompletionSource
-        DispatchQueue.main.async {
-            // dismiss the view controller being present before asking to remember device
-            self.window?.rootViewController!.presentedViewController?.dismiss(animated: true, completion: nil)
-            let alertController = UIAlertController(title: "Remember Device",
-                                                    message: "Do you want to remember this device?.",
-                                                    preferredStyle: .actionSheet)
-            
-            let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                self.rememberDeviceCompletionSource?.set(result: true)
-            })
-            let noAction = UIAlertAction(title: "No", style: .default, handler: { (action) in
-                self.rememberDeviceCompletionSource?.set(result: false)
-            })
-            alertController.addAction(yesAction)
-            alertController.addAction(noAction)
-            
-            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
-        }
+        
     }
+    
+    
+//    func getRememberDevice(_ rememberDeviceCompletionSource: AWSTaskCompletionSource<NSNumber>) {
+//        self.rememberDeviceCompletionSource = rememberDeviceCompletionSource
+//        DispatchQueue.main.async {
+//            // dismiss the view controller being present before asking to remember device
+//            self.window?.rootViewController!.presentedViewController?.dismiss(animated: true, completion: nil)
+//            let alertController = UIAlertController(title: "Remember Device",
+//                                                    message: "Do you want to remember this device?.",
+//                                                    preferredStyle: .actionSheet)
+//
+//            let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+//                self.rememberDeviceCompletionSource?.set(result: true)
+//            })
+//            let noAction = UIAlertAction(title: "No", style: .default, handler: { (action) in
+//                self.rememberDeviceCompletionSource?.set(result: false)
+//            })
+//            alertController.addAction(yesAction)
+//            alertController.addAction(noAction)
+//
+//            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+//        }
+//    }
     
     func didCompleteStepWithError(_ error: Error?) {
         DispatchQueue.main.async {

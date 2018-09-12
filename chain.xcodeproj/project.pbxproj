@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D5A8E5387CC8FA610CFB75B /* Pods_CognitoYourUserPoolsSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8F26771F0FF8105FC402DD /* Pods_CognitoYourUserPoolsSample.framework */; };
 		17FC2F801E258FC500174015 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FC2F7F1E258FC500174015 /* AppDelegate.swift */; };
 		17FC2F851E258FC500174015 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17FC2F831E258FC500174015 /* Main.storyboard */; };
 		17FC2F871E258FC500174015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17FC2F861E258FC500174015 /* Assets.xcassets */; };
@@ -41,9 +40,27 @@
 		B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */; };
 		B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817A20FF97F300207787 /* ImagePreviewVC.swift */; };
 		B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817B20FF97F400207787 /* ImagePreviewCell.swift */; };
+		B933E32F213A127B00B2EBEF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B933E32E213A127B00B2EBEF /* StoreKit.framework */; };
 		B9445E2A211C9A210053F2BC /* change_info.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9445E29211C9A210053F2BC /* change_info.swift */; };
 		B9445E2C211C9A4C0053F2BC /* info_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9445E2B211C9A4C0053F2BC /* info_cell.swift */; };
+		B95289D62133A55500F6322F /* wode_fabu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D52133A55500F6322F /* wode_fabu.swift */; };
+		B95289D82134644D00F6322F /* tableView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D72134644D00F6322F /* tableView2.swift */; };
+		B95289DA2138DAFE00F6322F /* qianbao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D92138DAFE00F6322F /* qianbao.swift */; };
 		B98E223520E6A01C0044BB31 /* background.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E223420E6A01C0044BB31 /* background.swift */; };
+		B9ABE14B213A20D60089AECE /* AWSAuthCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE14A213A20D60089AECE /* AWSAuthCore.framework */; };
+		B9ABE14D213A20EB0089AECE /* AWSAuthUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE14C213A20EB0089AECE /* AWSAuthUI.framework */; };
+		B9ABE14F213A20EB0089AECE /* AWSCognitoIdentityProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE14E213A20EB0089AECE /* AWSCognitoIdentityProvider.framework */; };
+		B9ABE151213A20EB0089AECE /* AWSCognitoIdentityProviderASF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE150213A20EB0089AECE /* AWSCognitoIdentityProviderASF.framework */; };
+		B9ABE153213A20EB0089AECE /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE152213A20EB0089AECE /* AWSCore.framework */; };
+		B9ABE155213A20EB0089AECE /* AWSDynamoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE154213A20EB0089AECE /* AWSDynamoDB.framework */; };
+		B9ABE157213A20EB0089AECE /* AWSMobileClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE156213A20EB0089AECE /* AWSMobileClient.framework */; };
+		B9ABE159213A20EB0089AECE /* AWSPinpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE158213A20EB0089AECE /* AWSPinpoint.framework */; };
+		B9ABE15B213A20EB0089AECE /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE15A213A20EB0089AECE /* AWSS3.framework */; };
+		B9ABE15D213A20EB0089AECE /* AWSUserPoolsSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE15C213A20EB0089AECE /* AWSUserPoolsSignIn.framework */; };
+		B9ABE15F213A20EB0089AECE /* BSGridCollectionViewLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE15E213A20EB0089AECE /* BSGridCollectionViewLayout.framework */; };
+		B9ABE161213A20EB0089AECE /* BSImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE160213A20EB0089AECE /* BSImagePicker.framework */; };
+		B9ABE163213A20EB0089AECE /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE162213A20EB0089AECE /* Kingfisher.framework */; };
+		B9ABE165213A20EB0089AECE /* UIImageViewModeScaleAspect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE164213A20EB0089AECE /* UIImageViewModeScaleAspect.framework */; };
 		B9BCB04E2106877600661970 /* post_images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BCB04D2106877600661970 /* post_images.swift */; };
 		B9C1DD5620F6763B004C611B /* post_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C1DD5520F6763B004C611B /* post_cell.swift */; };
 		B9C95E642117B1DD00E6DA06 /* share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C95E632117B1DD00E6DA06 /* share.swift */; };
@@ -51,13 +68,11 @@
 		B9C95E68211BC1A900E6DA06 /* setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C95E67211BC1A900E6DA06 /* setting.swift */; };
 		B9D6951020EE90790024F6FF /* profile_picture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D6950F20EE90790024F6FF /* profile_picture.swift */; };
 		B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B9D6951520EE924C0024F6FF /* awsconfiguration.json */; };
-		B9E0B17720FAB258009ED8BD /* 43 发布界面.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */; };
 		B9E0B17920FE60F0009ED8BD /* image_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E0B17820FE60F0009ED8BD /* image_cell.swift */; };
 		B9F77BD4210F77060088E601 /* post_detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F77BD3210F77060088E601 /* post_detail.swift */; };
 		B9F98AE82110B6D500E4CEDB /* comment_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F98AE72110B6D500E4CEDB /* comment_cell.swift */; };
 		B9F9B53C20F7A98D00CE306F /* trash_box in Resources */ = {isa = PBXBuildFile; fileRef = B9F9B53B20F7A98D00CE306F /* trash_box */; };
 		B9F9B53E20F7E4C100CE306F /* fabu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F9B53D20F7E4C100CE306F /* fabu.swift */; };
-		C45898B3B1F82CAEBB3D2148 /* Pods_chain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E8730576EDB3203667F8E00 /* Pods_chain.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,9 +115,27 @@
 		B924E9CB20ED2EB500A0B338 /* fabu_unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabu_unit.swift; sourceTree = "<group>"; };
 		B92A817A20FF97F300207787 /* ImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewVC.swift; sourceTree = "<group>"; };
 		B92A817B20FF97F400207787 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
+		B933E32E213A127B00B2EBEF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B9445E29211C9A210053F2BC /* change_info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = change_info.swift; sourceTree = "<group>"; };
 		B9445E2B211C9A4C0053F2BC /* info_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = info_cell.swift; sourceTree = "<group>"; };
+		B95289D52133A55500F6322F /* wode_fabu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wode_fabu.swift; sourceTree = "<group>"; };
+		B95289D72134644D00F6322F /* tableView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableView2.swift; sourceTree = "<group>"; };
+		B95289D92138DAFE00F6322F /* qianbao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qianbao.swift; sourceTree = "<group>"; };
 		B98E223420E6A01C0044BB31 /* background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = background.swift; sourceTree = "<group>"; };
+		B9ABE14A213A20D60089AECE /* AWSAuthCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSAuthCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE14C213A20EB0089AECE /* AWSAuthUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSAuthUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE14E213A20EB0089AECE /* AWSCognitoIdentityProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSCognitoIdentityProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE150213A20EB0089AECE /* AWSCognitoIdentityProviderASF.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSCognitoIdentityProviderASF.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE152213A20EB0089AECE /* AWSCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE154213A20EB0089AECE /* AWSDynamoDB.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSDynamoDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE156213A20EB0089AECE /* AWSMobileClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSMobileClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE158213A20EB0089AECE /* AWSPinpoint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSPinpoint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE15A213A20EB0089AECE /* AWSS3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSS3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE15C213A20EB0089AECE /* AWSUserPoolsSignIn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSUserPoolsSignIn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE15E213A20EB0089AECE /* BSGridCollectionViewLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BSGridCollectionViewLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE160213A20EB0089AECE /* BSImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BSImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE162213A20EB0089AECE /* Kingfisher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Kingfisher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9ABE164213A20EB0089AECE /* UIImageViewModeScaleAspect.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIImageViewModeScaleAspect.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9BCB04D2106877600661970 /* post_images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_images.swift; sourceTree = "<group>"; };
 		B9C1DD5520F6763B004C611B /* post_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_cell.swift; sourceTree = "<group>"; };
 		B9C95E632117B1DD00E6DA06 /* share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = share.swift; sourceTree = "<group>"; };
@@ -110,7 +143,6 @@
 		B9C95E67211BC1A900E6DA06 /* setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = setting.swift; sourceTree = "<group>"; };
 		B9D6950F20EE90790024F6FF /* profile_picture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profile_picture.swift; sourceTree = "<group>"; };
 		B9D6951420EE924C0024F6FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/awsconfiguration.json; sourceTree = "<group>"; };
-		B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "43 发布界面.jpg"; sourceTree = "<group>"; };
 		B9E0B17820FE60F0009ED8BD /* image_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = image_cell.swift; sourceTree = "<group>"; };
 		B9F77BD3210F77060088E601 /* post_detail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = post_detail.swift; sourceTree = "<group>"; };
 		B9F98AE72110B6D500E4CEDB /* comment_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = comment_cell.swift; sourceTree = "<group>"; };
@@ -125,8 +157,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D5A8E5387CC8FA610CFB75B /* Pods_CognitoYourUserPoolsSample.framework in Frameworks */,
-				C45898B3B1F82CAEBB3D2148 /* Pods_chain.framework in Frameworks */,
+				B9ABE14D213A20EB0089AECE /* AWSAuthUI.framework in Frameworks */,
+				B9ABE14F213A20EB0089AECE /* AWSCognitoIdentityProvider.framework in Frameworks */,
+				B9ABE151213A20EB0089AECE /* AWSCognitoIdentityProviderASF.framework in Frameworks */,
+				B9ABE153213A20EB0089AECE /* AWSCore.framework in Frameworks */,
+				B9ABE155213A20EB0089AECE /* AWSDynamoDB.framework in Frameworks */,
+				B9ABE157213A20EB0089AECE /* AWSMobileClient.framework in Frameworks */,
+				B9ABE159213A20EB0089AECE /* AWSPinpoint.framework in Frameworks */,
+				B9ABE15B213A20EB0089AECE /* AWSS3.framework in Frameworks */,
+				B9ABE15D213A20EB0089AECE /* AWSUserPoolsSignIn.framework in Frameworks */,
+				B9ABE15F213A20EB0089AECE /* BSGridCollectionViewLayout.framework in Frameworks */,
+				B9ABE161213A20EB0089AECE /* BSImagePicker.framework in Frameworks */,
+				B9ABE163213A20EB0089AECE /* Kingfisher.framework in Frameworks */,
+				B9ABE165213A20EB0089AECE /* UIImageViewModeScaleAspect.framework in Frameworks */,
+				B9ABE14B213A20D60089AECE /* AWSAuthCore.framework in Frameworks */,
+				B933E32F213A127B00B2EBEF /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +207,9 @@
 				17FC2F8B1E258FC500174015 /* Info.plist */,
 				17FC2F931E25909300174015 /* Supporting Files */,
 				17FC2F961E25928900174015 /* MFAViewController.swift */,
-				B9E0B17620FAB257009ED8BD /* 43 发布界面.jpg */,
+				B95289D52133A55500F6322F /* wode_fabu.swift */,
+				B95289D92138DAFE00F6322F /* qianbao.swift */,
+				B95289D72134644D00F6322F /* tableView2.swift */,
 				17FC2F981E25940900174015 /* SignInViewController.swift */,
 				B9D6951520EE924C0024F6FF /* awsconfiguration.json */,
 				17FC2F9A1E259E0500174015 /* Constants.swift */,
@@ -190,10 +237,10 @@
 				B91172B32107D9F900284FB5 /* MyTableViewCell.xib */,
 				B91172AF2107D94B00284FB5 /* MyCollectionViewCell.xib */,
 				B9E0B17820FE60F0009ED8BD /* image_cell.swift */,
-				17FC2F9C1E259E5D00174015 /* SignUpViewController.swift */,
 				B92A817B20FF97F400207787 /* ImagePreviewCell.swift */,
 				B92A817A20FF97F300207787 /* ImagePreviewVC.swift */,
 				B902A60C20F3D44600331D17 /* prepare_posts.swift */,
+				17FC2F9C1E259E5D00174015 /* SignUpViewController.swift */,
 				17FC2F9E1E259F3200174015 /* ConfirmSignUpViewController.swift */,
 				B9C1DD5520F6763B004C611B /* post_cell.swift */,
 				B9BCB04D2106877600661970 /* post_images.swift */,
@@ -218,6 +265,21 @@
 		2B50A37AC16AACF9427C4F0F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B9ABE14C213A20EB0089AECE /* AWSAuthUI.framework */,
+				B9ABE14E213A20EB0089AECE /* AWSCognitoIdentityProvider.framework */,
+				B9ABE150213A20EB0089AECE /* AWSCognitoIdentityProviderASF.framework */,
+				B9ABE152213A20EB0089AECE /* AWSCore.framework */,
+				B9ABE154213A20EB0089AECE /* AWSDynamoDB.framework */,
+				B9ABE156213A20EB0089AECE /* AWSMobileClient.framework */,
+				B9ABE158213A20EB0089AECE /* AWSPinpoint.framework */,
+				B9ABE15A213A20EB0089AECE /* AWSS3.framework */,
+				B9ABE15C213A20EB0089AECE /* AWSUserPoolsSignIn.framework */,
+				B9ABE15E213A20EB0089AECE /* BSGridCollectionViewLayout.framework */,
+				B9ABE160213A20EB0089AECE /* BSImagePicker.framework */,
+				B9ABE162213A20EB0089AECE /* Kingfisher.framework */,
+				B9ABE164213A20EB0089AECE /* UIImageViewModeScaleAspect.framework */,
+				B9ABE14A213A20D60089AECE /* AWSAuthCore.framework */,
+				B933E32E213A127B00B2EBEF /* StoreKit.framework */,
 				AB8F26771F0FF8105FC402DD /* Pods_CognitoYourUserPoolsSample.framework */,
 				6E8730576EDB3203667F8E00 /* Pods_chain.framework */,
 			);
@@ -280,6 +342,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 5BHGRFYGSS;
 						LastSwiftMigration = 0940;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -310,7 +377,6 @@
 				17FC2F871E258FC500174015 /* Assets.xcassets in Resources */,
 				B91172B12107D94B00284FB5 /* MyCollectionViewCell.xib in Resources */,
 				B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */,
-				B9E0B17720FAB258009ED8BD /* 43 发布界面.jpg in Resources */,
 				B91172B52107D9F900284FB5 /* MyTableViewCell.xib in Resources */,
 				17FC2F921E25908D00174015 /* CognitoLogo.png in Resources */,
 				17FC2F851E258FC500174015 /* Main.storyboard in Resources */,
@@ -405,6 +471,7 @@
 				B9F77BD4210F77060088E601 /* post_detail.swift in Sources */,
 				B91A14ED2121ECAB00CCD686 /* guanzhu.swift in Sources */,
 				B9445E2A211C9A210053F2BC /* change_info.swift in Sources */,
+				B95289D62133A55500F6322F /* wode_fabu.swift in Sources */,
 				B924E9CC20ED2EB500A0B338 /* fabu_unit.swift in Sources */,
 				B9445E2C211C9A4C0053F2BC /* info_cell.swift in Sources */,
 				B91A14EF2121F32B00CCD686 /* guanzhu_cell.swift in Sources */,
@@ -420,6 +487,8 @@
 				B9F98AE82110B6D500E4CEDB /* comment_cell.swift in Sources */,
 				B98E223520E6A01C0044BB31 /* background.swift in Sources */,
 				B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */,
+				B95289D82134644D00F6322F /* tableView2.swift in Sources */,
+				B95289DA2138DAFE00F6322F /* qianbao.swift in Sources */,
 				17FC2F991E25940900174015 /* SignInViewController.swift in Sources */,
 				B9C95E66211B860100E6DA06 /* personal_info.swift in Sources */,
 				B91A14F9212A362D00CCD686 /* message_cell.swift in Sources */,
@@ -564,6 +633,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = chancechain;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -578,6 +648,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = chancechain;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -39,11 +39,13 @@ class share: UIViewController {
     var tag = 0
     var share_from = ""
     @IBAction func share(_ sender: Any) {
+        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         
         if share_from != ""
         {
-            let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-            dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: share_from, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            
+            let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: share_from, rangeKey:nil)
+                heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
                 if let error = task.error as? NSError {
                     print("The request failed. Error: \(error)")
                 } else if let resultBook = task.result as? ChanceWithValue {
@@ -59,10 +61,12 @@ class share: UIViewController {
                 }
                 return nil
             })
+            heihei.waitUntilFinished()
         }
         
-        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+       
+        let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil)
+            heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
             if let error = task.error as? NSError {
                 print("The request failed. Error: \(error)")
             } else if let resultBook = task.result as? ChanceWithValue {
@@ -78,6 +82,7 @@ class share: UIViewController {
             }
             return nil
         })
+        heihei.waitUntilFinished()
         
         var counter = 0
         
@@ -108,7 +113,8 @@ class share: UIViewController {
                     // print("counter: \(counter)")
                     temp._id = String(counter)
                     
-                    dynamoDbObjectMapper.load(UserPool.self, hashKey: temp._username, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                    let haha = dynamoDbObjectMapper.load(UserPool.self, hashKey: temp._username, rangeKey:nil)
+                        haha.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
                         if let error = task.error as? NSError {
                             print("The request failed. Error: \(error)")
                         } else if let resultBook = task.result as? UserPool {
@@ -120,8 +126,16 @@ class share: UIViewController {
                         }
                         return nil
                     })
+                    haha.waitUntilFinished()
                     
                     temp._sharedFrom = ["\(self.id)","\(self.username_)","\(self.title_)","\(self.profile_picture_link)"]
+                    temp._fuFeiType = "cc"
+                    temp._fuFei = 0
+                    temp._shouFei = 0
+                    temp._shouFeiType = "cc"
+                    temp._profilePicture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + temp._username! + ".png"
+                    temp._renShu = 0
+                    temp._tag = self.tag as! NSNumber
                     dynamoDbObjectMapper.save(temp, completionHandler: nil)
                     
                     _ = self.navigationController?.popToRootViewController(animated: true)
@@ -156,8 +170,21 @@ class share: UIViewController {
         self.share.backgroundColor = colour
         self.share.tintColor = sign_in_colour
         self.share.layer.cornerRadius = 15
-        let url = URL(string:profile_picture_link)!
-        self.profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+//        let url = URL(string:profile_picture_link)!
+//        self.profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+        
+        //downloadImage(key_: "\(username_).png", destination: self.profile_picture)
+        if let cachedVersion = imageCache.object(forKey: "\(username_).png" as NSString) {
+            self.profile_picture.image = cachedVersion
+        }
+        else{
+            downloadImage(key_: "\(username_).png", destination: self.profile_picture)
+        }
+        
+        
+        
+        
+        
         self.username.text = username_
         self.title_label.text = self.title_
         self.view.backgroundColor = mid

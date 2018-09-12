@@ -15,6 +15,67 @@
 
 
 
+/////////////chat//////////
+task.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+if let error = task.error as? NSError {
+print("The request failed. Error: \(error)")
+} else if let resultBook = task.result as? ChattingList {
+self.p._user1 = resultBook._user1
+self.p._user2 = resultBook._user2
+
+if self.p._chattingText != nil{
+
+if (self.p._chattingText?.count)! < (resultBook._chattingText?.count)!
+{pull_down = 1
+
+
+for a in 0...(resultBook._chattingText?.count)! - 1
+{
+let l = resultBook._chattingText![a]
+if !self.p._chattingText!.contains(l)
+{
+let indexPath = IndexPath(row: a, section: 0)
+self.new_rows.append(indexPath)
+
+if self.p._chattingText != nil
+{self.p._chattingText!.append(l)}
+else
+{self.p._chattingText = [l]}
+if self.p._chattingTime != nil
+{ self.p._chattingTime!.append(resultBook._chattingTime![a])}
+else
+{self.p._chattingTime = [resultBook._chattingTime![a]]}
+if self.p._srList != nil
+{ self.p._srList!.append(resultBook._srList![a])}
+else
+{self.p._srList = [resultBook._srList![a]]}
+
+DispatchQueue.main.async(execute: {
+//                    self.tableView.reloadData()
+self.user_index = 1
+self.tableView.beginUpdates()
+self.tableView.insertRows(at: self.new_rows, with: .automatic)
+self.tableView.endUpdates()
+})
+
+}
+}
+
+
+
+//self.p = resultBook
+
+
+
+
+}}
+}
+return nil
+})
+task.waitUntilFinished()
+
+
+
 //load some posts:
 //********************
 //        let queryExpression = AWSDynamoDBQueryExpression()

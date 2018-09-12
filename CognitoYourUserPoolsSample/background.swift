@@ -18,10 +18,33 @@ import Photos
 import BSImagePicker
 import Foundation
 
+
+
+func set_image_cache(key: String, image: UIImage){
+    imageCache.setObject(image, forKey: key as NSString)
+}
+
+func get_image_cache_image(key: String) -> UIImage{
+    
+    var image = UIImage()
+    
+    
+    if let cachedVersion = imageCache.object(forKey: key as NSString) {
+        
+        return cachedVersion
+    }
+    return image
+}
+
 class MyTapGesture: UITapGestureRecognizer {
     var username = String()
 }
-
+extension String {
+    func deletingPrefix(_ prefix: String) -> String {
+        guard self.hasPrefix(prefix) else { return self }
+        return String(self.dropFirst(prefix.count))
+    }
+}
 
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {

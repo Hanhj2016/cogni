@@ -282,20 +282,37 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             var upcoming: chat = segue.destination as! chat
             upcoming.target = p._userId!
             upcoming.user = user!
-            var url = URL(string:p._profilePic!)!
-            upcoming.target_image = UIImage(data:try! Data(contentsOf: url))!
+            var url = URL(string: "")
+            if p._profilePic != nil{
+                var message = p._profilePic!
+                message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                 url = URL(string:message)!
+                
+                upcoming.target_image = UIImage(data:try! Data(contentsOf: url!))!
+            }
+            else
+            { upcoming.target_image = UIImage(named: "boy")!}
+            
             let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-            dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            
+            let heihei = dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil)
+                heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
                 if let error = task.error as? NSError {
                     print("The request failed. Error: \(error)")
                 } else if let resultBook = task.result as? UserPool {
-                    url = URL(string:resultBook._profilePic!)!
-                    upcoming.user_image = UIImage(data:try! Data(contentsOf: url))!
+                    
+                    var message = resultBook._profilePic!
+                    message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                    url = URL(string:message)!
+                    
+                    upcoming.user_image = UIImage(data:try! Data(contentsOf: url!))!
                     
                 }
                 return nil
             })
-            
+            heihei.waitUntilFinished()
+            if upcoming.user_image != nil
+            {upcoming.user_image = UIImage(named: "girl")!}
         }
         
     }
@@ -304,23 +321,26 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         super.viewDidLoad()
 
         
-        while(p._userId == nil)
-        {
-        }
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
+//        while(p._userId == nil)
+//        {
+//        }
+        //self.refresh()
         self.top_view.backgroundColor = mid
+        self.profile_picture.layer.borderWidth = 1.0
+        self.profile_picture.layer.masksToBounds = false
+        self.profile_picture.layer.borderColor = UIColor.white.cgColor
+        self.profile_picture.layer.cornerRadius = self.profile_picture.frame.size.width / 2
+        self.profile_picture.clipsToBounds = true
         if ((p._profilePic != nil))
         {
-            let url = URL(string: p._profilePic!)
-            let data = try? Data(contentsOf: url!)
-            self.profile_picture.layer.borderWidth = 1.0
-            self.profile_picture.layer.masksToBounds = false
-            self.profile_picture.layer.borderColor = UIColor.white.cgColor
-            //print("width: \(self.profile_picture.frame.size.width)")
-            self.profile_picture.layer.cornerRadius = self.profile_picture.frame.size.width / 2
-            self.profile_picture.clipsToBounds = true
-            self.profile_picture.image = UIImage(data: data!)
+//            let url = URL(string: p._profilePic!)
+//            let data = try? Data(contentsOf: url!)
+//
+//            self.profile_picture.image = UIImage(data: data!)
+            downloadImage(key_: "\(p._userId!).png", destination: self.profile_picture)
         }
+        else
+        {self.profile_picture.image = UIImage(named: "girl")}
         
         self.username.text = p._userId
         self.username.textColor = text_light
@@ -337,7 +357,7 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             self.resume.text = "简介：" + p._resume!}
         else
         {self.resume.isHidden = true}
-        self.reputation.setTitle("声望: \(p._shengWang)", for: .normal)
+        self.reputation.setTitle("声望: \(p._shengWang!)", for: .normal)
         self.reputation.backgroundColor = colour
         self.reputation.layer.cornerRadius = self.reputation.frame.height / 2
         self.reputation.setTitleColor(sign_in_colour, for: .normal)
@@ -541,6 +561,17 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         let temp_time:[Int] = time
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
+        cell.zhanwaifenxiang.isHidden = true
+        
+
+        
+        cell.profile_picture.layer.borderWidth = 1.0
+        cell.profile_picture.layer.masksToBounds = false
+        cell.profile_picture.layer.borderColor = UIColor.white.cgColor
+        cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
+        cell.profile_picture.clipsToBounds = true
+        
+        
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
         cell.like.tag = indexPath.row
         cell.comments.tag = indexPath.row
@@ -604,7 +635,9 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         {cell.title.text = temp._title
             cell.title.font = cell.title.font.withSize(17)
             cell.title.textColor = text_light
-            
+            cell.title.numberOfLines = 0
+            cell.title.lineBreakMode = NSLineBreakMode.byWordWrapping
+            cell.title.sizeToFit()
         }
         
         if ((temp._text) != nil)
@@ -622,22 +655,42 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         }
         
         
-        if (temp._profilePicture != nil){
-            let url = URL(string:temp._profilePicture!)!
-            cell.profile_picture.image = UIImage(data:try! Data(contentsOf: url))}
         cell.images = []
         if (temp._pictures != nil)&&(temp._pictures?.count != 0)
         {
             for i in 0...(temp._pictures?.count)!-1
             {
                 
-                let url = URL(string:temp._pictures![i])!
-                var data:NSData = try! NSData(contentsOf: url)
-                let image = UIImage(data: data as Data)!
-                cell.images.append(image)
+                var message = temp._pictures![i]
+                if let cachedVersion = imageCache.object(forKey: message as NSString) {
+                    cell.images.append(cachedVersion)
+                    //print("1")
+                }
+                else{
+                    message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                    var data:NSData = try! NSData(contentsOf: URL(string:message)!)
+                    let image = UIImage(data: data as Data)!
+                    set_image_cache(key: message, image: image)
+                    // print("2")
+                }
+                
                 
             }
         }
+        if (temp._profilePicture != nil){
+            
+            if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
+                cell.profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
+            }
+        }
+        else
+        {cell.profile_picture.image = UIImage(named: "girl")}
+        
+        
+
         
         
         
@@ -721,16 +774,6 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             else if t == 3
             {cell.tagg.image = UIImage(named: "qita")}
         }
-        if ((temp._profilePicture != nil))
-        {
-            let url = URL(string: temp._profilePicture!)
-            let data = try? Data(contentsOf: url!)
-            cell.profile_picture.layer.borderWidth = 1.0
-            cell.profile_picture.layer.masksToBounds = false
-            cell.profile_picture.layer.borderColor = UIColor.white.cgColor
-            cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
-            cell.profile_picture.clipsToBounds = true
-        }
         
         
         
@@ -750,8 +793,15 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.share_view.isHidden = false
             print("height: \(cell.share_view.frame.height)")
             cell.collectionViewHeight.constant = 130
-            let url = URL(string:temp._sharedFrom![3])!
-            cell.share_profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+//            let url = URL(string:temp._sharedFrom![3])!
+//            cell.share_profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+            if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
+                cell.profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
+            }
+            //downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
             cell.share_title.text = temp._sharedFrom![2]
             cell.share_username.text = temp._sharedFrom![1]
             cell.share_view.backgroundColor = sign_in_colour
@@ -799,13 +849,17 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         {
             id_list.append(Int(a._id!)!)
         }
+       // print(id_list)
         id_list.sort(by: >)
+       // print(id_list)
         var temp_list:[ChanceWithValue] = []
-        
+        //print(id_list)
+        //print(posts)
         for a in 0...posts.count - 1
         {
             for b in posts
             {
+                //print(a)
                 if b._id == String(id_list[a])
                 {
                     temp_list.append(b)
@@ -833,67 +887,52 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         
         //*********************** ALL***********************
-        if (all == true){
+        
+        
             var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
             var queryExpression = AWSDynamoDBScanExpression()
-            dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
-                DispatchQueue.main.async(execute: {
-                    if let paginatedOutput = task{
-                        if (paginatedOutput.items.count < self.posts.count)
-                        {self.posts = []}
-                        for news in paginatedOutput.items {
-                            if !self.posts.contains(news as! ChanceWithValue)
-                            {self.posts.append(news as! ChanceWithValue)}
-                        }
-                    }
-                    if self.posts.count > 0
-                    {self.sort_posts()}
-                })
-            })}
-        else if (self.title == "我的任务")
-        { var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-            var queryExpression = AWSDynamoDBScanExpression()
-            
+        var key_list:[String] = []
             posts = []
-            for a in p._chanceIdList!{
-                dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: a, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
-                    if let error = task.error as? NSError {
-                        print("The request failed. Error: \(error)")
-                    } else if let resultBook = task.result as? ChanceWithValue {
-                        if resultBook._tag == 2
-                        {
-                            self.posts.append(resultBook)
-                        }
-                        
-                    }
-                    return nil
-                })
-            }
-            
-        }
-        else
-        {
-            var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-            var queryExpression = AWSDynamoDBScanExpression()
-            
             var temp_list:[ChanceWithValue] = []
-            for a in p._chanceIdList!{
-                dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: a, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+     
+            var heihei = dynamoDbObjectMapper.load(UserPool.self, hashKey: p._userId, rangeKey:nil)
+            heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                if let error = task.error as? NSError {
+                    print("The request failed. Error: \(error)")
+                } else if let resultBook = task.result as? UserPool {
+                    if resultBook._chanceIdList != nil{
+                        key_list = resultBook._chanceIdList!}
+                    else
+                    {
+                        key_list = []
+                    }
+                   // print("keylist: \(key_list)")
+                }
+                return nil
+            })
+            heihei.waitUntilFinished()
+        //print("892 keylist: \(key_list)")
+        //print(p)
+            for a in key_list{
+                 let haha = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: a, rangeKey:nil)
+                    haha.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
                     if let error = task.error as? NSError {
                         print("The request failed. Error: \(error)")
                     } else if let resultBook = task.result as? ChanceWithValue {
                         
-                        if !self.posts.contains(resultBook as! ChanceWithValue)
-                        {self.posts.append(resultBook as! ChanceWithValue)}
+                        self.posts.append(resultBook as! ChanceWithValue)
                     }
                     return nil
                 })
+                haha.waitUntilFinished()
+               
             }
             
             
-        }
-        
-        
+        //print(posts)
+        //print("number: \(posts.count)")
+        if self.posts.count > 0
+        {self.sort_posts()}
         
         
         self.tableView.reloadData()

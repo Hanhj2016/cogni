@@ -71,17 +71,23 @@ class post_cell: UITableViewCell, UICollectionViewDelegate, UICollectionViewData
         
         var url: URL
         if (temp._profilePicture != nil){
-            url = URL(string:temp._profilePicture!)!
-            self.profile_picture.image = UIImage(data:try! Data(contentsOf: url))}
+//            url = URL(string:temp._profilePicture!)!
+//            self.profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+            downloadImage(key_: "\(temp._username!).png", destination: self.profile_picture)
+            
+        }
+        
         //displaying pictures
         if (temp._pictures != nil)
         {
            images = []
             for i in 0...(temp._pictures?.count)!-1
             {
-                url = URL(string:temp._pictures![i])!
-                var data:NSData = try! NSData(contentsOf: url)
-                images.append(UIImage(data: data as Data)!)
+                var message = temp._pictures![i]
+                message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                var data:NSData = try! NSData(contentsOf: URL(string:message)!)
+                let image = UIImage(data: data as Data)!
+                images.append(image)
             }
             
         }
@@ -179,8 +185,7 @@ class post_cell: UITableViewCell, UICollectionViewDelegate, UICollectionViewData
         }
         if ((temp._profilePicture != nil))
         {
-            let url = URL(string: temp._profilePicture!)
-            let data = try? Data(contentsOf: url!)
+            
             // self.profile_picture.image = UIImage(data: data!)
             self.profile_picture.layer.borderWidth = 1.0
             self.profile_picture.layer.masksToBounds = false

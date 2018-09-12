@@ -67,6 +67,11 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     @IBOutlet weak var share_username: UILabel!
     @IBOutlet weak var share_title: UILabel!
     @IBOutlet weak var table_height: NSLayoutConstraint!
+    @IBOutlet weak var input_height: NSLayoutConstraint!
+    
+    @IBOutlet weak var label1: UILabel!
+    @IBOutlet weak var label2: UILabel!
+    @IBOutlet weak var label3: UILabel!
     
     
     
@@ -80,6 +85,107 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     let scrollViewContentHeight = 1200 as CGFloat
     var images:[UIImage] = []
     var comments:[CommentTable] = []
+    
+    
+    @IBAction func get(_ sender: Any) {
+        
+        var con_count = 0
+        var uncon_count = 0
+        if p._confirmList != nil
+        {con_count = (p._confirmList?.count)!}
+        if p._unConfirmList != nil
+        {uncon_count = (p._unConfirmList?.count)!}
+        if con_count + uncon_count == Int(p._renShu!)
+       {
+        let alertController = UIAlertController(title: "哟",
+                                                message: "人刚好满了",
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion:  nil)
+        return
+        }
+        
+        var expense = 0.0
+        if self.p._shouFei != nil
+        {expense = Double(self.p._shouFei!) }
+        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        var queryExpression = AWSDynamoDBScanExpression()
+        var avail = 0.0
+        var froz = 0.0
+        
+        let haha = dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil)
+        var user_pool:UserPool = UserPool()
+        haha.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? UserPool {
+                avail = resultBook._availableWallet as! Double
+                froz = resultBook._frozenwallet as! Double
+                user_pool = resultBook
+            }
+            return nil
+        })
+        haha.waitUntilFinished()
+        if p._shouFei != nil && p._shouFei != 0{
+            expense = Double(self.p._shouFei!)
+        if avail < expense {
+            let alertController = UIAlertController(title: "无法通过",
+                                                    message: "钱包可用金额不足",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
+        }else
+        {
+            avail = avail - expense
+            froz = froz + expense
+            user_pool._availableWallet = avail as NSNumber
+            user_pool._frozenwallet = froz as NSNumber
+           if user_pool._gottenList == nil
+           {user_pool._gottenList = [p._id!]}
+            else
+           {
+            user_pool._gottenList!.append(p._id!)
+            }
+            dynamoDbObjectMapper.save(user_pool,completionHandler:nil)
+            
+            if p._getList != nil
+            {p._getList!.append(user!)}
+            else
+            {p._getList = [user!]}
+            
+            dynamoDbObjectMapper.save(p,completionHandler:nil)
+            return
+        }
+        }
+        
+        
+    
+        if user_pool._gottenList == nil
+        {user_pool._gottenList = [p._id!]}
+        else
+        {
+            user_pool._gottenList!.append(p._id!)
+        }
+        dynamoDbObjectMapper.save(user_pool,completionHandler:nil)
+        
+        if p._getList != nil
+        {p._getList!.append(user!)}
+        else
+        {p._getList = [user!]}
+        
+        dynamoDbObjectMapper.save(p,completionHandler:nil)
+        
+        
+    }
+    
+    
+    
+    
     
     
     @IBAction func share_detail(_ sender: Any) {
@@ -140,7 +246,12 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             let s = sender as! UIButton
             let temp = p
             if temp._sharedFrom == nil{
-                upcoming.profile_picture_link = temp._profilePicture!
+                if temp._profilePicture != nil{
+                    upcoming.profile_picture_link = temp._profilePicture!}
+                else
+                {
+                    upcoming.profile_picture_link = ""
+                }
                 upcoming.username_ = "@" + temp._username!
                 upcoming.title_ = temp._title!
                 upcoming.id = temp._id!
@@ -207,12 +318,27 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     
     
     @objc func keyboardWillHide(notification: NSNotification) {
-        scrollView.setContentOffset(CGPoint(x:0,y:0), animated: true)
-        
+       
+        self.table_height.constant = 500
+        self.input_height.constant = 10
     }
     
     @objc func keyboardWillAppear(notification: NSNotification) {
-        scrollView.setContentOffset(CGPoint(x:0,y:300), animated: true)
+        
+        
+        
+        let userInfo = notification.userInfo
+        let keyboardframe = (userInfo![UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let difference = self.screenHeight - (self.navigationController?.navigationBar.frame.height)! - self.top_view_height.constant - self.input_view.frame.height -
+            keyboardframe!.height
+        var offset = 0
+        if difference < 200
+        {
+            offset = Int(200 - difference)
+        }
+        self.input_height.constant = keyboardframe!.height
+        print("height: \(self.input_height.constant)")
+        
     }
     
     @IBAction func comment_clicked(_ sender: Any) {
@@ -294,7 +420,8 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         {
             for comment_id in self.p._commentIdList!{
                 let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-                dynamoDbObjectMapper.load(CommentTable.self, hashKey: comment_id, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                let heihei = dynamoDbObjectMapper.load(CommentTable.self, hashKey: comment_id, rangeKey:nil)
+                    heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
                     if let error = task.error as? NSError {
                         print("The request failed. Error: \(error)")
                     } else if let resultBook = task.result as? CommentTable {
@@ -308,6 +435,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                     }
                     return nil
                 })
+                heihei.waitUntilFinished()
             }
         }
         
@@ -369,6 +497,68 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         {
             print("post_detail: wasting time here man")
         }
+        
+        
+        let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
+        let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
+        tap.username = p._username!
+        tap.cancelsTouchesInView = true
+        tap2.username = p._username!
+        tap2.cancelsTouchesInView = true
+        
+        
+        var con_count = 0
+        var uncon_count = 0
+        if p._confirmList != nil
+        {con_count = (p._confirmList?.count)!}
+        if p._unConfirmList != nil
+        {uncon_count = (p._unConfirmList?.count)!}
+        
+      
+        
+        
+        if self.p._sharedFrom != nil || con_count + uncon_count == Int(p._renShu!)
+        {self.get.isHidden = false
+        }
+        else
+        {self.get.isHidden = true}
+        self.profile_picture.isUserInteractionEnabled = true
+        self.profile_picture.addGestureRecognizer(tap)
+        
+        self.username.isUserInteractionEnabled = true
+        self.username.addGestureRecognizer(tap2)
+        
+        self.label1.backgroundColor = colour
+        self.label1.layer.cornerRadius = 5.0
+        self.label1.textColor = sign_in_colour
+        self.label2.textColor = colour
+        self.label3.textColor = colour
+        var in_or_out = ""
+        if Double(p._fuFei!) > 0
+        {
+            in_or_out = "福利"
+            self.label1.text = in_or_out
+            self.label2.text = "\(p._fuFei!) \(p._fuFeiType!)"
+            self.label3.text = "还剩 \(p._renShu!) 人"
+        }
+        else if Double(p._shouFei!) > 0
+        {
+            in_or_out = "服务"
+            self.label1.text = in_or_out
+            self.label2.text = "\(p._shouFei!) \(p._shouFeiType!)"
+            self.label3.text = "还剩 \(p._renShu!) 人"
+        }
+        else
+        {
+            self.label1.isHidden = true
+            self.label2.isHidden = true
+            self.label3.isHidden = true
+        }
+        //self.label1.text =
+        
+        
+        //self.view.addSubview(self.input_view)
+        self.zhanwaifenxiang.isHidden = true
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : colour]
         self.view.addSubview(self.bot_bar)
         self.hideKeyboardWhenTappedAround()
@@ -423,9 +613,10 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         scrollView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        scrollView.bounces = false
+        scrollView.bounces = true
         tableView.bounces = true
         tableView.isScrollEnabled = true
+        scrollView.isScrollEnabled = true
         // Do any additional setup after loading the view.
         
         
@@ -457,31 +648,41 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         
         var url: URL
-        if (p._profilePicture != nil){
-            url = URL(string:p._profilePicture!)!
-            self.profile_picture.image = UIImage(data:try! Data(contentsOf: url))}
-        //displaying pictures
+        
         if (p._pictures != nil)&&(p._pictures?.count != 0)
         {
-            
-            //DispatchQueue.main.async(execute: {
             for i in 0...(p._pictures?.count)!-1
             {
                 
-                let url = URL(string:p._pictures![i])!
-                //  self.urls.append(url)
-                var data:NSData = try! NSData(contentsOf: url)
-                let image = UIImage(data: data as Data)!
-                self.images.append(image)
+                var message = p._pictures![i]
+                if let cachedVersion = imageCache.object(forKey: message as NSString) {
+                    self.images.append(cachedVersion)
+                    //print("1")
+                }
+                else{
+                    message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                    var data:NSData = try! NSData(contentsOf: URL(string:message)!)
+                    let image = UIImage(data: data as Data)!
+                    set_image_cache(key: message, image: image)
+                    // print("2")
+                }
+                
                 
             }
-            
-            
-            
-            
-            
-            //})
         }
+        if (p._profilePicture != nil){
+            
+            if let cachedVersion = imageCache.object(forKey: "\(p._username!).png" as NSString) {
+                self.profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: "\(p._username!).png", destination: self.profile_picture)
+            }
+        }
+        else
+        {self.profile_picture.image = UIImage(named: "girl")}
+        
+    
         
         
         
@@ -576,8 +777,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         }
         if ((p._profilePicture != nil))
         {
-            let url = URL(string: p._profilePicture!)
-            let data = try? Data(contentsOf: url!)
+            
             // self.profile_picture.image = UIImage(data: data!)
             self.profile_picture.layer.borderWidth = 1.0
             self.profile_picture.layer.masksToBounds = false
@@ -609,7 +809,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         
         self.share_number.backgroundColor = mid
-        self.share_number.tintColor = text_mid
+        self.share_number.tintColor = colour
         if self.p._shared != nil
         {self.share_number.setTitle("转发 \(self.p._shared!)", for: .normal)}
         else
@@ -626,6 +826,14 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         {self.comment_number.setTitle("评论 \(comment_number)", for: .normal)}
         else
         {self.comment_number.setTitle("评论 0", for: .normal)}
+        
+        
+        
+        
+        
+        
+        
+        
         
         self.tableView.backgroundColor = mid
         //print("bot: \(self.comments.count)")
@@ -660,6 +868,12 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             self.bot_like.setTitle("点赞", for: .normal)
         }
         }
+        else
+        {
+            self.bot_like.setTitleColor(text_mid, for: .normal)
+            self.bot_like.tintColor = text_mid
+            self.bot_like.setTitle("点赞", for: .normal)
+        }
         
         self.bot_comment.backgroundColor = sign_in_colour
         self.bot_share.backgroundColor = sign_in_colour
@@ -668,14 +882,22 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         if p._sharedFrom == nil //no share
         {
             self.share_view.isHidden = true
+            self.get.isHidden = false
         }
         else
         {
+            self.get.isHidden = true
             self.share_view.isHidden = false
            
             self.collectionViewHeight.constant = 130
-            let url = URL(string:p._sharedFrom![3])!
-            self.share_profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+
+            if let cachedVersion = imageCache.object(forKey: "\(p._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
+                self.share_profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: "\(p._sharedFrom![1]).png".deletingPrefix("@"), destination: self.share_profile_picture)
+            }
+            
             self.share_title.text = p._sharedFrom![2]
             self.share_username.text = p._sharedFrom![1]
             self.share_username.textColor = text_light
@@ -695,12 +917,12 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             {self.comment_clicked(self)}
         })
         
-        //print(" Collect Height: \(collectionViewHeight)")
-        //print("tool bar bot: \(tool_bar.frame.maxY)")
-        self.table_height.constant = screenHeight - 180 - collectionViewHeight.constant - 140
         
-        
-        
+        self.table_height.constant = 500
+        self.input_height.constant = 10
+        self.label1.isHidden = true
+        self.label2.isHidden = true
+        self.label3.isHidden = true
         
     }
     
@@ -758,12 +980,37 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         let cell = tableView.dequeueReusableCell(withIdentifier: "comment_cell", for: indexPath) as! comment_cell
         let index = indexPath.row
         
+        let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
+        let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
+        tap.username = p._username!
+        tap.cancelsTouchesInView = true
+        tap2.username = p._username!
+        tap2.cancelsTouchesInView = true
+        
+        cell.profile_picture.isUserInteractionEnabled = true
+        cell.profile_picture.addGestureRecognizer(tap)
+        
+        cell.username.isUserInteractionEnabled = true
+        cell.username.addGestureRecognizer(tap2)
+        
+        
         if ((comments[index]._userPic != nil))
         {
-            let url = URL(string: comments[index]._userPic!)
-            do{
-            let data = try? Data(contentsOf: url!)}
-            cell.profile_picture.image = UIImage(data:try! Data(contentsOf: url!))
+
+            
+            if (comments[index]._userPic != nil){
+                
+                if let cachedVersion = imageCache.object(forKey: "\(comments[index]._userId!).png" as NSString) {
+                    cell.profile_picture.image = cachedVersion
+                }
+                else{
+                    downloadImage(key_: "\(comments[index]._userId!).png", destination: cell.profile_picture)
+                }
+            }
+            else
+            {cell.profile_picture.image = UIImage(named: "girl")}
+            
+            //downloadImage(key_: "\(comments[index]._userId!).png".deletingPrefix("@"), destination: cell.profile_picture)
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
             cell.profile_picture.layer.borderColor = UIColor.white.cgColor
@@ -875,7 +1122,6 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             
             
         }
-        
         
         cell.backgroundColor = mid
         

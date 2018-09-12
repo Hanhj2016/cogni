@@ -94,8 +94,6 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "info_cell", for: indexPath) as! info_cell
-        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: .UIKeyboardWillShow, object: nil)
         cell.info.delegate = self
         cell.info.returnKeyType = UIReturnKeyType.done
         cell.textLabel?.textColor = text_light
@@ -109,11 +107,9 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
         cell.info.tag = indexPath.row
         if indexPath.row == 0
         {
-            //print("nimei")
-           //cell.profile_picture.isHidden = false
             cell.info.isHidden = true
             if ((p._profilePic != nil))
-            {//print("nimei")
+            {
                 
                 cell.profile_picture.layer.borderWidth = 1.0
                 cell.profile_picture.layer.masksToBounds = false
@@ -122,8 +118,16 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
                 cell.image_height.constant = 50
                 cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
                 cell.profile_picture.clipsToBounds = true
-                cell.profile_picture.image = pic
-                //self.table.addSubview(cell.profile_picture)
+                
+                
+                if let cachedVersion = imageCache.object(forKey: "\(p._userId!).png" as NSString) {
+                    cell.profile_picture.image = cachedVersion
+                }
+                else{
+                    downloadImage(key_: "\(p._userId!).png", destination: cell.profile_picture)
+                }
+                
+                //downloadImage(key_: "\(p._userId!).png", destination: cell.profile_picture)
             }
         }
         else
@@ -163,14 +167,9 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
                 cell.info.text = p._resume
             cell.info_width.constant = 200
                  cell.image_height.constant = (cell.info.text?.height(withConstrainedWidth: 200, font: cell.info.font!))! + 20
-              //  print(cell.image_height.constant)
             }
             
             
-            
-           
-            
-           // cell.info_height.constant = cell.image_height.constant + 10
             
 
             
@@ -198,11 +197,8 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
         {
         }
         self.hideKeyboardWhenTappedAround()
-        if p._profilePic != nil{
-        let url = URL(string: p._profilePic!)
-            let data = try? Data(contentsOf: url!)
-            pic = UIImage(data:data!)!
-        }
+
+        self.table.isScrollEnabled = false
         
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "确认", style: .plain, target: self, action: #selector(confirm))

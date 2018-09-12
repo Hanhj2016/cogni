@@ -82,22 +82,35 @@ class UserDetailTableViewController : UITableViewController {
         return temp
     }
     
+    @IBOutlet weak var notification: UILabel!
     
-    @IBOutlet weak var notification: UIImageView!
+   
     
     @objc func reload_notification(){
         let username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
-        
-        let temp_chat = load_UserChat(key: username!)
-        if temp_chat._totalUnread != nil || temp_chat._totalUnread != 0
+        //print("91")
+        DispatchQueue.main.async(execute: {
+            let temp_chat = self.load_UserChat(key: username!)
+            //print(temp_chat)
+        if temp_chat._totalUnread != nil && temp_chat._totalUnread != 0
         {
-            notification.isHidden = true
+            
+            
+            
+            self.notification.isHidden = false
+            self.notification.backgroundColor = UIColor.red
+            self.notification.layer.cornerRadius = self.notification.frame.height/2
+            self.notification.layer.borderWidth = 1.0
+            self.notification.layer.masksToBounds = false
+            self.notification.layer.borderColor = UIColor.red.cgColor
+            self.notification.clipsToBounds = true
+            self.notification.textColor = text_light
+            //print("in")
         }
         else
-        {
-            notification.isHidden = false
-            notification.backgroundColor = UIColor.red
-        }
+        {//print("out")
+            self.notification.isHidden = true
+            }})
     }
     
     
@@ -321,15 +334,25 @@ class UserDetailTableViewController : UITableViewController {
         
         
         let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
+        let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
         tap.username = temp._username!
         tap.cancelsTouchesInView = true
+        tap2.username = temp._username!
+        tap2.cancelsTouchesInView = true
+        cell.profile_picture.layer.borderWidth = 1.0
+        cell.profile_picture.layer.masksToBounds = false
+        cell.profile_picture.layer.borderColor = UIColor.white.cgColor
+        cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
+        cell.profile_picture.clipsToBounds = true
+        
         cell.profile_picture.isUserInteractionEnabled = true
        cell.profile_picture.addGestureRecognizer(tap)
         
         cell.username.isUserInteractionEnabled = true
-        cell.username.addGestureRecognizer(tap)
+        cell.username.addGestureRecognizer(tap2)
         
-        //self.view.addSubview(cell.profile_picture)
+        
+    
         
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
@@ -396,6 +419,9 @@ class UserDetailTableViewController : UITableViewController {
         {cell.title.text = temp._title
             cell.title.font = cell.title.font.withSize(17)
             cell.title.textColor = text_light
+            cell.title.numberOfLines = 0
+            cell.title.lineBreakMode = NSLineBreakMode.byWordWrapping
+            cell.title.sizeToFit()
             
         }
     
@@ -414,22 +440,44 @@ class UserDetailTableViewController : UITableViewController {
         }
         
         
-        if (temp._profilePicture != nil){
-            let url = URL(string:temp._profilePicture!)!
-            cell.profile_picture.image = UIImage(data:try! Data(contentsOf: url))}
+        
         cell.images = []
         if (temp._pictures != nil)&&(temp._pictures?.count != 0)
         {
             for i in 0...(temp._pictures?.count)!-1
             {
                 
-                let url = URL(string:temp._pictures![i])!
-                var data:NSData = try! NSData(contentsOf: url)
-                let image = UIImage(data: data as Data)!
-                cell.images.append(image)
+                var message = temp._pictures![i]
+                if let cachedVersion = imageCache.object(forKey: message as NSString) {
+                    cell.images.append(cachedVersion)
+                    //print("1")
+                }
+                else{
+                    message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                                var data:NSData = try! NSData(contentsOf: URL(string:message)!)
+                                    let image = UIImage(data: data as Data)!
+                    set_image_cache(key: message, image: image)
+                   // print("2")
+                }
+                
                 
             }
         }
+        if (temp._profilePicture != nil){
+            
+            if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
+                cell.profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
+            }
+        }
+        else
+        {cell.profile_picture.image = UIImage(named: "girl")}
+        
+        
+        
+        
         
         
         
@@ -513,16 +561,10 @@ class UserDetailTableViewController : UITableViewController {
             else if t == 3
             {cell.tagg.image = UIImage(named: "qita")}
         }
-        if ((temp._profilePicture != nil))
-        {
-            let url = URL(string: temp._profilePicture!)
-            let data = try? Data(contentsOf: url!)
-            cell.profile_picture.layer.borderWidth = 1.0
-            cell.profile_picture.layer.masksToBounds = false
-            cell.profile_picture.layer.borderColor = UIColor.white.cgColor
-            cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
-            cell.profile_picture.clipsToBounds = true
-        }
+        
+        
+        
+        
         
         
         
@@ -536,14 +578,21 @@ class UserDetailTableViewController : UITableViewController {
         if temp._sharedFrom == nil //no share
         {
             cell.share_view.isHidden = true
+            cell.share_profile_picture.isHidden = true
             }
         else
         {
             cell.share_view.isHidden = false
-            print("height: \(cell.share_view.frame.height)")
+            cell.share_profile_picture.isHidden = false
+            //print("height: \(cell.share_view.frame.height)")
             cell.collectionViewHeight.constant = 130
-            let url = URL(string:temp._sharedFrom![3])!
-            cell.share_profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+            if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
+                cell.profile_picture.image = cachedVersion
+            }
+            else{
+                downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
+            }
+            //downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
             cell.share_title.text = temp._sharedFrom![2]
             cell.share_username.text = temp._sharedFrom![1]
             cell.share_view.backgroundColor = sign_in_colour
@@ -658,11 +707,10 @@ class UserDetailTableViewController : UITableViewController {
             heihei.continueWith(block: { (task:AWSTask<AWSDynamoDBPaginatedOutput>!) -> Any? in
                 DispatchQueue.main.async(execute: {
                     if let paginatedOutput = task.result{
-                        if (paginatedOutput.items.count < self.posts.count)
-                        {self.posts = []}
+                        
+                        self.posts = []
                         for news in paginatedOutput.items {
-                            if !self.posts.contains(news as! ChanceWithValue)
-                            {self.posts.append(news as! ChanceWithValue)}
+                            self.posts.append(news as! ChanceWithValue)
                         }
                     }
                     if self.posts.count > 0
@@ -685,9 +733,8 @@ class UserDetailTableViewController : UITableViewController {
                 if let error = task.error as? NSError {
                     print("The request failed. Error: \(error)")
                 } else if let resultBook = task.result as? ChanceWithValue {
-                    
-                    if !self.posts.contains(resultBook as! ChanceWithValue)
-                    {self.posts.append(resultBook as! ChanceWithValue)}
+                    self.posts = []
+                    self.posts.append(resultBook as! ChanceWithValue)
                 }
                 return nil
             })

@@ -94,7 +94,7 @@ class setting: UIViewController,UITableViewDelegate,UITableViewDataSource {
         super.viewDidLoad()
         
         
-        
+        self.tableView.isScrollEnabled = false
         self.pool = AWSCognitoIdentityUserPool(forKey: AWSCognitoUserPoolsSignInProviderKey)
         if (self.user == nil) {
             self.user = self.pool?.currentUser()

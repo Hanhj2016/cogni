@@ -11,8 +11,10 @@ import Photos
 import BSImagePicker
 class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate, UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate {
     var photos:[UIImage] = []
-      var SelectedAssets = [PHAsset]()
+    var SelectedAssets = [PHAsset]()
     let imagePicker = UIImagePickerController()
+    
+    
     let comments_init = Set<String>()
     
    
@@ -45,7 +47,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         //self.navigationController?.setToolbarHidden(true, animated: true)
         self.navigationController?.pushViewController(previewVC, animated: true)
     }
-    var tag_ = 0
+    var tag_ = 4
     var type = ""
     @IBOutlet weak var title_input: UITextField!
     
@@ -126,19 +128,34 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
                 self.view.frame.origin.y = offset
                 
             }
+            else if x == self.renshu
+            {
+                let y = self.renshu.frame.maxY
+                //print("maxy: \(y)")
+                let offset = self.view.frame.height - y - keyboardHeight
+                self.view.frame.origin.y = offset
+            }
             //self.view.frame.origin.y = 0 - keyboardHeight
         }
     }
-//
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        if textField == self.reward_number
-//        {
-//
-//        }
-//    }
+
+    
+    
+    
+    
+    @IBOutlet weak var renshu: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        self.renshu.delegate = self
+        self.renshu.add_placeholder(text: "人数", color: colour)
+        self.renshu.backgroundColor = mid
+        self.renshu.setBottomBorder()
+        self.renshu.textColor = colour
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         self.hideKeyboardWhenTappedAround()
@@ -180,7 +197,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         
         let padding = UIView(frame: CGRect(x:0, y:0, width:87, height:self.reward_number.frame.height))
         let paddingView = UILabel(frame: CGRect(x:0, y:0, width:150, height:self.reward_number.frame.height))
-        paddingView.text = "  交易金额："
+        paddingView.text = "  奖励："
         self.reward_number.backgroundColor = colour
         self.reward_number.textColor = sign_in_colour
         self.reward_number.leftView = paddingView
@@ -191,7 +208,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         
         let padding2 = UIView(frame: CGRect(x:0, y:0, width:87, height:self.reward_number.frame.height))
         let paddingView2 = UILabel(frame: CGRect(x:0, y:0, width:150, height:self.reward_number.frame.height))
-        paddingView2.text = "  追加奖励："
+        paddingView2.text = "  价格："
         self.bonus_number.backgroundColor = colour
         self.bonus_number.textColor = sign_in_colour
         self.bonus_number.leftView = paddingView2
@@ -214,7 +231,11 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
        self.button.setTitle("cc", for: .normal)
         //self.view.addSubview(button)
         self.button.dropView.dropDownOptions = ["cc","btc", "Green"]//, "Magenta", "White", "Black", "Pink"]
-      
+      //print("dude")
+       // print(self.button.dropView.tableView.delegate)
+        
+        //self.view.addSubview(self.renshu)
+        
         
         self.confirm.backgroundColor = colour
         self.confirm.setTitleColor(sign_in_colour, for:.normal)
@@ -251,9 +272,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         
         //navigation bar
         self.title = "发布"
-        self.navigationController?.navigationBar.tintColor = colour
-        self.navigationController?.navigationBar.barTintColor = sign_in_colour
-        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName:colour] as [NSAttributedStringKey : Any]
+      
     }
     
     
@@ -310,6 +329,106 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
        // _ = self.navigationController?.popToRootViewController(animated: true)
         var counter = 0
         
+        guard let current_title = self.title_input.text, !current_title.isEmpty else {
+            let alertController = UIAlertController(title: "信息不足",
+                                                    message: "请输入标题",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
+        }
+        
+        guard let current_content = self.content.text, !current_content.isEmpty else {
+            let alertController = UIAlertController(title: "信息不足",
+                                                    message: "请输入内容",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
+        }
+        
+        if self.tag_ == 4 {
+            let alertController = UIAlertController(title: "信息不足",
+                                                    message: "请选择标签",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
+        }
+        
+        if self.reward_number.text != nil && self.reward_number.text != "" && self.reward_number.text != "0" && self.bonus_number.text != nil && self.bonus_number.text != "" && self.bonus_number.text != "0" {
+            let alertController = UIAlertController(title: "乱啦",
+                                                    message: "一个发布不能同时作为收费和付费机会出现，请只输入其中至多一个数字",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
+        }
+        
+        if self.renshu.text == "" || self.renshu.text == nil {
+            let alertController = UIAlertController(title: "信息不足",
+                                                    message: "请输入人数",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
+        }
+        var expense = 0.0
+        if self.reward_number.text != nil
+        {expense = Double(self.reward_number.text!)! * Double(self.renshu.text!)!}
+        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        var queryExpression = AWSDynamoDBScanExpression()
+        var avail = 0.0
+        var froz = 0.0
+        let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+       let haha = dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil)
+        var p:UserPool = UserPool()
+        haha.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? UserPool {
+                avail = resultBook._availableWallet as! Double
+                froz = resultBook._frozenwallet as! Double
+                p = resultBook
+            }
+            return nil
+        })
+        haha.waitUntilFinished()
+        
+       // print("avail: \(avail)")
+        //print("expense: \(expense)")
+        if avail < expense {
+            let alertController = UIAlertController(title: "无法通过",
+                                                    message: "钱包可用金额不足",
+                                                    preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            self.present(alertController, animated: true, completion:  nil)
+            return
+        }else if self.reward_number.text != nil && Double(self.reward_number.text!) != 0
+        {
+            avail = avail - expense
+            froz = froz + expense
+            p._availableWallet = avail as NSNumber
+            p._frozenwallet = froz as NSNumber
+            dynamoDbObjectMapper.save(p,completionHandler:nil)
+        }
+        
+        
+        
+        
+        
         var temp:ChanceWithValue = ChanceWithValue()
         let date = Date()
         let calendar = Calendar.current
@@ -319,33 +438,30 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         let hour = calendar.component(.hour, from: date) // 3
         let minute = calendar.component(.minute, from: date) // 4
         let second = calendar.component(.second, from: date) // 5
-        let temp_time1 = Int(year * 10000000000 + month * 100000000 + day * 1000000)
-        let temp_time2 = Int(hour * 10000 + minute * 100 + second)
+        let temp_time1 = UInt64(year * 10000000000 + month * 100000000 + day * 1000000)
+        let temp_time2 = UInt64(hour * 10000 + minute * 100 + second)
         temp._time = (temp_time1 + temp_time2) as NSNumber
-        temp._rewardType = self.button.titleLabel?.text
-        temp._bonusType = self.button2.titleLabel?.text
+        temp._fuFeiType = self.button.titleLabel?.text
+        temp._shouFeiType = self.button2.titleLabel?.text
         temp._tag = tag_ as NSNumber
-        temp._username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
-       // temp._comments = comments_init
-        //seems that sets in aws database cannot be set to empty array
-        // will just give value when first one comments
-        //temp._shared = 0
-        //temp._liked = []
+        temp._username = user
+       
         temp._title = self.title_input.text
         temp._text = self.content.text
-        temp._bonus = Int(self.bonus_number.text!) as! NSNumber
-        temp._reward = Int(self.bonus_number.text!) as! NSNumber
+        if self.bonus_number.text != nil && self.bonus_number.text != ""
+        {temp._shouFei = Double(self.bonus_number.text!) as! NSNumber}
+        else
+        {temp._shouFei = 0}
+        if self.reward_number.text != nil && self.reward_number.text != ""
+        {temp._fuFei = Double(self.reward_number.text!) as! NSNumber}
+        else
+        {temp._fuFei = 0}
         var dude = ""//pictureid in the database
         //profile
         temp._profilePicture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + temp._username! + ".png"
+        temp._renShu = Int(self.renshu.text!) as! NSNumber
         
         
-        if (bonus_number.text != nil)
-        {temp._bonus = Int(bonus_number.text!) as! NSNumber}
-        if (reward_number.text != nil)
-        {temp._reward = Int(reward_number.text!) as! NSNumber}
-        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        var queryExpression = AWSDynamoDBScanExpression()
         dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in
             DispatchQueue.main.async(execute: {
                 if let paginatedOutput = task{
@@ -405,157 +521,3 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         // Dispose of any resources that can be recreated.
     }
 }
-
-protocol dropDownProtocol {
-    func dropDownPressed(string : String)
-}
-
-class dropDownBtn: UIButton, dropDownProtocol {
-    
-    func dropDownPressed(string: String) {
-        self.setTitle(string, for: .normal)
-        self.dismissDropDown()
-    }
-    
-    var dropView = dropDownView()
-    
-    var height = NSLayoutConstraint()
-    
-    override func removeFromSuperview() {
-        
-    }
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.backgroundColor = UIColor.darkGray
-        
-        dropView = dropDownView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
-        dropView.delegate = self
-        dropView.translatesAutoresizingMaskIntoConstraints = false
-    }
-    override func didMoveToSuperview() {
-        self.superview?.addSubview(dropView)
-        self.superview?.bringSubview(toFront: dropView)
-        dropView.topAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        dropView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        dropView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        height = dropView.heightAnchor.constraint(equalToConstant: 0)
-    }
-    
-    var isOpen = false
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if isOpen == false {
-            
-            isOpen = true
-            
-            NSLayoutConstraint.deactivate([self.height])
-            
-            if self.dropView.tableView.contentSize.height > 150 {
-                self.height.constant = 150
-            } else {
-                self.height.constant = self.dropView.tableView.contentSize.height
-            }
-            
-            
-            NSLayoutConstraint.activate([self.height])
-            
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-                self.dropView.layoutIfNeeded()
-                self.dropView.center.y += self.dropView.frame.height / 2
-            }, completion: nil)
-            
-        } else {
-            isOpen = false
-            
-            NSLayoutConstraint.deactivate([self.height])
-            self.height.constant = 0
-            NSLayoutConstraint.activate([self.height])
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-                self.dropView.center.y -= self.dropView.frame.height / 2
-                self.dropView.layoutIfNeeded()
-            }, completion: nil)
-            
-        }
-    }
-    
-    func dismissDropDown() {
-        isOpen = false
-        NSLayoutConstraint.deactivate([self.height])
-        self.height.constant = 0
-        NSLayoutConstraint.activate([self.height])
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-            self.dropView.center.y -= self.dropView.frame.height / 2
-            self.dropView.layoutIfNeeded()
-        }, completion: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.backgroundColor = UIColor.darkGray
-        
-        dropView = dropDownView.init(frame: CGRect.init(x: 0, y: 0, width: 0, height: 0))
-        dropView.delegate = self
-        dropView.translatesAutoresizingMaskIntoConstraints = false
-    }
-}
-
-class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
-    
-    var dropDownOptions = [String]()
-    
-    var tableView = UITableView()
-    
-    var delegate : dropDownProtocol!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        tableView.backgroundColor = colour
-        self.backgroundColor = colour
-        
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.addSubview(tableView)
-        
-        tableView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        tableView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dropDownOptions.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        
-        cell.textLabel?.text = dropDownOptions[indexPath.row]
-        cell.textLabel?.textColor = sign_in_colour
-        cell.backgroundColor = colour
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate.dropDownPressed(string: dropDownOptions[indexPath.row])
-        self.tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-}
-
-
-
-
