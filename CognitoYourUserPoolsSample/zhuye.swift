@@ -64,6 +64,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = light
 //self.button3.layer.cornerRadius = 3.0
         self.button2.layer.cornerRadius = 5.0
@@ -932,21 +933,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             }
             
             
-            
-//            cell.images = []
-//            if (temp._pictures != nil)&&(temp._pictures?.count != 0)
-//            {
-//                for i in 0...(temp._pictures?.count)!-1
-//                {
-//
-//                    var message = temp._pictures![i]
-//                    message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-//                    var data:NSData = try! NSData(contentsOf: URL(string:message)!)
-//                    let image = UIImage(data: data as Data)!
-//                    cell.images.append(image)
-//
-//                }
-//            }
+
             cell.images = []
             if (temp._pictures != nil)&&(temp._pictures?.count != 0)
             {
@@ -1197,6 +1184,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var temp_list:[ChanceWithValue] = []
         if p._gottenList != nil{
             post_key_list = p._gottenList!}
+        print("list: \(post_key_list)")
         for a in post_key_list{
             let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: a, rangeKey:nil)
             heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
@@ -1230,7 +1218,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             heihei.waitUntilFinished()
         }
         
-        
+        //print("done at 1235")
         
         self.tableView2.reloadData()
         self.tableView1.reloadData()

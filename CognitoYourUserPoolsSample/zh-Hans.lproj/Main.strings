@@ -1,0 +1,561 @@
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "02U-xD-5EK"; */
+"02U-xD-5EK.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "0Lv-UR-lOC"; */
+"0Lv-UR-lOC.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "发送"; ObjectID = "0V8-Hu-tgw"; */
+"0V8-Hu-tgw.normalTitle" = "发送";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "0pi-ih-rBT"; */
+"0pi-ih-rBT.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "0w9-h2-wNM"; */
+"0w9-h2-wNM.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "1BH-d8-0KR"; */
+"1BH-d8-0KR.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "1IK-7X-jbH"; */
+"1IK-7X-jbH.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "转发"; ObjectID = "1Rh-vl-wbY"; */
+"1Rh-vl-wbY.normalTitle" = "转发";
+
+/* Class = "UIViewController"; title = "修改密码"; ObjectID = "1Z9-ek-DYA"; */
+"1Z9-ek-DYA.title" = "修改密码";
+
+/* Class = "UILabel"; text = "转发机会"; ObjectID = "21H-ce-tHX"; */
+"21H-ce-tHX.text" = "转发机会";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "267-IX-YIf"; */
+"267-IX-YIf.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "完成注册"; ObjectID = "2AX-rN-0c4"; */
+"2AX-rN-0c4.normalTitle" = "完成注册";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "2DK-FB-6qT"; */
+"2DK-FB-6qT.text" = "Label";
+
+/* Class = "UILabel"; text = "1"; ObjectID = "2XT-WJ-cnK"; */
+"2XT-WJ-cnK.text" = "1";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "2dK-b6-Yk3"; */
+"2dK-b6-Yk3.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "38h-AW-2Jk"; */
+"38h-AW-2Jk.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "3jX-w7-Vus"; */
+"3jX-w7-Vus.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "取消编辑"; ObjectID = "3qs-Fc-IfG"; */
+"3qs-Fc-IfG.normalTitle" = "取消编辑";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "3yQ-mq-Tb7"; */
+"3yQ-mq-Tb7.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "退出"; ObjectID = "4Pd-t3-Iot"; */
+"4Pd-t3-Iot.normalTitle" = "退出";
+
+/* Class = "UIButton"; normalTitle = " 转发"; ObjectID = "4hp-Vv-efP"; */
+"4hp-Vv-efP.normalTitle" = " 转发";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "4uZ-bE-NVM"; */
+"4uZ-bE-NVM.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "4wr-yN-R3h"; */
+"4wr-yN-R3h.text" = "Label";
+
+/* Class = "UIViewController"; title = "确认您的账号"; ObjectID = "52d-g9-hr2"; */
+"52d-g9-hr2.title" = "确认您的账号";
+
+/* Class = "UILabel"; text = "OK"; ObjectID = "56V-BY-89T"; */
+"56V-BY-89T.text" = "OK";
+
+/* Class = "UIButton"; normalTitle = " 点赞"; ObjectID = "5Wr-Cs-b3O"; */
+"5Wr-Cs-b3O.normalTitle" = " 点赞";
+
+/* Class = "UITextField"; placeholder = "Confirmation Code"; ObjectID = "5ip-nQ-ff9"; */
+"5ip-nQ-ff9.placeholder" = "Confirmation Code";
+
+/* Class = "UITextField"; placeholder = "Username"; ObjectID = "6BZ-sc-Lc1"; */
+"6BZ-sc-Lc1.placeholder" = "Username";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "6DN-ta-axg"; */
+"6DN-ta-axg.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "6ZR-z3-AjL"; */
+"6ZR-z3-AjL.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "6aJ-LG-frb"; */
+"6aJ-LG-frb.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "6oY-Y5-8Nr"; */
+"6oY-Y5-8Nr.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "6yR-cp-krm"; */
+"6yR-cp-krm.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "72F-WC-nfk"; */
+"72F-WC-nfk.normalTitle" = "Button";
+
+/* Class = "UIViewController"; title = "我的信息"; ObjectID = "7SJ-VI-thp"; */
+"7SJ-VI-thp.title" = "我的信息";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "7ZZ-eH-pAU"; */
+"7ZZ-eH-pAU.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "7rw-kQ-Pa6"; */
+"7rw-kQ-Pa6.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "7xH-lu-wGK"; */
+"7xH-lu-wGK.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "9EK-2e-97e"; */
+"9EK-2e-97e.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "9KL-d1-YzH"; */
+"9KL-d1-YzH.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "A8o-ka-9IZ"; */
+"A8o-ka-9IZ.text" = "Label";
+
+/* Class = "UILabel"; text = "图片发送中..."; ObjectID = "AOW-rv-PKa"; */
+"AOW-rv-PKa.text" = "图片发送中...";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ARO-gi-NIg"; */
+"ARO-gi-NIg.text" = "Label";
+
+/* Class = "UIViewController"; title = "我的消息"; ObjectID = "AW7-Vo-qU1"; */
+"AW7-Vo-qU1.title" = "我的消息";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "AeR-Mz-1Zm"; */
+"AeR-Mz-1Zm.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "AoR-WR-Xic"; */
+"AoR-WR-Xic.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Ax3-Bp-o8m"; */
+"Ax3-Bp-o8m.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Be7-W6-nPw"; */
+"Be7-W6-nPw.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "BhL-nb-AZy"; */
+"BhL-nb-AZy.text" = "Label";
+
+/* Class = "UIViewController"; title = "忘记密码"; ObjectID = "BkF-2Z-FaF"; */
+"BkF-2Z-FaF.title" = "忘记密码";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "BoX-HD-HTB"; */
+"BoX-HD-HTB.text" = "Label";
+
+/* Class = "UILabel"; text = "我的任务"; ObjectID = "CDv-zO-0Y5"; */
+"CDv-zO-0Y5.text" = "我的任务";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "CF9-l9-Fgc"; */
+"CF9-l9-Fgc.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "CRE-8q-hJ9"; */
+"CRE-8q-hJ9.text" = "Label";
+
+/* Class = "UIViewController"; title = "转发"; ObjectID = "DCv-5d-BDE"; */
+"DCv-5d-BDE.title" = "转发";
+
+/* Class = "UINavigationItem"; title = "发布"; ObjectID = "DN8-YC-cej"; */
+"DN8-YC-cej.title" = "发布";
+
+/* Class = "UIButton"; normalTitle = "登录"; ObjectID = "DzC-gK-L3y"; */
+"DzC-gK-L3y.normalTitle" = "登录";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "E0S-fp-JGp"; */
+"E0S-fp-JGp.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "E9b-ev-H2G"; */
+"E9b-ev-H2G.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Eez-cA-3uA"; */
+"Eez-cA-3uA.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "F0A-UZ-Z19"; */
+"F0A-UZ-Z19.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "New Password"; ObjectID = "FgX-KG-zLK"; */
+"FgX-KG-zLK.placeholder" = "New Password";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Fvw-p8-grt"; */
+"Fvw-p8-grt.text" = "Label";
+
+/* Class = "UILabel"; text = "我的钱包"; ObjectID = "HUF-v9-gdI"; */
+"HUF-v9-gdI.text" = "我的钱包";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "HZ8-cU-lyi"; */
+"HZ8-cU-lyi.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = " 评论"; ObjectID = "HqI-lF-cem"; */
+"HqI-lF-cem.normalTitle" = " 评论";
+
+/* Class = "UILabel"; text = "输入以下信息完成注册"; ObjectID = "J7T-hc-6pf"; */
+"J7T-hc-6pf.text" = "输入以下信息完成注册";
+
+/* Class = "UIButton"; normalTitle = "Get"; ObjectID = "JOO-Ie-NS1"; */
+"JOO-Ie-NS1.normalTitle" = "Get";
+
+/* Class = "UITextField"; placeholder = "再次输入"; ObjectID = "Jmu-QH-pd3"; */
+"Jmu-QH-pd3.placeholder" = "再次输入";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "KFe-gQ-lmY"; */
+"KFe-gQ-lmY.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Ksw-aq-juT"; */
+"Ksw-aq-juT.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "完成注册"; ObjectID = "L92-OD-AWi"; */
+"L92-OD-AWi.normalTitle" = "完成注册";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "LJk-6e-ClE"; */
+"LJk-6e-ClE.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "LL3-p8-Sqz"; */
+"LL3-p8-Sqz.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Lf9-1F-Dx5"; */
+"Lf9-1F-Dx5.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Loy-zy-qtc"; */
+"Loy-zy-qtc.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "发布"; ObjectID = "M2e-UB-nvR"; */
+"M2e-UB-nvR.normalTitle" = "发布";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "MvR-xr-RUF"; */
+"MvR-xr-RUF.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "NCo-TQ-slj"; */
+"NCo-TQ-slj.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "NX6-AI-3nP"; */
+"NX6-AI-3nP.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Nd3-lu-XqE"; */
+"Nd3-lu-XqE.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "取消"; ObjectID = "Ngq-Uq-Fyv"; */
+"Ngq-Uq-Fyv.normalTitle" = "取消";
+
+/* Class = "UIButton"; normalTitle = "忘记密码？"; ObjectID = "O01-Qr-hlK"; */
+"O01-Qr-hlK.normalTitle" = "忘记密码？";
+
+/* Class = "UIViewController"; title = "注册"; ObjectID = "O2Z-Ld-ZTv"; */
+"O2Z-Ld-ZTv.title" = "注册";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Or5-t8-Hak"; */
+"Or5-t8-Hak.text" = "Label";
+
+/* Class = "UIViewController"; title = "我的关注"; ObjectID = "Ow3-bz-HwZ"; */
+"Ow3-bz-HwZ.title" = "我的关注";
+
+/* Class = "UITextField"; placeholder = "用户名"; ObjectID = "Ozv-Iw-42u"; */
+"Ozv-Iw-42u.placeholder" = "用户名";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "PdC-D9-bdh"; */
+"PdC-D9-bdh.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "PhM-Y5-97v"; */
+"PhM-Y5-97v.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Q8h-29-9st"; */
+"Q8h-29-9st.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "REV-r1-6SG"; */
+"REV-r1-6SG.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "RVj-Xp-TFm"; */
+"RVj-Xp-TFm.text" = "Label";
+
+/* Class = "UILabel"; text = "我的机会"; ObjectID = "SAp-BC-mMb"; */
+"SAp-BC-mMb.text" = "我的机会";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "T2A-VA-hpe"; */
+"T2A-VA-hpe.text" = "Label";
+
+/* Class = "UILabel"; text = "输入您的用户名和我们向您提供的验证码以完成注册"; ObjectID = "T2D-hl-97M"; */
+"T2D-hl-97M.text" = "输入您的用户名和我们向您提供的验证码以完成注册";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "T7g-9m-kBU"; */
+"T7g-9m-kBU.text" = "Label";
+
+/* Class = "UILabel"; text = "我的发布"; ObjectID = "UL1-Sb-Syg"; */
+"UL1-Sb-Syg.text" = "我的发布";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "UpC-Cf-5gD"; */
+"UpC-Cf-5gD.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Vbc-2z-TRJ"; */
+"Vbc-2z-TRJ.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "重新发送验证码"; ObjectID = "Vcr-l8-gne"; */
+"Vcr-l8-gne.normalTitle" = "重新发送验证码";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Vft-CN-NaU"; */
+"Vft-CN-NaU.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Vo2-Vy-n7r"; */
+"Vo2-Vy-n7r.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "W1B-Vw-fev"; */
+"W1B-Vw-fev.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "WjP-AZ-f9K"; */
+"WjP-AZ-f9K.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Wum-df-2JW"; */
+"Wum-df-2JW.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "WvS-An-D2L"; */
+"WvS-An-D2L.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "邮箱"; ObjectID = "WyZ-BE-297"; */
+"WyZ-BE-297.placeholder" = "邮箱";
+
+/* Class = "UIViewController"; title = "个人信息"; ObjectID = "XaP-ay-RSu"; */
+"XaP-ay-RSu.title" = "个人信息";
+
+/* Class = "UITextField"; placeholder = "用户名"; ObjectID = "XdH-zS-hci"; */
+"XdH-zS-hci.placeholder" = "用户名";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "XoN-ww-DoB"; */
+"XoN-ww-DoB.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "YLT-ha-oto"; */
+"YLT-ha-oto.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ZGY-U0-HKW"; */
+"ZGY-U0-HKW.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Zf9-0G-YGj"; */
+"Zf9-0G-YGj.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "把握机会快去注册>"; ObjectID = "aXe-qm-Syq"; */
+"aXe-qm-Syq.normalTitle" = "把握机会快去注册>";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "asd-Vy-ehk"; */
+"asd-Vy-ehk.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "c2A-QP-YLY"; */
+"c2A-QP-YLY.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "c4Y-EK-XtL"; */
+"c4Y-EK-XtL.text" = "Label";
+
+/* Class = "UIViewController"; title = "我的钱包"; ObjectID = "cq6-e8-Z9A"; */
+"cq6-e8-Z9A.title" = "我的钱包";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "cvh-wA-Cyu"; */
+"cvh-wA-Cyu.text" = "Label";
+
+/* Class = "UILabel"; text = "恭喜！"; ObjectID = "d9x-VW-cyw"; */
+"d9x-VW-cyw.text" = "恭喜！";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dY2-2O-5bU"; */
+"dY2-2O-5bU.text" = "Label";
+
+/* Class = "UILabel"; text = "我的关注"; ObjectID = "dco-9M-rw5"; */
+"dco-9M-rw5.text" = "我的关注";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "dlA-7h-Z4P"; */
+"dlA-7h-Z4P.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dsK-ze-1DM"; */
+"dsK-ze-1DM.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "eVB-Px-QEG"; */
+"eVB-Px-QEG.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "eWA-ig-gGD"; */
+"eWA-ig-gGD.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ef3-Ik-pqA"; */
+"ef3-Ik-pqA.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "发送"; ObjectID = "elf-0s-6Nl"; */
+"elf-0s-6Nl.normalTitle" = "发送";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "eoZ-oB-HDO"; */
+"eoZ-oB-HDO.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ey2-oy-bMb"; */
+"ey2-oy-bMb.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fbZ-Y8-aTR"; */
+"fbZ-Y8-aTR.text" = "Label";
+
+/* Class = "UILabel"; text = "设置"; ObjectID = "fjI-On-kuJ"; */
+"fjI-On-kuJ.text" = "设置";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fsr-uK-gd8"; */
+"fsr-uK-gd8.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fzX-cO-nyo"; */
+"fzX-cO-nyo.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "g8g-cu-jui"; */
+"g8g-cu-jui.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "gbf-Mg-Gcv"; */
+"gbf-Mg-Gcv.normalTitle" = "Button";
+
+/* Class = "UIViewController"; title = "私信列表"; ObjectID = "gf6-XT-DAJ"; */
+"gf6-XT-DAJ.title" = "私信列表";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "hKn-Me-F1Y"; */
+"hKn-Me-F1Y.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "hmU-Qg-fyn"; */
+"hmU-Qg-fyn.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "hzP-JV-U8F"; */
+"hzP-JV-U8F.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "iL2-wk-URi"; */
+"iL2-wk-URi.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "iXu-E3-BRu"; */
+"iXu-E3-BRu.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "jLq-la-bN4"; */
+"jLq-la-bN4.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "jM8-cZ-fQx"; */
+"jM8-cZ-fQx.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "确定"; ObjectID = "jfj-m7-W5X"; */
+"jfj-m7-W5X.normalTitle" = "确定";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "jpH-Jd-euP"; */
+"jpH-Jd-euP.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "密码"; ObjectID = "jtg-5s-y9B"; */
+"jtg-5s-y9B.placeholder" = "密码";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "k9o-Me-uPn"; */
+"k9o-Me-uPn.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ko7-rG-b2C"; */
+"ko7-rG-b2C.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "kp7-hp-jyP"; */
+"kp7-hp-jyP.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "lNz-sU-ICs"; */
+"lNz-sU-ICs.normalTitle" = "Button";
+
+/* Class = "UIViewController"; title = "设置"; ObjectID = "lYq-46-djn"; */
+"lYq-46-djn.title" = "设置";
+
+/* Class = "UILabel"; text = "获得了该机会！"; ObjectID = "meQ-8o-RRV"; */
+"meQ-8o-RRV.text" = "获得了该机会！";
+
+/* Class = "UILabel"; text = "选择标签"; ObjectID = "n1M-7I-Oqf"; */
+"n1M-7I-Oqf.text" = "选择标签";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "nvw-vw-l10"; */
+"nvw-vw-l10.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "oKx-68-LPh"; */
+"oKx-68-LPh.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "oVX-w1-555"; */
+"oVX-w1-555.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ofd-Oi-4cW"; */
+"ofd-Oi-4cW.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "oj9-Y1-HzG"; */
+"oj9-Y1-HzG.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "pBA-BM-JFx"; */
+"pBA-BM-JFx.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "pol-Q5-prx"; */
+"pol-Q5-prx.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "Username"; ObjectID = "qBV-Yn-oTi"; */
+"qBV-Yn-oTi.placeholder" = "Username";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "rCR-z2-cPQ"; */
+"rCR-z2-cPQ.text" = "Detail";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "rXb-18-tyF"; */
+"rXb-18-tyF.text" = "Title";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "rjX-gt-y2V"; */
+"rjX-gt-y2V.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "rk0-jO-4nC"; */
+"rk0-jO-4nC.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "Confirmation Code"; ObjectID = "s02-hv-Uoj"; */
+"s02-hv-Uoj.placeholder" = "Confirmation Code";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "s6a-GQ-EbS"; */
+"s6a-GQ-EbS.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "sJt-n9-eAj"; */
+"sJt-n9-eAj.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "sUg-e4-uqL"; */
+"sUg-e4-uqL.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "sqy-Zx-KkF"; */
+"sqy-Zx-KkF.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "stE-Cb-yLT"; */
+"stE-Cb-yLT.text" = "Label";
+
+/* Class = "UILabel"; text = "我的消息"; ObjectID = "suK-AT-Gyq"; */
+"suK-AT-Gyq.text" = "我的消息";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "toQ-Vq-GTz"; */
+"toQ-Vq-GTz.text" = "Label";
+
+/* Class = "UILabel"; text = "我的机会>"; ObjectID = "u67-56-Uzt"; */
+"u67-56-Uzt.text" = "我的机会>";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "uYl-Xm-YgH"; */
+"uYl-Xm-YgH.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "uaq-a2-nR5"; */
+"uaq-a2-nR5.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "upF-UN-0On"; */
+"upF-UN-0On.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "vAc-JL-Qc2"; */
+"vAc-JL-Qc2.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "密码"; ObjectID = "vlW-ds-11L"; */
+"vlW-ds-11L.placeholder" = "密码";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "wst-0E-9xU"; */
+"wst-0E-9xU.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "x05-Yc-UNW"; */
+"x05-Yc-UNW.text" = "Label";
+
+/* Class = "UILabel"; text = "个人信息"; ObjectID = "xfo-7s-0t7"; */
+"xfo-7s-0t7.text" = "个人信息";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "xrJ-Cy-pEb"; */
+"xrJ-Cy-pEb.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "区域码加电话号码：比如+155555555"; ObjectID = "yJN-sh-wk7"; */
+"yJN-sh-wk7.placeholder" = "区域码加电话号码：比如+155555555";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "yq5-OV-ONG"; */
+"yq5-OV-ONG.text" = "Label";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "z9J-ek-bIl"; */
+"z9J-ek-bIl.title" = "Item";

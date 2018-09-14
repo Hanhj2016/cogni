@@ -154,7 +154,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.renshu.backgroundColor = mid
         self.renshu.setBottomBorder()
         self.renshu.textColor = colour
-        
+        self.renshu.isHidden = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
@@ -197,7 +197,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         
         let padding = UIView(frame: CGRect(x:0, y:0, width:87, height:self.reward_number.frame.height))
         let paddingView = UILabel(frame: CGRect(x:0, y:0, width:150, height:self.reward_number.frame.height))
-        paddingView.text = "  奖励："
+        paddingView.text = "  ："
         self.reward_number.backgroundColor = colour
         self.reward_number.textColor = sign_in_colour
         self.reward_number.leftView = paddingView
@@ -208,7 +208,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         
         let padding2 = UIView(frame: CGRect(x:0, y:0, width:87, height:self.reward_number.frame.height))
         let paddingView2 = UILabel(frame: CGRect(x:0, y:0, width:150, height:self.reward_number.frame.height))
-        paddingView2.text = "  价格："
+        paddingView2.text = "     人数："
         self.bonus_number.backgroundColor = colour
         self.bonus_number.textColor = sign_in_colour
         self.bonus_number.leftView = paddingView2
@@ -220,9 +220,9 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.button2.layer.cornerRadius = 5.0
         self.button2.backgroundColor = colour
         self.button2.tintColor = sign_in_colour
-        self.button2.setTitle("cc", for: .normal)
+        self.button2.setTitle("机会收费", for: .normal)
         //self.view.addSubview(button2)
-        self.button2.dropView.dropDownOptions = ["cc","btc", "eth"]//, "Magenta", "White", "Black", "Pink"]
+        self.button2.dropView.dropDownOptions = ["机会收费","机会奖励"]//, "Magenta", "White", "Black", "Pink"]
         //self.button2.isHidden = true
     
         self.button.layer.cornerRadius = 5.0
@@ -230,7 +230,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.button.tintColor = sign_in_colour
        self.button.setTitle("cc", for: .normal)
         //self.view.addSubview(button)
-        self.button.dropView.dropDownOptions = ["cc","btc", "Green"]//, "Magenta", "White", "Black", "Pink"]
+        self.button.dropView.dropDownOptions = ["cc","btc", "Candy"]//, "Magenta", "White", "Black", "Pink"]
       //print("dude")
        // print(self.button.dropView.tableView.delegate)
         
@@ -362,18 +362,18 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
             return
         }
         
-        if self.reward_number.text != nil && self.reward_number.text != "" && self.reward_number.text != "0" && self.bonus_number.text != nil && self.bonus_number.text != "" && self.bonus_number.text != "0" {
-            let alertController = UIAlertController(title: "乱啦",
-                                                    message: "一个发布不能同时作为收费和付费机会出现，请只输入其中至多一个数字",
+        if self.reward_number.text == nil || self.reward_number.text == "" {
+            let alertController = UIAlertController(title: "信息不足",
+                                                    message: "请输入金额",
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
-            
+
             self.present(alertController, animated: true, completion:  nil)
             return
         }
         
-        if self.renshu.text == "" || self.renshu.text == nil {
+        if self.bonus_number.text == "" || self.bonus_number.text == nil {
             let alertController = UIAlertController(title: "信息不足",
                                                     message: "请输入人数",
                                                     preferredStyle: .alert)
@@ -385,12 +385,16 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         }
         var expense = 0.0
         if self.reward_number.text != nil
-        {expense = Double(self.reward_number.text!)! * Double(self.renshu.text!)!}
+        {expense = Double(self.reward_number.text!)! * Double(self.bonus_number.text!)!}
+        
         var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         var queryExpression = AWSDynamoDBScanExpression()
+        let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        
+        if button2.title(for: .normal) == "机会奖励"{
         var avail = 0.0
         var froz = 0.0
-        let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        
        let haha = dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil)
         var p:UserPool = UserPool()
         haha.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
@@ -405,8 +409,6 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         })
         haha.waitUntilFinished()
         
-       // print("avail: \(avail)")
-        //print("expense: \(expense)")
         if avail < expense {
             let alertController = UIAlertController(title: "无法通过",
                                                     message: "钱包可用金额不足",
@@ -425,7 +427,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
             dynamoDbObjectMapper.save(p,completionHandler:nil)
         }
         
-        
+        }
         
         
         
@@ -441,25 +443,35 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         let temp_time1 = UInt64(year * 10000000000 + month * 100000000 + day * 1000000)
         let temp_time2 = UInt64(hour * 10000 + minute * 100 + second)
         temp._time = (temp_time1 + temp_time2) as NSNumber
-        temp._fuFeiType = self.button.titleLabel?.text
-        temp._shouFeiType = self.button2.titleLabel?.text
+if button2.title(for: .normal) == "机会奖励"{
+    temp._fuFeiType = self.button.titleLabel?.text
+    temp._fuFei = Double(self.reward_number.text!) as! NSNumber
+    
+}else{
+    temp._shouFeiType = self.button2.titleLabel?.text
+    temp._shouFei = Double(self.reward_number.text!) as! NSNumber
+        }
         temp._tag = tag_ as NSNumber
         temp._username = user
        
         temp._title = self.title_input.text
         temp._text = self.content.text
-        if self.bonus_number.text != nil && self.bonus_number.text != ""
-        {temp._shouFei = Double(self.bonus_number.text!) as! NSNumber}
-        else
-        {temp._shouFei = 0}
-        if self.reward_number.text != nil && self.reward_number.text != ""
-        {temp._fuFei = Double(self.reward_number.text!) as! NSNumber}
-        else
-        {temp._fuFei = 0}
+        
+//        if self.bonus_number.text != nil && self.bonus_number.text != ""
+//        {temp._shouFei = Double(self.bonus_number.text!) as! NSNumber}
+//        else
+//        {temp._shouFei = 0}
+//
+//        if self.reward_number.text != nil && self.reward_number.text != ""
+//        {temp._fuFei = Double(self.reward_number.text!) as! NSNumber}
+//        else
+//        {temp._fuFei = 0}
+//
+        
         var dude = ""//pictureid in the database
         //profile
         temp._profilePicture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + temp._username! + ".png"
-        temp._renShu = Int(self.renshu.text!) as! NSNumber
+        temp._renShu = Int(self.bonus_number.text!) as! NSNumber
         
         
         dynamoDbObjectMapper.scan(ChanceWithValue.self, expression: queryExpression, completionHandler:{(task:AWSDynamoDBPaginatedOutput?, error: Error?) -> Void in

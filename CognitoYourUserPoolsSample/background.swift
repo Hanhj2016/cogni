@@ -18,7 +18,11 @@ import Photos
 import BSImagePicker
 import Foundation
 
-
+func waitfor(time: Double){
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + time) {
+        
+    }
+}
 
 func set_image_cache(key: String, image: UIImage){
     imageCache.setObject(image, forKey: key as NSString)

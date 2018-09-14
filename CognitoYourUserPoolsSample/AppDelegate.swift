@@ -73,6 +73,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pool.delegate = self
         
         
+        
+
+        
+        
+        
+        
+        
         //************** TIME ******************//
         let date = Date()
         let calendar = Calendar.current

@@ -19,7 +19,8 @@ import BSImagePicker
 import Foundation
 
 class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate {
-    
+    var dude = ""
+    var head:UIImage = UIImage()
     let table_titles:[String] = ["更换头像","昵称","机会号","钱包地址","姓名","性别","职业","简介"]
     var pic:UIImage = UIImage()
     var p:UserPool = UserPool()
@@ -183,6 +184,7 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
     @objc func confirm(){
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         dynamoDbObjectMapper.save(p,completionHandler: nil)
+        
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -239,11 +241,14 @@ public func imagePickerController(_ picker: UIImagePickerController, didFinishPi
     if "public.image" == info[UIImagePickerControllerMediaType] as? String {
         //print("in")
         let image: UIImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        let dude = String(p._userId!) + ".png"
-        print(dude)
-        uploadImage(with: UIImagePNGRepresentation(image)!, bucket: pictures, key: dude)
+        dude = String(p._userId!) + ".png"
+        head = image
+        set_image_cache(key: dude, image: head)
+        uploadImage(with: UIImagePNGRepresentation(head)!, bucket: pictures, key: dude)
+        
+        self.table.reloadRows(at: [[0,1] as IndexPath], with: .automatic)
+        
         pic = image
-        //self.download(key_: "download.png")
     }
     
     table.reloadData()

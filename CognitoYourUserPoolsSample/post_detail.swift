@@ -17,11 +17,16 @@ import AWSS3
 import Photos
 import BSImagePicker
 import Foundation
-
+import PCLBlurEffectAlert
 class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource {
     
+    @IBOutlet weak var alertview: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    
+    
+    @IBOutlet weak var ok: UILabel!
+    @IBOutlet weak var wodejihui: UILabel!
     @IBOutlet weak var top_view: UIView!
     @IBOutlet weak var tableView: UITableView!
     
@@ -124,12 +129,21 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                 avail = resultBook._availableWallet as! Double
                 froz = resultBook._frozenwallet as! Double
                 user_pool = resultBook
+                //print("bs \(avail)")
+                //print("this bs comes again")
             }
             return nil
         })
         haha.waitUntilFinished()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            
+        }
+        
+        
         if p._shouFei != nil && p._shouFei != 0{
             expense = Double(self.p._shouFei!)
+            //print("133 \(avail)")
+            //print("134 \(expense)")
         if avail < expense {
             let alertController = UIAlertController(title: "无法通过",
                                                     message: "钱包可用金额不足",
@@ -159,6 +173,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             {p._getList = [user!]}
             
             dynamoDbObjectMapper.save(p,completionHandler:nil)
+            self.alertview.isHidden = false
             return
         }
         }
@@ -179,6 +194,14 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         {p._getList = [user!]}
         
         dynamoDbObjectMapper.save(p,completionHandler:nil)
+        
+        
+        
+        
+        
+       
+        //print("heihei")
+        self.alertview.isHidden = false
         
         
     }
@@ -386,12 +409,30 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             if  contain{
                 self.bot_like.setTitleColor(colour, for: .normal)
                 self.bot_like.tintColor = colour
-                self.bot_like.setTitle("取消", for: .normal)
+                let number = Int(self.bot_like.title(for: .normal)!)
+                if number == 1{
+                    self.bot_like.setTitle("", for: .normal)
+                }else
+                {
+                    self.bot_like.setTitle(String(number! - 1), for: .normal)
+                }
+                //self.bot_like.setTitle("取消", for: .normal)
             }
             else{
                 self.bot_like.setTitleColor(text_mid, for: .normal)
                 self.bot_like.tintColor = text_mid
-                self.bot_like.setTitle("点赞", for: .normal)
+                
+                if self.bot_like.title(for: .normal) == ""
+                {
+                    self.bot_like.setTitle("1", for: .normal)
+                }
+                else{
+                let number = Int(self.bot_like.title(for: .normal)!)
+                
+                    self.bot_like.setTitle(String(number! + 1), for: .normal)
+                
+                }
+                
             }
             
             })
@@ -490,6 +531,66 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     }
     
     
+    @objc func wodejihui_(sender : MyTapGesture){
+        let title_name = "我的机会"
+        
+        //performSegue(withIdentifier: "zhuye", sender: self)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "zhuye") as! zhuye
+        
+        var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        var queryExpression = AWSDynamoDBScanExpression()
+        
+           let lala = dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil)
+            lala.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+                if let error = task.error as? NSError {
+                    print("The request failed. Error: \(error)")
+                } else if let resultBook = task.result as? UserPool{
+                     new_chat.p = resultBook
+                }
+                return nil
+            })
+        
+        lala.waitUntilFinished()
+        
+        
+        
+       
+        new_chat.title = "我的机会"
+        self.navigationController?.pushViewController(new_chat, animated: true)
+        
+    }
+    
+    @objc func cancel_alert(sender : MyTapGesture){
+        //print("im in dude")
+        self.alertview.isHidden = true
+        self.get.isHidden = true
+        var ren = 0
+        var ge = 0
+        var conf = 0
+        var unconf = 0
+        if p._renShu != nil && p._renShu != 0
+        {
+            ren = p._renShu as! Int
+        }
+        if p._getList != nil
+        {
+            ge = (p._getList?.count)!
+        }
+        if p._confirmList != nil
+        {
+            conf = (p._confirmList?.count)!
+        }
+        if p._unConfirmList != nil
+        {
+            unconf = (p._unConfirmList?.count)!
+        }
+        
+        let left = ren - ge - conf - unconf
+        self.like_number.setTitle("还剩 \(left) 人", for: .normal)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -499,6 +600,11 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         }
         
         
+        
+        
+        
+        
+        self.alertview.isHidden = true
         let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
         let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
         tap.username = p._username!
@@ -506,6 +612,16 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         tap2.username = p._username!
         tap2.cancelsTouchesInView = true
         
+        
+        let tap3:MyTapGesture = MyTapGesture(target: self, action: #selector(cancel_alert))
+        //tap3.cancelsTouchesInView = true
+        self.ok.isUserInteractionEnabled = true
+        self.ok.addGestureRecognizer(tap3)
+        
+        
+        let tap4:MyTapGesture = MyTapGesture(target: self, action: #selector(wodejihui_))
+        self.wodejihui.isUserInteractionEnabled = true
+        self.wodejihui.addGestureRecognizer(tap4)
         
         var con_count = 0
         var uncon_count = 0
@@ -515,7 +631,28 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         {uncon_count = (p._unConfirmList?.count)!}
         
       
+        var ren = 0
+        var ge = 0
+        var conf = 0
+        var unconf = 0
+        if p._renShu != nil && p._renShu != 0
+        {
+            ren = p._renShu as! Int
+        }
+        if p._getList != nil
+        {
+            ge = (p._getList?.count)!
+        }
+        if p._confirmList != nil
+        {
+            conf = (p._confirmList?.count)!
+        }
+        if p._unConfirmList != nil
+        {
+            unconf = (p._unConfirmList?.count)!
+        }
         
+        let left = ren - ge - conf - unconf
         
         if self.p._sharedFrom != nil || con_count + uncon_count == Int(p._renShu!)
         {self.get.isHidden = false
@@ -539,14 +676,14 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             in_or_out = "福利"
             self.label1.text = in_or_out
             self.label2.text = "\(p._fuFei!) \(p._fuFeiType!)"
-            self.label3.text = "还剩 \(p._renShu!) 人"
+            self.label3.text = "还剩 \(left) 人"
         }
         else if Double(p._shouFei!) > 0
         {
             in_or_out = "服务"
             self.label1.text = in_or_out
             self.label2.text = "\(p._shouFei!) \(p._shouFeiType!)"
-            self.label3.text = "还剩 \(p._renShu!) 人"
+            self.label3.text = "还剩 \(left) 人"
         }
         else
         {
@@ -801,7 +938,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         self.tool_bar.backgroundColor = mid
         self.like_number.backgroundColor = mid
-        self.like_number.tintColor = text_mid
+        self.like_number.tintColor = colour
         if self.p._liked != nil
         {self.like_number.setTitle("赞 \((self.p._liked?.count)!)", for: .normal)}
         else
@@ -821,7 +958,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             comment_number = (p._commentIdList?.count)!
         }
         self.comment_number.backgroundColor = mid
-        self.comment_number.tintColor = text_mid
+        self.comment_number.tintColor = colour
         if self.p._commentIdList != nil
         {self.comment_number.setTitle("评论 \(comment_number)", for: .normal)}
         else
@@ -829,7 +966,26 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         
         
-        
+        if Double(p._fuFei!) > 0
+        {
+            in_or_out = "付费"
+            self.share_number.setTitle(in_or_out, for: .normal)
+            self.comment_number.setTitle("\(p._fuFei!) \(p._fuFeiType!)", for: .normal)
+            self.like_number.setTitle("还剩 \(left) 人", for: .normal)
+        }
+        else if Double(p._shouFei!) > 0
+        {
+            in_or_out = "收费"
+            self.share_number.setTitle(in_or_out, for: .normal)
+            self.comment_number.setTitle("\(p._shouFei!) \(p._shouFeiType!)", for: .normal)
+            self.like_number.setTitle("还剩 \(left) 人", for: .normal)
+        }
+        else
+        {
+            self.share_number.isHidden = true
+            self.like_number.isHidden = true
+            self.comment_number.isHidden = true
+        }
         
         
         
@@ -859,21 +1015,41 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         {
             self.bot_like.setTitleColor(colour, for: .normal)
             self.bot_like.tintColor = colour
-            self.bot_like.setTitle("取消", for: .normal)
+            //self.bot_like.setTitle("取消", for: .normal)
+            
         }
         else
         {
             self.bot_like.setTitleColor(text_mid, for: .normal)
             self.bot_like.tintColor = text_mid
-            self.bot_like.setTitle("点赞", for: .normal)
+           // self.bot_like.setTitle("点赞", for: .normal)
         }
         }
         else
         {
             self.bot_like.setTitleColor(text_mid, for: .normal)
             self.bot_like.tintColor = text_mid
-            self.bot_like.setTitle("点赞", for: .normal)
+            //self.bot_like.setTitle("点赞", for: .normal)
         }
+        if self.p._liked?.count != nil && self.p._liked?.count != 0{
+            self.bot_like.setTitle("\((self.p._liked?.count)!)", for: .normal)}
+        else{
+            self.bot_like.setTitle("", for: .normal)
+        }
+        
+        if self.p._commentIdList?.count != nil && self.p._commentIdList?.count != 0{
+            self.bot_comment.setTitle("\((self.p._commentIdList?.count)!)", for: .normal)}
+        else{
+            self.bot_comment.setTitle("", for: .normal)
+        }
+        if self.p._shared != nil && self.p._shared != 0{
+            self.bot_share.setTitle("\((self.p._shared)!)", for: .normal)}
+        else{
+            self.bot_share.setTitle("", for: .normal)
+        }
+        
+        
+        
         
         self.bot_comment.backgroundColor = sign_in_colour
         self.bot_share.backgroundColor = sign_in_colour
@@ -982,9 +1158,10 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
         let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
-        tap.username = p._username!
+        let dest = comments[index]._userId!
+        tap.username = dest
         tap.cancelsTouchesInView = true
-        tap2.username = p._username!
+        tap2.username = dest
         tap2.cancelsTouchesInView = true
         
         cell.profile_picture.isUserInteractionEnabled = true
@@ -1017,6 +1194,8 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
             cell.profile_picture.clipsToBounds = true
             //print("438")
+        }else{
+            cell.profile_picture.image = UIImage(named:"boy")
         }
         
         

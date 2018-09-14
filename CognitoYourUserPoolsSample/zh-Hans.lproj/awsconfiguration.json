@@ -1,0 +1,66 @@
+{
+    "UserAgent": "MobileHub/1.0",
+    "Version": "1.0",
+    "CredentialsProvider": {
+        "CognitoIdentity": {
+            "Default": {
+                "PoolId": "us-east-1:8ea6ccf7-195c-4c3f-a228-dce153794dbd",
+                "Region": "us-east-1"
+            }
+        }
+    },
+    "IdentityManager": {
+        "Default": {}
+    },
+    "CognitoUserPool": {
+        "Default": {
+            "PoolId": "us-east-1_OyEPKqrHG",
+            "AppClientId": "1topa7t6d5nspmikm8tpbdp7bt",
+            "AppClientSecret": "18ijf5nnejosukdfgu2u0208ko63opah0c804ef88thq89pusq58",
+            "Region": "us-east-1"
+        }
+    },
+    "S3TransferUtility": {
+        "Default": {
+            "Bucket": "chance-userfiles-mobilehub-653619147",
+            "Region": "us-east-1"
+        }
+    },
+    "DynamoDBObjectMapper": {
+        "Default": {
+            "Region": "us-east-1"
+        }
+    },
+    "ContentManager": {
+        "Default": {
+            "Bucket": "chance-hosting-mobilehub-653619147",
+            "Region": "us-east-1",
+            "CloudFrontURL": "https://d3dl4dsq1o1pol.cloudfront.net"
+        }
+    },
+    "PinpointAnalytics": {
+        "Default": {
+            "AppId": "8e2e670c75fb4227a69badf5bfa76c64",
+            "Region": "us-east-1"
+        }
+    },
+    "PinpointTargeting": {
+        "Default": {
+            "Region": "us-east-1"
+        }
+    },
+    "UserFileManager": {
+        "Default": {
+            "Bucket": "chance-userfiles-mobilehub-653619147",
+            "Region": "us-east-1"
+        }
+    },
+    "GoogleSignIn": {
+        "ClientId-WebApp": "chancechain-208715",
+        "Permissions": "email,profile,openid"
+    },
+    "FacebookSignIn": {
+        "AppId": "1007699982736676",
+        "Permissions": "public_profile"
+    }
+}

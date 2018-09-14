@@ -144,6 +144,27 @@ class UserDetailTableViewController : UITableViewController {
         } else {
             tableView.addSubview(refresher)
         }
+        
+        
+        let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        //print(user)
+        let haha = dynamoDbObjectMapper.load(UserPool.self, hashKey: user, rangeKey:nil)
+        var user_pool:UserPool = UserPool()
+        haha.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? UserPool {
+                user_pool = resultBook
+            }
+            return nil
+        })
+        haha.waitUntilFinished()
+        waitfor(time: 0.3)
+        if user_pool._userId == nil
+        {
+            self.signOut()
+        }
+        
         self.refresh()
         
         myTimer = Timer(timeInterval: 1.0, target: self, selector: "reload_notification", userInfo: nil, repeats: true)
@@ -357,6 +378,7 @@ class UserDetailTableViewController : UITableViewController {
         cell.frame = tableView.bounds
         cell.layoutIfNeeded()
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
+        //print(user)
         cell.like.tag = indexPath.row
         cell.comments.tag = indexPath.row
         cell.share.tag = indexPath.row
