@@ -200,7 +200,7 @@ class share: UIViewController {
         
         self.input.textColor = text_mid
         self.input.backgroundColor = mid
-        self.input.placeholder = "说说分享心得..."
+        self.input.placeholder = "说说分享心得...".toLocal()
         self.tt.textColor = colour
         //self.navigationController?.navigationBar.tintColor = colour
         //UINavigationBar.appearance().tintColor = colour

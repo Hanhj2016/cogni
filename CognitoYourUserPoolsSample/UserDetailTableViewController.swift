@@ -186,7 +186,7 @@ class UserDetailTableViewController : UITableViewController {
         self.navigationController?.toolbar.barTintColor = sign_in_colour
         if(posts.count == 0)
         {refresh()}
-        self.navigationController?.setToolbarHidden(false, animated: true)
+        //self.navigationController?.setToolbarHidden(false, animated: true)
     }
     
     // MARK: - Table view data source
@@ -383,10 +383,14 @@ class UserDetailTableViewController : UITableViewController {
         cell.comments.tag = indexPath.row
         cell.share.tag = indexPath.row
         cell.share_detail.tag = indexPath.row
-        cell.image_collection.backgroundColor = light
+        cell.image_collection.backgroundColor = mid
+        
         let origImage = UIImage(named: "dianzan")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         cell.like.setImage(tintedImage, for: .normal)
+        //cell.like.imageView?.contentMode = .scaleAspectFit
+        
+       // cell.like.imageEdgeInsets = UIEdgeInsetsMake(10,20,10,20);
         if temp._liked != nil{
         let like_number = (temp._liked?.count)!
         let clicked = (temp._liked?.contains(user!))
@@ -472,7 +476,6 @@ class UserDetailTableViewController : UITableViewController {
                 var message = temp._pictures![i]
                 if let cachedVersion = imageCache.object(forKey: message as NSString) {
                     cell.images.append(cachedVersion)
-                    //print("1")
                 }
                 else{
                     message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -526,41 +529,56 @@ class UserDetailTableViewController : UITableViewController {
                     if hour == time[3]
                     {
                         if Minute == time[4]
-                        {output = "\(time[5]-second) 秒前"}
+                        {output = "\(time[5]-second) " + "秒前".toLocal()}
                         else if time[4] - Minute == 1
                         {
-                            if (time[5]+60-second <= 60)
-                            {output = "\(time[5]+60-second) 秒前"}
+                            if (time[5]+60-second < 60)
+                            {output = "\(time[5]+60-second) " + "秒前".toLocal()}
                             else
-                            {output = "1分钟前"}
+                            {output = "1" + "分钟前".toLocal()}
                             
                         }
                         else
-                        {output = "\(time[4]-Minute) 分钟前"}
+                        {output = "\(time[4]-Minute) " + "分钟前".toLocal()}
                     }
                     else if time[3] - hour == 1
                     {
-                        if time[4]+60-Minute <= 60
-                        {output = "\(time[4]+60-Minute) 分钟前"}
+                        if time[4]+60-Minute < 60
+                        {output = "\(time[4]+60-Minute) " + "分钟前".toLocal()}
                         else
-                        {output = "\(hour):\(Minute)"}
+                        {
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}}
                     }
                     else
                     {
-                        output = "\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
                     }
                 }
                 else if time[2] == (day + 1)
                 {
-                    output = "昨天\(hour):\(Minute)"
+                    if Minute < 10{
+                        output = "\(hour):0\(Minute)"
+                    }else{
+                        output = "\(hour):\(Minute)"}
+                    output = "昨天".toLocal() + output
                 }
                 else if time[2] == day + 2
                 {
-                    output = "前天\(hour):\(Minute)"
+                    if Minute < 10{
+                        output = "\(hour):0\(Minute)"
+                    }else{
+                        output = "\(hour):\(Minute)"}
+                    output = "昨天".toLocal() + output
                 }
                 else
                 {
-                    output = "\(month)月\(day)日"
+                    output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                 }
             }
             else
@@ -609,7 +627,7 @@ class UserDetailTableViewController : UITableViewController {
             //print("height: \(cell.share_view.frame.height)")
             cell.collectionViewHeight.constant = 130
             if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                cell.profile_picture.image = cachedVersion
+                cell.share_profile_picture.image = cachedVersion
             }
             else{
                 downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)

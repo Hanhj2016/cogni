@@ -39,7 +39,7 @@ class ForgotPasswordViewController: UIViewController,UITextFieldDelegate {
     }
     override func viewWillAppear(_ animated: Bool) {
         self.username.textColor = colour
-       self.username.add_placeholder(text: "用户名", color: colour)
+       self.username.add_placeholder(text: "用户名".toLocal(), color: colour)
         self.username.setBottomBorder()
         
         
@@ -62,8 +62,8 @@ class ForgotPasswordViewController: UIViewController,UITextFieldDelegate {
     @IBAction func forgotPassword(_ sender: AnyObject) {
         guard let username = self.username.text, !username.isEmpty else {
 
-            let alertController = UIAlertController(title: "用户名错误",
-                                                    message: "用户名不存在",
+            let alertController = UIAlertController(title: "用户名错误".toLocal(),
+                                                    message: "用户名不存在".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)

@@ -55,8 +55,8 @@ class ConfirmSignUpViewController : UIViewController,UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.username.add_placeholder(text: "用户名", color: colour)
-        self.code.add_placeholder(text: "验证码", color: colour)
+        self.username.add_placeholder(text: "用户名".toLocal(), color: colour)
+        self.code.add_placeholder(text: "验证码".toLocal(), color: colour)
         
         
         self.username.textColor = colour
@@ -78,8 +78,8 @@ class ConfirmSignUpViewController : UIViewController,UITextFieldDelegate {
     // handle confirm sign up
     @IBAction func confirm(_ sender: AnyObject) {
         guard let confirmationCodeValue = self.code.text, !confirmationCodeValue.isEmpty else {
-            let alertController = UIAlertController(title: "嘿嘿嘿",
-                                                    message: "验证码不对啊",
+            let alertController = UIAlertController(title: "嘿嘿嘿".toLocal(),
+                                                    message: "验证码不对啊".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -148,8 +148,8 @@ class ConfirmSignUpViewController : UIViewController,UITextFieldDelegate {
                     
                     self?.present(alertController, animated: true, completion:  nil)
                 } else if let result = task.result {
-                    let alertController = UIAlertController(title: "验证码已发送",
-                                                            message: "已发送至 \(result.codeDeliveryDetails?.destination! ?? " no message")",
+                    let alertController = UIAlertController(title: "验证码已发送".toLocal(),
+                                                            message: "已发送至".toLocal() + " \(result.codeDeliveryDetails?.destination! ?? " no message")",
                         preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
                     alertController.addAction(okAction)

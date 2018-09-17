@@ -26,7 +26,7 @@ class qianbao: UIViewController {
 self.view.backgroundColor = mid
         qianbao1.layer.cornerRadius = 5.0
         self.title1.textColor = qianbao_colour
-        self.title1.text = "糖果币 CC"
+        self.title1.text = "糖果币".toLocal() +  "CC"
         self.title1.font = self.title1.font.withSize(17)
         
         self.number1.font = self.number1.font.withSize(30)
@@ -34,11 +34,11 @@ self.view.backgroundColor = mid
         self.number1.textColor = qianbao_colour
         
         self.frozen_label.font = self.frozen_label.font.withSize(17)
-        self.frozen_label.text = "冻结：  " + String(frozen)
+        self.frozen_label.text = "冻结".toLocal() + "：  " + String(frozen)
         self.frozen_label.textColor = qianbao_colour
         
         self.avail_label.font = self.avail_label.font.withSize(17)
-        self.avail_label.text = "可用：  " + String(avail)
+        self.avail_label.text = "可用".toLocal() + "：  " + String(avail)
         self.avail_label.textColor = qianbao_colour
         
         

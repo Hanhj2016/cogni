@@ -80,7 +80,7 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
         if !(p._lastSentence?[name]?.hasPrefix(chat_image_preset))!{
             cell.last_sentence.text = p._lastSentence?[name]}
         else
-        {cell.last_sentence.text = "[图片]"}
+        {cell.last_sentence.text = "[图片]".toLocal()}
         cell.last_sentence.textColor = text_grey
         cell.last_sentence.font = cell.last_sentence.font.withSize(14)
         
@@ -203,7 +203,7 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var new_chat = storyboard.instantiateViewController(withIdentifier: "chat") as! chat
         
         
-        var profile_picture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + target + ".png"
+        var profile_picture = target + ".png"
      
             
             if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
@@ -211,7 +211,7 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
             }
         
     
-        profile_picture = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + user + ".png"
+        profile_picture = user + ".png"
         if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
             new_chat.user_image  = cachedVersion
         }

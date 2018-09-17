@@ -93,7 +93,7 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBAction func guanzhu(_ sender: Any) {
         if did_follow == 0
         {
-            self.guanzhu.setTitle("已关注", for: .normal)
+            self.guanzhu.setTitle("已关注".toLocal(), for: .normal)
             did_follow = 1
             //self guanzhu ++
             //target: p beiguanzhu ++
@@ -101,7 +101,7 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         }
         else
         {
-            self.guanzhu.setTitle("关注", for: .normal)
+            self.guanzhu.setTitle("关注".toLocal(), for: .normal)
             did_follow = 0
         }
         
@@ -354,10 +354,10 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         self.follow_label.font = self.follow_label.font.withSize(12)
         self.resume.textColor = text_mid
         if p._resume != nil{
-            self.resume.text = "简介：" + p._resume!}
+            self.resume.text = "简介".toLocal() + "：" + p._resume!}
         else
         {self.resume.isHidden = true}
-        self.reputation.setTitle("声望: \(p._shengWang!)", for: .normal)
+        self.reputation.setTitle("声望".toLocal() + ": \(p._shengWang!)", for: .normal)
         self.reputation.backgroundColor = colour
         self.reputation.layer.cornerRadius = self.reputation.frame.height / 2
         self.reputation.setTitleColor(sign_in_colour, for: .normal)
@@ -381,9 +381,9 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         self.follow_label.textColor = text_mid
         self.followed_label.textColor = text_mid
         self.fabu_label.textColor = text_mid
-        self.followed_label.text = "被关注"
-        self.follow_label.text = "关注"
-        self.fabu_label.text = "发布"
+        self.followed_label.text = "被关注".toLocal()
+        self.follow_label.text = "关注".toLocal()
+        self.fabu_label.text = "发布".toLocal()
         // Do any additional setup after loading the view.
         
         
@@ -395,9 +395,9 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         self.bot_bar.backgroundColor = light
         self.guanzhu.setTitleColor(colour, for: .normal)
         self.his_guanzhu.setTitleColor(colour, for: .normal)
-        self.his_guanzhu.setTitle("他的关注", for: .normal)
+        self.his_guanzhu.setTitle("他的关注".toLocal(), for: .normal)
         self.send_message.setTitleColor(colour, for: .normal)
-        self.send_message.setTitle("发送私信", for: .normal)
+        self.send_message.setTitle("发送私信".toLocal(), for: .normal)
         self.send_message.backgroundColor = mid
         self.his_guanzhu.backgroundColor = mid
         self.guanzhu.backgroundColor = mid
@@ -409,20 +409,20 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             if (p._beiGuanZhu?.contains(user!))!
             {
                 self.guanzhu.setTitleColor(colour, for: .normal)
-                self.guanzhu.setTitle("取消关注", for: .normal)
+                self.guanzhu.setTitle("取消关注".toLocal(), for: .normal)
                 self.did_follow = 1
             }
             else
             {
                // print("396")
                 self.guanzhu.setTitleColor(colour, for: .normal)
-                self.guanzhu.setTitle("关注", for: .normal)
+                self.guanzhu.setTitle("关注".toLocal(), for: .normal)
                 self.did_follow = 0
             }
         }
         else{
             self.guanzhu.setTitleColor(colour, for: .normal)
-            self.guanzhu.setTitle("关注", for: .normal)
+            self.guanzhu.setTitle("关注".toLocal(), for: .normal)
             self.did_follow = 0
         }
         
@@ -692,8 +692,6 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
 
         
-        
-        
         if ((temp._time) != nil)
         {
             var output = ""
@@ -717,41 +715,56 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                     if hour == time[3]
                     {
                         if Minute == time[4]
-                        {output = "\(time[5]-second) 秒前"}
+                        {output = "\(time[5]-second) " + "秒前".toLocal()}
                         else if time[4] - Minute == 1
                         {
-                            if (time[5]+60-second <= 60)
-                            {output = "\(time[5]+60-second) 秒前"}
+                            if (time[5]+60-second < 60)
+                            {output = "\(time[5]+60-second) " + "秒前".toLocal()}
                             else
-                            {output = "1分钟前"}
+                            {output = "1" + "分钟前".toLocal()}
                             
                         }
                         else
-                        {output = "\(time[4]-Minute) 分钟前"}
+                        {output = "\(time[4]-Minute) " + "分钟前".toLocal()}
                     }
                     else if time[3] - hour == 1
                     {
-                        if time[4]+60-Minute <= 60
-                        {output = "\(time[4]+60-Minute) 分钟前"}
+                        if time[4]+60-Minute < 60
+                        {output = "\(time[4]+60-Minute) " + "分钟前".toLocal()}
                         else
-                        {output = "\(hour):\(Minute)"}
+                        {
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}}
                     }
                     else
                     {
-                        output = "\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
                     }
                 }
                 else if time[2] == (day + 1)
                 {
-                    output = "昨天\(hour):\(Minute)"
+                    if Minute < 10{
+                        output = "\(hour):0\(Minute)"
+                    }else{
+                        output = "\(hour):\(Minute)"}
+                    output = "昨天".toLocal() + output
                 }
                 else if time[2] == day + 2
                 {
-                    output = "前天\(hour):\(Minute)"
+                    if Minute < 10{
+                        output = "\(hour):0\(Minute)"
+                    }else{
+                        output = "\(hour):\(Minute)"}
+                    output = "昨天".toLocal() + output
                 }
                 else
                 {
-                    output = "\(month)月\(day)日"
+                    output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                 }
             }
             else
@@ -793,15 +806,12 @@ class other_zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.share_view.isHidden = false
             print("height: \(cell.share_view.frame.height)")
             cell.collectionViewHeight.constant = 130
-//            let url = URL(string:temp._sharedFrom![3])!
-//            cell.share_profile_picture.image = UIImage(data:try! Data(contentsOf: url))
             if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                cell.profile_picture.image = cachedVersion
+                cell.share_profile_picture.image = cachedVersion
             }
             else{
                 downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
             }
-            //downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
             cell.share_title.text = temp._sharedFrom![2]
             cell.share_username.text = temp._sharedFrom![1]
             cell.share_view.backgroundColor = sign_in_colour

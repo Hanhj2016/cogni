@@ -72,8 +72,8 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         self.top_bar.backgroundColor = mid
         
-        self.button1.setTitle("进行中", for: .normal)
-        self.button2.setTitle("已完成", for: .normal)
+        self.button1.setTitle("进行中".toLocal(), for: .normal)
+        self.button2.setTitle("已完成".toLocal(), for: .normal)
         self.button1.backgroundColor = colour
         self.button1.setTitleColor(sign_in_colour, for: .normal)
         self.button2.backgroundColor = sign_in_colour
@@ -487,20 +487,42 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.confirm.tag = indexPath.row
             //cell.layoutIfNeeded()
             //cell.zhanwaifenxiang.isHidden = true
+            cell.finish_bar.backgroundColor = light
+            cell.finish_label.isHidden = true
             cell.cancel.isHidden = false
             cell.dropdown.isHidden = true
             cell.confirm.isHidden = false
             
+            
+            cell.confirm.isHidden = false
+            cell.cancel.backgroundColor = sign_in_colour
+            cell.cancel.setTitle("取消".toLocal(), for: .normal)
+            cell.cancel.setTitleColor(text_light, for: .normal)
+            cell.cancel.layer.cornerRadius = 5.0
+            
+            
+            cell.confirm.isHidden = false
+            cell.confirm.backgroundColor = sign_in_colour
+            cell.confirm.setTitle("确认完成".toLocal(), for: .normal)
+            cell.confirm.setTitleColor(text_light, for: .normal)
+            cell.confirm.layer.cornerRadius = 5.0
+            cell.confirm.tag = indexPath.row
+            
+            
+            
             if temp._unConfirmList != nil
             {if (temp._unConfirmList?.contains(p._userId!))!
-            {
+                {
                 cell.cancel.isHidden = true
                 cell.confirm.isHidden = true
                 cell.finish_label.isHidden = false
-                cell.finish_label.text = "已被拒绝"
+                cell.finish_label.text = "已被拒绝".toLocal()
                 cell.finish_label.textColor = colour
                 }
+        
             }
+            
+            
             let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
             let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
             tap.username = temp._username!
@@ -664,7 +686,6 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             
             
             
-            
             if ((temp._time) != nil)
             {
                 var output = ""
@@ -688,41 +709,56 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                         if hour == time[3]
                         {
                             if Minute == time[4]
-                            {output = "\(time[5]-second) 秒前"}
+                            {output = "\(time[5]-second) " + "秒前".toLocal()}
                             else if time[4] - Minute == 1
                             {
-                                if (time[5]+60-second <= 60)
-                                {output = "\(time[5]+60-second) 秒前"}
+                                if (time[5]+60-second < 60)
+                                {output = "\(time[5]+60-second) " + "秒前".toLocal()}
                                 else
-                                {output = "1分钟前"}
+                                {output = "1" + "分钟前".toLocal()}
                                 
                             }
                             else
-                            {output = "\(time[4]-Minute) 分钟前"}
+                            {output = "\(time[4]-Minute) " + "分钟前".toLocal()}
                         }
                         else if time[3] - hour == 1
                         {
-                            if time[4]+60-Minute <= 60
-                            {output = "\(time[4]+60-Minute) 分钟前"}
+                            if time[4]+60-Minute < 60
+                            {output = "\(time[4]+60-Minute) " + "分钟前".toLocal()}
                             else
-                            {output = "\(hour):\(Minute)"}
+                            {
+                                if Minute < 10{
+                                    output = "\(hour):0\(Minute)"
+                                }else{
+                                    output = "\(hour):\(Minute)"}}
                         }
                         else
                         {
-                            output = "\(hour):\(Minute)"
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
-                        output = "昨天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
-                        output = "前天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else
                     {
-                        output = "\(month)月\(day)日"
+                        output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                     }
                 }
                 else
@@ -764,7 +800,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.share_view.isHidden = false
                 cell.collectionViewHeight.constant = 130
                 if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                    cell.profile_picture.image = cachedVersion
+                    cell.share_profile_picture.image = cachedVersion
                 }
                 else{
                     downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
@@ -807,7 +843,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.finish_label.isHidden = true
             cell.confirm.isHidden = true
             cell.cancel.backgroundColor = sign_in_colour
-            cell.cancel.setTitle("放弃", for: .normal)
+            cell.cancel.setTitle("放弃".toLocal(), for: .normal)
             cell.cancel.setTitleColor(text_light, for: .normal)
             cell.cancel.layer.cornerRadius = 5.0
            
@@ -819,8 +855,20 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             if temp._confirmList != nil && (temp._confirmList?.contains(p._userId!))!
             {
                 cell.finish_label.isHidden = false
-                cell.finish_label.text = "已被确认完成"
+                cell.finish_label.text = "已被确认完成".toLocal()
+            }else if temp._unConfirmList != nil
+            {if (temp._unConfirmList?.contains(p._userId!))!
+            {
+                cell.cancel.isHidden = true
+                cell.confirm.isHidden = true
+                cell.finish_label.isHidden = false
+                cell.finish_label.text = "已被拒绝".toLocal()
+                cell.finish_label.textColor = colour
+                }
+                
             }
+            
+            
             let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
             let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
             tap.username = temp._username!
@@ -970,7 +1018,6 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             
             
             
-            
             if ((temp._time) != nil)
             {
                 var output = ""
@@ -994,41 +1041,56 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                         if hour == time[3]
                         {
                             if Minute == time[4]
-                            {output = "\(time[5]-second) 秒前"}
+                            {output = "\(time[5]-second) " + "秒前".toLocal()}
                             else if time[4] - Minute == 1
                             {
-                                if (time[5]+60-second <= 60)
-                                {output = "\(time[5]+60-second) 秒前"}
+                                if (time[5]+60-second < 60)
+                                {output = "\(time[5]+60-second) " + "秒前".toLocal()}
                                 else
-                                {output = "1分钟前"}
+                                {output = "1" + "分钟前".toLocal()}
                                 
                             }
                             else
-                            {output = "\(time[4]-Minute) 分钟前"}
+                            {output = "\(time[4]-Minute) " + "分钟前".toLocal()}
                         }
                         else if time[3] - hour == 1
                         {
-                            if time[4]+60-Minute <= 60
-                            {output = "\(time[4]+60-Minute) 分钟前"}
+                            if time[4]+60-Minute < 60
+                            {output = "\(time[4]+60-Minute) " + "分钟前".toLocal()}
                             else
-                            {output = "\(hour):\(Minute)"}
+                            {
+                                if Minute < 10{
+                                    output = "\(hour):0\(Minute)"
+                                }else{
+                                    output = "\(hour):\(Minute)"}}
                         }
                         else
                         {
-                            output = "\(hour):\(Minute)"
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
-                        output = "昨天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
-                        output = "前天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else
                     {
-                        output = "\(month)月\(day)日"
+                        output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                     }
                 }
                 else
@@ -1038,7 +1100,6 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.time_label.text = output
                 cell.time_label.textColor = text_mid
             }
-            
             if ((temp._tag) != nil)
             {
                 let t = temp._tag
@@ -1070,7 +1131,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.share_view.isHidden = false
                 cell.collectionViewHeight.constant = 130
                 if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                    cell.profile_picture.image = cachedVersion
+                    cell.share_profile_picture.image = cachedVersion
                 }
                 else{
                     downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
@@ -1184,7 +1245,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var temp_list:[ChanceWithValue] = []
         if p._gottenList != nil{
             post_key_list = p._gottenList!}
-        print("list: \(post_key_list)")
+        //print("list: \(post_key_list)")
         for a in post_key_list{
             let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: a, rangeKey:nil)
             heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
@@ -1194,7 +1255,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                     let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
                     var temp = resultBook as! ChanceWithValue
                     if temp._getList != nil
-                    {if (temp._getList?.contains(user!))!
+                    {if (temp._getList?.contains(user!))! || (temp._unConfirmList != nil && (temp._unConfirmList?.contains(user!))!)
                     {
                         self.posts.append(temp)
                         }
@@ -1202,11 +1263,9 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                     if temp._completeList != nil
                     {if (temp._completeList?.contains(user!))!
                     {
-                        self.posts.append(temp)
+                        self.posts2.append(temp)
                         }
                     }
-                   
-                    
                     if self.posts.count > 0
                     {self.sort_posts()}
                     if self.posts2.count > 0

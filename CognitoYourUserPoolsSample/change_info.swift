@@ -21,7 +21,7 @@ import Foundation
 class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate {
     var dude = ""
     var head:UIImage = UIImage()
-    let table_titles:[String] = ["更换头像","昵称","机会号","钱包地址","姓名","性别","职业","简介"]
+    let table_titles:[String] = ["更换头像".toLocal(),"昵称".toLocal(),"机会号".toLocal(),"钱包地址".toLocal(),"姓名".toLocal(),"性别".toLocal(),"职业".toLocal(),"简介".toLocal()]
     var pic:UIImage = UIImage()
     var p:UserPool = UserPool()
     let imagePicker = UIImagePickerController()
@@ -203,7 +203,7 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
         self.table.isScrollEnabled = false
         
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "确认", style: .plain, target: self, action: #selector(confirm))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "确认".toLocal(), style: .plain, target: self, action: #selector(confirm))
         self.table.estimatedRowHeight = 150
         self.table.rowHeight = UITableViewAutomaticDimension
         self.view.backgroundColor = mid

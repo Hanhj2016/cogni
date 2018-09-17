@@ -73,11 +73,11 @@ class SignUpViewController: UIViewController,UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         
       
-        self.username.add_placeholder(text: "用户名", color: colour)
-        self.password.add_placeholder(text: "密码", color: colour)
-        self.phone.add_placeholder(text: "区域码加电话号码：比如+155555555", color: colour)
-        self.email.add_placeholder(text: "邮箱", color: colour)
-        self.confirm.add_placeholder(text: "再次输入", color: colour)
+        self.username.add_placeholder(text: "用户名".toLocal(), color: colour)
+        self.password.add_placeholder(text: "密码".toLocal(), color: colour)
+        self.phone.add_placeholder(text: "区域码加电话号码：比如+155555555".toLocal(), color: colour)
+        self.email.add_placeholder(text: "邮箱".toLocal(), color: colour)
+        self.confirm.add_placeholder(text: "再次输入".toLocal(), color: colour)
         self.username.delegate = self
         self.password.delegate = self
         self.email.delegate = self
@@ -128,8 +128,8 @@ class SignUpViewController: UIViewController,UITextFieldDelegate {
         
         guard let confirm_value = self.confirm.text, !confirm_value.isEmpty,
             let password_value = self.password.text, confirm_value == password_value else {
-                let alertController = UIAlertController(title: "嘿嘿嘿",
-                                                        message: "两次密码输入不相同",
+                let alertController = UIAlertController(title: "嘿嘿嘿".toLocal(),
+                                                        message: "两次密码输入不相同".toLocal(),
                                                         preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
                 alertController.addAction(okAction)
@@ -147,8 +147,8 @@ class SignUpViewController: UIViewController,UITextFieldDelegate {
             phone?.value = phoneValue
             attributes.append(phone!)
         }else {
-            let alertController = UIAlertController(title: "嘿嘿嘿",
-                                                    message: "输个电话号码吧",
+            let alertController = UIAlertController(title: "嘿嘿嘿".toLocal(),
+                                                    message: "输个电话号码吧".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -165,8 +165,8 @@ class SignUpViewController: UIViewController,UITextFieldDelegate {
             user_email = emailValue
             print(user_email)
         }else{
-                let alertController = UIAlertController(title: "嘿嘿嘿",
-                                                        message: "输个邮箱吧",
+                let alertController = UIAlertController(title: "嘿嘿嘿".toLocal(),
+                                                        message: "输个邮箱吧".toLocal(),
                                                         preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
                 alertController.addAction(okAction)

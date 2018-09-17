@@ -64,8 +64,8 @@ class SignInViewController: UIViewController,UITextFieldDelegate {
         super.viewWillAppear(animated)
         
        self.navigationController?.navigationBar.isHidden = true
-        self.username.add_placeholder(text: "用户名", color: colour)
-        self.password.add_placeholder(text: "密码", color: colour)
+        self.username.add_placeholder(text: "用户名".toLocal(), color: colour)
+        self.password.add_placeholder(text: "密码".toLocal(), color: colour)
         self.username.textColor = colour
         self.password.textColor = colour
         self.weibo.setImage(UIImage(named: "weibo"), for: .normal)

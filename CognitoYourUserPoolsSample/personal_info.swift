@@ -58,7 +58,7 @@ var renwu_list:[String] = []
     
     var title_name = ""
     @IBAction func jihui(_ sender: Any) {
-        title_name = "我的机会"
+        title_name = "我的机会".toLocal()
         
         //performSegue(withIdentifier: "zhuye", sender: self)
         
@@ -66,14 +66,14 @@ var renwu_list:[String] = []
         
         var new_chat = storyboard.instantiateViewController(withIdentifier: "zhuye") as! zhuye
         new_chat.p = self.p
-        new_chat.title = "我的机会"
+        new_chat.title = "我的机会".toLocal()
         self.navigationController?.pushViewController(new_chat, animated: true)
         
         
     }
     
     @IBAction func fabu(_ sender: Any) {
-        title_name = "我的发布"
+        title_name = "我的发布".toLocal()
         
         //performSegue(withIdentifier: "zhuye", sender: self)
         
@@ -81,7 +81,7 @@ var renwu_list:[String] = []
         
         var new_chat = storyboard.instantiateViewController(withIdentifier: "wode_fabu") as! wode_fabu
         new_chat.p = self.p
-        new_chat.title = "我的发布"
+        new_chat.title = "我的发布".toLocal()
      self.navigationController?.pushViewController(new_chat, animated: true)
         
         
@@ -96,7 +96,7 @@ var renwu_list:[String] = []
     }
     
     @IBAction func messages(_ sender: Any) {
-        title_name = "我的消息"
+        title_name = "我的信息".toLocal()
         performSegue(withIdentifier: "messages", sender: self)
     }
     
@@ -113,7 +113,7 @@ var renwu_list:[String] = []
     
     
     @IBAction func guanzhu(_ sender: Any) {
-        title_name = "我的关注"
+        title_name = "我的关注".toLocal()
         performSegue(withIdentifier: "guanzhu", sender: self)
     }
     
@@ -123,17 +123,17 @@ var renwu_list:[String] = []
             var upcoming: zhuye = segue.destination as! zhuye
             //upcoming.all = false
             upcoming.title = title_name
-            if title_name == "我的机会"{
+            if title_name == "我的机会".toLocal(){
             if p._gottenList != nil
             {upcoming.post_key_list = p._gottenList!}
             else
             {upcoming.post_key_list = []}}
-            if title_name == "我的发布"{
+            if title_name == "我的发布".toLocal(){
                 if p._chanceIdList != nil
                 {upcoming.post_key_list = p._chanceIdList!}
                 else
                 {upcoming.post_key_list = []}}
-            if title_name == "我的任务"
+            if title_name == "我的任务".toLocal()
             {
                 
                 upcoming.p = self.p
@@ -144,7 +144,7 @@ var renwu_list:[String] = []
         if segue.identifier == "guanzhu"
         {
             var upcoming: guanzhu = segue.destination as! guanzhu
-            if title_name == "我的关注"
+            if title_name == "我的关注".toLocal()
             {
                 
                 
@@ -160,7 +160,7 @@ var renwu_list:[String] = []
         if segue.identifier == "messages"
         {
             var upcoming: messagesViewController = segue.destination as! messagesViewController
-            if title_name == "我的消息"
+            if title_name == "我的信息".toLocal()
             {
                 upcoming.user = (AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username)!
                 
@@ -226,10 +226,10 @@ var renwu_list:[String] = []
          self.follow_label.font = self.follow_label.font.withSize(12)
         self.resume.textColor = text_mid
         if p._resume != nil{
-            self.resume.text = "简介：" + p._resume!}
+            self.resume.text = "简介".toLocal() + "：" + p._resume!}
         else
         {self.resume.isHidden = true}
-        self.reputation.setTitle("声望: \(p._shengWang!)", for: .normal)
+        self.reputation.setTitle("声望".toLocal() + ": \(p._shengWang!)", for: .normal)
         self.reputation.backgroundColor = colour
         self.reputation.layer.cornerRadius = self.reputation.frame.height / 2
         self.reputation.setTitleColor(sign_in_colour, for: .normal)
@@ -253,9 +253,9 @@ var renwu_list:[String] = []
         self.follow_label.textColor = text_mid
         self.followed_label.textColor = text_mid
         self.fabu_label.textColor = text_mid
-        self.followed_label.text = "被关注"
-        self.follow_label.text = "关注"
-        self.fabu_label.text = "发布"
+        self.followed_label.text = "被关注".toLocal()
+        self.follow_label.text = "关注".toLocal()
+        self.fabu_label.text = "发布".toLocal()
         /////////////////////////////////////2nd/////////////////////////
         self.second_view.backgroundColor = mid
         self.jihui_label.textColor = text_light

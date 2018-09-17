@@ -324,7 +324,7 @@ class dropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         let cell = UITableViewCell()
      //   print("288")
         cell.textLabel?.text = dropDownOptions[indexPath.row]
-       
+       cell.textLabel?.font = cell.textLabel?.font.withSize(14)
         cell.textLabel?.textColor = sign_in_colour
         cell.backgroundColor = colour
         return cell

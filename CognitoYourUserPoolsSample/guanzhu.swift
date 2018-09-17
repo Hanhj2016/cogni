@@ -201,13 +201,13 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
                         if (self.p._guanZhu != nil && (self.p._guanZhu?.contains(resultBook._userId!))!)
                         {
                             cell.guanzhu.setImage(UIImage(named:"yiguanzhu"), for: .normal)
-                            cell.guanzhu.setTitle("已关注", for: .normal)
+                            cell.guanzhu.setTitle("已关注".toLocal(), for: .normal)
                             cell.guanzhu.setTitleColor(colour, for: .normal)
                         }
                         else
                         {
                             cell.guanzhu.setTitleColor(text_light, for: .normal)
-                            cell.guanzhu.setTitle("关注", for: .normal)
+                            cell.guanzhu.setTitle("关注".toLocal(), for: .normal)
                         }
                     
                     })

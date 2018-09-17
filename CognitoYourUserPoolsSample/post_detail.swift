@@ -102,8 +102,8 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         {uncon_count = (p._unConfirmList?.count)!}
         if con_count + uncon_count == Int(p._renShu!)
        {
-        let alertController = UIAlertController(title: "哟",
-                                                message: "人刚好满了",
+        let alertController = UIAlertController(title: "哟".toLocal(),
+                                                message: "人刚好满了".toLocal(),
                                                 preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(okAction)
@@ -145,8 +145,8 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             //print("133 \(avail)")
             //print("134 \(expense)")
         if avail < expense {
-            let alertController = UIAlertController(title: "无法通过",
-                                                    message: "钱包可用金额不足",
+            let alertController = UIAlertController(title: "无法通过".toLocal(),
+                                                    message: "钱包可用金额不足".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -174,6 +174,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             
             dynamoDbObjectMapper.save(p,completionHandler:nil)
             self.alertview.isHidden = false
+            
             return
         }
         }
@@ -532,7 +533,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     
     
     @objc func wodejihui_(sender : MyTapGesture){
-        let title_name = "我的机会"
+        let title_name = "我的机会".toLocal()
         
         //performSegue(withIdentifier: "zhuye", sender: self)
         
@@ -558,7 +559,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         
        
-        new_chat.title = "我的机会"
+        new_chat.title = "我的机会".toLocal()
         self.navigationController?.pushViewController(new_chat, animated: true)
         
     }
@@ -589,7 +590,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         }
         
         let left = ren - ge - conf - unconf
-        self.like_number.setTitle("还剩 \(left) 人", for: .normal)
+        self.like_number.setTitle("还剩".toLocal() + " \(left)" + "人".toLocal(), for: .normal)
     }
     
     override func viewDidLoad() {
@@ -599,7 +600,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             print("post_detail: wasting time here man")
         }
         
-        
+        self.alertview.layer.cornerRadius = 5.0
         
         
         
@@ -671,16 +672,16 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.label2.textColor = colour
         self.label3.textColor = colour
         var in_or_out = ""
-        if Double(p._fuFei!) > 0
+        if p._fuFei != nil && Double(p._fuFei!) > 0
         {
-            in_or_out = "福利"
+            in_or_out = "福利".toLocal()
             self.label1.text = in_or_out
             self.label2.text = "\(p._fuFei!) \(p._fuFeiType!)"
             self.label3.text = "还剩 \(left) 人"
         }
-        else if Double(p._shouFei!) > 0
+        else if p._shouFei != nil && Double(p._shouFei!) > 0
         {
-            in_or_out = "服务"
+            in_or_out = "服务".toLocal()
             self.label1.text = in_or_out
             self.label2.text = "\(p._shouFei!) \(p._shouFeiType!)"
             self.label3.text = "还剩 \(left) 人"
@@ -843,7 +844,6 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             let year = (Rem % 100)%100
             var a = time__[0] % 100
             //   print("year:\(year)..month:\(month)..day:\(day)")
-            
             if year == a
             {
                 if day == time__[2]
@@ -851,41 +851,56 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                     if hour == time__[3]
                     {
                         if Minute == time__[4]
-                        {output = "\(time__[5]-second) 秒前"}
+                        {output = "\(time__[5]-second) " + "秒前".toLocal()}
                         else if time__[4] - Minute == 1
                         {
-                            if (time__[5]+60-second <= 60)
-                            {output = "\(time__[5]+60-second) 秒前"}
+                            if (time__[5]+60-second < 60)
+                            {output = "\(time__[5]+60-second) " + "秒前".toLocal()}
                             else
-                            {output = "1分钟前"}
+                            {output = "1" + "分钟前".toLocal()}
                             
                         }
                         else
-                        {output = "\(time__[4]-Minute) 分钟前"}
+                        {output = "\(time__[4]-Minute) " + "分钟前".toLocal()}
                     }
                     else if time__[3] - hour == 1
                     {
-                        if time__[4]+60-Minute <= 60
-                        {output = "\(time__[4]+60-Minute) 分钟前"}
+                        if time__[4]+60-Minute < 60
+                        {output = "\(time__[4]+60-Minute) " + "分钟前".toLocal()}
                         else
-                        {output = "\(hour):\(Minute)"}
+                        {
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}}
                     }
                     else
                     {
-                        output = "\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
                     }
                 }
                 else if time__[2] == (day + 1)
                 {
-                    output = "昨天\(hour):\(Minute)"
+                    if Minute < 10{
+                        output = "\(hour):0\(Minute)"
+                    }else{
+                        output = "\(hour):\(Minute)"}
+                    output = "昨天".toLocal() + output
                 }
                 else if time__[2] == day + 2
                 {
-                    output = "前天\(hour):\(Minute)"
+                    if Minute < 10{
+                        output = "\(hour):0\(Minute)"
+                    }else{
+                        output = "\(hour):\(Minute)"}
+                    output = "昨天".toLocal() + output
                 }
                 else
                 {
-                    output = "\(month)月\(day)日"
+                    output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                 }
             }
             else
@@ -940,17 +955,17 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.like_number.backgroundColor = mid
         self.like_number.tintColor = colour
         if self.p._liked != nil
-        {self.like_number.setTitle("赞 \((self.p._liked?.count)!)", for: .normal)}
+        {self.like_number.setTitle("赞".toLocal() + "\((self.p._liked?.count)!)", for: .normal)}
         else
-        {self.like_number.setTitle("赞 0", for: .normal)}
+        {self.like_number.setTitle("赞".toLocal() + "0", for: .normal)}
         
         
         self.share_number.backgroundColor = mid
         self.share_number.tintColor = colour
         if self.p._shared != nil
-        {self.share_number.setTitle("转发 \(self.p._shared!)", for: .normal)}
+        {self.share_number.setTitle("转发".toLocal() + " \(self.p._shared!)", for: .normal)}
         else
-        {self.share_number.setTitle("转发 0", for: .normal)}
+        {self.share_number.setTitle("转发".toLocal() + "0", for: .normal)}
         
         var comment_number = 0
         if self.p._commentIdList != nil
@@ -960,25 +975,25 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.comment_number.backgroundColor = mid
         self.comment_number.tintColor = colour
         if self.p._commentIdList != nil
-        {self.comment_number.setTitle("评论 \(comment_number)", for: .normal)}
+        {self.comment_number.setTitle("评论".toLocal() + "\(comment_number)", for: .normal)}
         else
-        {self.comment_number.setTitle("评论 0", for: .normal)}
+        {self.comment_number.setTitle("评论".toLocal() + "0", for: .normal)}
         
         
         
-        if Double(p._fuFei!) > 0
+        if p._fuFei != nil && Double(p._fuFei!) > 0
         {
-            in_or_out = "付费"
+            in_or_out = "付费".toLocal()
             self.share_number.setTitle(in_or_out, for: .normal)
             self.comment_number.setTitle("\(p._fuFei!) \(p._fuFeiType!)", for: .normal)
-            self.like_number.setTitle("还剩 \(left) 人", for: .normal)
+            self.like_number.setTitle("还剩".toLocal() + "\(left) " + "人".toLocal(), for: .normal)
         }
-        else if Double(p._shouFei!) > 0
+        else if p._shouFei != nil && Double(p._shouFei!) > 0
         {
-            in_or_out = "收费"
+            in_or_out = "收费".toLocal()
             self.share_number.setTitle(in_or_out, for: .normal)
             self.comment_number.setTitle("\(p._shouFei!) \(p._shouFeiType!)", for: .normal)
-            self.like_number.setTitle("还剩 \(left) 人", for: .normal)
+            self.like_number.setTitle("还剩".toLocal() + "\(left) " + "人".toLocal(), for: .normal)
         }
         else
         {
@@ -1145,7 +1160,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         let row = self.tableView.indexPathForSelectedRow!.row
         self.input_view.isHidden = false
         self.input.becomeFirstResponder()
-        self.input.text = "回复 \(comments[row]._userId!) ："
+        self.input.text = "回复".toLocal() + " \(comments[row]._userId!) ："
     }
     //displayed cell number
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

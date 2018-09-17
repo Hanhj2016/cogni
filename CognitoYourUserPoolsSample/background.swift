@@ -24,6 +24,30 @@ func waitfor(time: Double){
     }
 }
 
+
+func get_image_size(image:UIImage)-> (CGFloat,CGFloat){
+    var standard:CGFloat = 200.0
+    var max:CGFloat = 0.0
+    var height = image.size.height
+    var width = image.size.width
+    if height > width
+    {
+        height = 200.0
+        let ratio = image.size.height / height
+        width = image.size.width / ratio
+        
+    }
+    else
+    {
+        width = 200.0
+        let ratio = image.size.width / width
+        height = image.size.height / ratio
+        
+    }
+    
+    return (height,width)
+}
+
 func set_image_cache(key: String, image: UIImage){
     imageCache.setObject(image, forKey: key as NSString)
 }
@@ -47,6 +71,12 @@ extension String {
     func deletingPrefix(_ prefix: String) -> String {
         guard self.hasPrefix(prefix) else { return self }
         return String(self.dropFirst(prefix.count))
+    }
+    
+   func toLocal() -> String{
+    //print("53 \(self)")
+    //print("54 \(NSLocalizedString(self, comment: ""))")
+        return NSLocalizedString(self, comment: "")
     }
 }
 

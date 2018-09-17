@@ -92,9 +92,10 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
         self.top_bar.backgroundColor = mid
         
-        self.button1.setTitle("未进行", for: .normal)
-        self.button2.setTitle("进行中", for: .normal)
-        self.button3.setTitle("已完成", for: .normal)
+        self.button1.setTitle(NSLocalizedString("未进行", comment: ""), for: .normal)
+        //print("jaysus \("未进行".toLocal()).")
+        self.button2.setTitle("进行中".toLocal(), for: .normal)
+        self.button3.setTitle("已完成".toLocal(), for: .normal)
         
         self.button1.backgroundColor = sign_in_colour
          self.button2.backgroundColor = sign_in_colour
@@ -489,7 +490,7 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
         let indexPath = IndexPath(item: s.tag, section: 0)
         let cell = self.tableView2.cellForRow(at: indexPath) as! tableView2
         let name = cell.dropdown.title(for: .normal)
-        if name == "选择拒绝"
+        if name == "选择拒绝".toLocal()
         {
             return
         }
@@ -532,7 +533,7 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
         let indexPath = IndexPath(item: s.tag, section: 0)
         let cell = self.tableView3.cellForRow(at: indexPath) as! tableView2
         let name = cell.dropdown.title(for: .normal)
-        if name == "确认或拒绝"
+        if name == "确认或拒绝".toLocal()
         {
             return
         }
@@ -681,7 +682,7 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
         let indexPath = IndexPath(item: s.tag, section: 0)
         let cell = self.tableView2.cellForRow(at: indexPath) as! tableView2
         let name = cell.dropdown.title(for: .normal)
-        if name == "确认或拒绝"
+        if name == "确认或拒绝".toLocal()
         {
             return
         }
@@ -909,41 +910,56 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                         if hour == time[3]
                         {
                             if Minute == time[4]
-                            {output = "\(time[5]-second) 秒前"}
+                            {output = "\(time[5]-second) " + "秒前".toLocal()}
                             else if time[4] - Minute == 1
                             {
-                                if (time[5]+60-second <= 60)
-                                {output = "\(time[5]+60-second) 秒前"}
+                                if (time[5]+60-second < 60)
+                                {output = "\(time[5]+60-second) " + "秒前".toLocal()}
                                 else
-                                {output = "1分钟前"}
+                                {output = "1" + "分钟前".toLocal()}
                                 
                             }
                             else
-                            {output = "\(time[4]-Minute) 分钟前"}
+                            {output = "\(time[4]-Minute) " + "分钟前".toLocal()}
                         }
                         else if time[3] - hour == 1
                         {
-                            if time[4]+60-Minute <= 60
-                            {output = "\(time[4]+60-Minute) 分钟前"}
+                            if time[4]+60-Minute < 60
+                            {output = "\(time[4]+60-Minute) " + "分钟前".toLocal()}
                             else
-                            {output = "\(hour):\(Minute)"}
+                            {
+                                if Minute < 10{
+                                    output = "\(hour):0\(Minute)"
+                                }else{
+                                    output = "\(hour):\(Minute)"}}
                         }
                         else
                         {
-                            output = "\(hour):\(Minute)"
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
-                        output = "昨天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
-                        output = "前天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else
                     {
-                        output = "\(month)月\(day)日"
+                        output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                     }
                 }
                 else
@@ -987,14 +1003,13 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 
                     
                     if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                        cell.profile_picture.image = cachedVersion
+                        cell.share_profile_picture.image = cachedVersion
                     }
                     else{
                         downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
                     }
                 
                 
-               // downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
                 cell.share_title.text = temp._sharedFrom![2]
                 cell.share_username.text = temp._sharedFrom![1]
                 cell.share_view.backgroundColor = sign_in_colour
@@ -1032,19 +1047,19 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.finish_label.isHidden = true
             cell.confirm.isHidden = true
             cell.cancel.backgroundColor = sign_in_colour
-            cell.cancel.setTitle("取消", for: .normal)
+            cell.cancel.setTitle("取消".toLocal(), for: .normal)
             cell.cancel.setTitleColor(text_light, for: .normal)
             cell.cancel.layer.cornerRadius = 5.0
             cell.dropdown.backgroundColor = colour
             cell.dropdown.layer.cornerRadius = 5.0
             cell.dropdown.tintColor = sign_in_colour
            // cell.dropdown.setTitleColor(sign_in_colour, for: .normal)
-            cell.dropdown.setTitle("选择拒绝", for: .normal)
+            cell.dropdown.setTitle("选择拒绝".toLocal(), for: .normal)
            cell.dropdown.dropView.dropDownOptions = temp._getList!
             cell.finish_label.isHidden = true
             cell.confirm.isHidden = false
             cell.confirm.backgroundColor = sign_in_colour
-            cell.confirm.setTitle("查看信息", for: .normal)
+            cell.confirm.setTitle("查看信息".toLocal(), for: .normal)
             cell.confirm.setTitleColor(text_light, for: .normal)
             cell.confirm.layer.cornerRadius = 5.0
             cell.confirm.tag = indexPath.row
@@ -1189,6 +1204,7 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
             {cell.profile_picture.image = UIImage(named: "girl")}
             
             
+            
             if ((temp._time) != nil)
             {
                 var output = ""
@@ -1212,41 +1228,56 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                         if hour == time[3]
                         {
                             if Minute == time[4]
-                            {output = "\(time[5]-second) 秒前"}
+                            {output = "\(time[5]-second) " + "秒前".toLocal()}
                             else if time[4] - Minute == 1
                             {
-                                if (time[5]+60-second <= 60)
-                                {output = "\(time[5]+60-second) 秒前"}
+                                if (time[5]+60-second < 60)
+                                {output = "\(time[5]+60-second) " + "秒前".toLocal()}
                                 else
-                                {output = "1分钟前"}
+                                {output = "1" + "分钟前".toLocal()}
                                 
                             }
                             else
-                            {output = "\(time[4]-Minute) 分钟前"}
+                            {output = "\(time[4]-Minute) " + "分钟前".toLocal()}
                         }
                         else if time[3] - hour == 1
                         {
-                            if time[4]+60-Minute <= 60
-                            {output = "\(time[4]+60-Minute) 分钟前"}
+                            if time[4]+60-Minute < 60
+                            {output = "\(time[4]+60-Minute) " + "分钟前".toLocal()}
                             else
-                            {output = "\(hour):\(Minute)"}
+                            {
+                                if Minute < 10{
+                                    output = "\(hour):0\(Minute)"
+                                }else{
+                                    output = "\(hour):\(Minute)"}}
                         }
                         else
                         {
-                            output = "\(hour):\(Minute)"
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
-                        output = "昨天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
-                        output = "前天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else
                     {
-                        output = "\(month)月\(day)日"
+                        output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                     }
                 }
                 else
@@ -1289,12 +1320,12 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.collectionViewHeight.constant = 130
                 
                 if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                    cell.profile_picture.image = cachedVersion
+                    cell.share_profile_picture.image = cachedVersion
                 }
                 else{
                     downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
                 }
-               // downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
+               
                 cell.share_title.text = temp._sharedFrom![2]
                 cell.share_username.text = temp._sharedFrom![1]
                 cell.share_view.backgroundColor = sign_in_colour
@@ -1333,14 +1364,14 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.finish_label.isHidden = true
             cell.confirm.isHidden = false
             cell.cancel.backgroundColor = sign_in_colour
-            cell.cancel.setTitle("取消", for: .normal)
+            cell.cancel.setTitle("取消".toLocal(), for: .normal)
             cell.cancel.setTitleColor(text_light, for: .normal)
             cell.cancel.layer.cornerRadius = 5.0
             
             
             cell.confirm.isHidden = false
             cell.confirm.backgroundColor = sign_in_colour
-            cell.confirm.setTitle("确认", for: .normal)
+            cell.confirm.setTitle("确认".toLocal(), for: .normal)
             cell.confirm.setTitleColor(text_light, for: .normal)
             cell.confirm.layer.cornerRadius = 5.0
             cell.confirm.tag = indexPath.row
@@ -1349,7 +1380,7 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.dropdown.layer.cornerRadius = 5.0
             cell.dropdown.tintColor = sign_in_colour
             // cell.dropdown.setTitleColor(sign_in_colour, for: .normal)
-            cell.dropdown.setTitle("确认或拒绝", for: .normal)
+            cell.dropdown.setTitle("确认或拒绝".toLocal(), for: .normal)
             
             var arrayA = temp._completeList!
             var arrayB = [String]()
@@ -1384,7 +1415,7 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.cancel.isHidden = true
                 cell.dropdown.isHidden = true
                 cell.finish_label.isHidden = false
-                cell.finish_label.text = "全部完成"
+                cell.finish_label.text = "全部完成".toLocal()
             }
          
             
@@ -1579,41 +1610,56 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                         if hour == time[3]
                         {
                             if Minute == time[4]
-                            {output = "\(time[5]-second) 秒前"}
+                            {output = "\(time[5]-second) " + "秒前".toLocal()}
                             else if time[4] - Minute == 1
                             {
-                                if (time[5]+60-second <= 60)
-                                {output = "\(time[5]+60-second) 秒前"}
+                                if (time[5]+60-second < 60)
+                                {output = "\(time[5]+60-second) " + "秒前".toLocal()}
                                 else
-                                {output = "1分钟前"}
+                                {output = "1" + "分钟前".toLocal()}
                                 
                             }
                             else
-                            {output = "\(time[4]-Minute) 分钟前"}
+                            {output = "\(time[4]-Minute) " + "分钟前".toLocal()}
                         }
                         else if time[3] - hour == 1
                         {
-                            if time[4]+60-Minute <= 60
-                            {output = "\(time[4]+60-Minute) 分钟前"}
+                            if time[4]+60-Minute < 60
+                            {output = "\(time[4]+60-Minute) " + "分钟前".toLocal()}
                             else
-                            {output = "\(hour):\(Minute)"}
+                            {
+                                if Minute < 10{
+                                    output = "\(hour):0\(Minute)"
+                                }else{
+                                    output = "\(hour):\(Minute)"}}
                         }
                         else
                         {
-                            output = "\(hour):\(Minute)"
+                            if Minute < 10{
+                                output = "\(hour):0\(Minute)"
+                            }else{
+                                output = "\(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
-                        output = "昨天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
-                        output = "前天\(hour):\(Minute)"
+                        if Minute < 10{
+                            output = "\(hour):0\(Minute)"
+                        }else{
+                            output = "\(hour):\(Minute)"}
+                        output = "昨天".toLocal() + output
                     }
                     else
                     {
-                        output = "\(month)月\(day)日"
+                        output = "\(month)月".toLocal() + " " + "\(day)日".toLocal()
                     }
                 }
                 else
@@ -1623,7 +1669,6 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.time_label.text = output
                 cell.time_label.textColor = text_mid
             }
-            
             if ((temp._tag) != nil)
             {
                 let t = temp._tag
@@ -1655,12 +1700,12 @@ class wode_fabu: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.share_view.isHidden = false
                 cell.collectionViewHeight.constant = 130
                 if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                    cell.profile_picture.image = cachedVersion
+                    cell.share_profile_picture.image = cachedVersion
                 }
                 else{
                     downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
                 }
-               // downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
+             
                 cell.share_title.text = temp._sharedFrom![2]
                 cell.share_username.text = temp._sharedFrom![1]
                 cell.share_view.backgroundColor = sign_in_colour

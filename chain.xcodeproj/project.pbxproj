@@ -41,13 +41,14 @@
 		B92A817C20FF97F400207787 /* ImagePreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817A20FF97F300207787 /* ImagePreviewVC.swift */; };
 		B92A817D20FF97F400207787 /* ImagePreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92A817B20FF97F400207787 /* ImagePreviewCell.swift */; };
 		B933E32F213A127B00B2EBEF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B933E32E213A127B00B2EBEF /* StoreKit.framework */; };
+		B934EB26214EEB3100B82D5B /* main_page.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934EB25214EEB3100B82D5B /* main_page.swift */; };
 		B9445E2A211C9A210053F2BC /* change_info.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9445E29211C9A210053F2BC /* change_info.swift */; };
 		B9445E2C211C9A4C0053F2BC /* info_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9445E2B211C9A4C0053F2BC /* info_cell.swift */; };
 		B95289D62133A55500F6322F /* wode_fabu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D52133A55500F6322F /* wode_fabu.swift */; };
 		B95289D82134644D00F6322F /* tableView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D72134644D00F6322F /* tableView2.swift */; };
 		B95289DA2138DAFE00F6322F /* qianbao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D92138DAFE00F6322F /* qianbao.swift */; };
 		B95BA1892149D46800AF7F5A /* PCLBlurEffectAlert.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B95BA1882149D46800AF7F5A /* PCLBlurEffectAlert.framework */; };
-		B95BA18E214C5C0400AF7F5A /* English_String.strings in Resources */ = {isa = PBXBuildFile; fileRef = B95BA190214C5C0400AF7F5A /* English_String.strings */; };
+		B95BA18E214C5C0400AF7F5A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B95BA190214C5C0400AF7F5A /* Localizable.strings */; };
 		B98E223520E6A01C0044BB31 /* background.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98E223420E6A01C0044BB31 /* background.swift */; };
 		B9ABE14B213A20D60089AECE /* AWSAuthCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE14A213A20D60089AECE /* AWSAuthCore.framework */; };
 		B9ABE14D213A20EB0089AECE /* AWSAuthUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9ABE14C213A20EB0089AECE /* AWSAuthUI.framework */; };
@@ -119,16 +120,17 @@
 		B92A817A20FF97F300207787 /* ImagePreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewVC.swift; sourceTree = "<group>"; };
 		B92A817B20FF97F400207787 /* ImagePreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewCell.swift; sourceTree = "<group>"; };
 		B933E32E213A127B00B2EBEF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		B934EB25214EEB3100B82D5B /* main_page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main_page.swift; sourceTree = "<group>"; };
 		B9445E29211C9A210053F2BC /* change_info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = change_info.swift; sourceTree = "<group>"; };
 		B9445E2B211C9A4C0053F2BC /* info_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = info_cell.swift; sourceTree = "<group>"; };
 		B95289D52133A55500F6322F /* wode_fabu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wode_fabu.swift; sourceTree = "<group>"; };
 		B95289D72134644D00F6322F /* tableView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableView2.swift; sourceTree = "<group>"; };
 		B95289D92138DAFE00F6322F /* qianbao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qianbao.swift; sourceTree = "<group>"; };
 		B95BA1882149D46800AF7F5A /* PCLBlurEffectAlert.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PCLBlurEffectAlert.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B95BA18F214C5C0400AF7F5A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/English_String.strings; sourceTree = "<group>"; };
+		B95BA18F214C5C0400AF7F5A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B95BA191214C5C8300AF7F5A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		B95BA192214C5C8300AF7F5A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		B95BA193214C5C8400AF7F5A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/English_String.strings"; sourceTree = "<group>"; };
+		B95BA193214C5C8400AF7F5A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		B95BA194214C5C8400AF7F5A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "zh-Hans"; path = "zh-Hans.lproj/awsconfiguration.json"; sourceTree = "<group>"; };
 		B95BA196214C5CC000AF7F5A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		B98E223420E6A01C0044BB31 /* background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = background.swift; sourceTree = "<group>"; };
@@ -219,8 +221,7 @@
 				17FC2F8B1E258FC500174015 /* Info.plist */,
 				17FC2F931E25909300174015 /* Supporting Files */,
 				17FC2F961E25928900174015 /* MFAViewController.swift */,
-				B95BA190214C5C0400AF7F5A /* English_String.strings */,
-				B95289D52133A55500F6322F /* wode_fabu.swift */,
+				B95BA190214C5C0400AF7F5A /* Localizable.strings */,
 				B95289D92138DAFE00F6322F /* qianbao.swift */,
 				B95289D72134644D00F6322F /* tableView2.swift */,
 				17FC2F981E25940900174015 /* SignInViewController.swift */,
@@ -238,6 +239,8 @@
 				B91A14EE2121F32B00CCD686 /* guanzhu_cell.swift */,
 				B9445E2B211C9A4C0053F2BC /* info_cell.swift */,
 				B91A14F0212219A700CCD686 /* other_zhuye.swift */,
+				B934EB25214EEB3100B82D5B /* main_page.swift */,
+				B95289D52133A55500F6322F /* wode_fabu.swift */,
 				B91A14EA21212F9800CCD686 /* zhuye.swift */,
 				B9C95E632117B1DD00E6DA06 /* share.swift */,
 				B9445E29211C9A210053F2BC /* change_info.swift */,
@@ -393,7 +396,7 @@
 				B91172B12107D94B00284FB5 /* MyCollectionViewCell.xib in Resources */,
 				B9D6951320EE924C0024F6FF /* awsconfiguration.json in Resources */,
 				B91172B52107D9F900284FB5 /* MyTableViewCell.xib in Resources */,
-				B95BA18E214C5C0400AF7F5A /* English_String.strings in Resources */,
+				B95BA18E214C5C0400AF7F5A /* Localizable.strings in Resources */,
 				17FC2F921E25908D00174015 /* CognitoLogo.png in Resources */,
 				17FC2F851E258FC500174015 /* Main.storyboard in Resources */,
 				17FC2F951E2590D800174015 /* MFAViewController.xib in Resources */,
@@ -495,6 +498,7 @@
 				B91A14EF2121F32B00CCD686 /* guanzhu_cell.swift in Sources */,
 				B91A14FD212A5A5400CCD686 /* chat_message_cell.swift in Sources */,
 				B9E0B17920FE60F0009ED8BD /* image_cell.swift in Sources */,
+				B934EB26214EEB3100B82D5B /* main_page.swift in Sources */,
 				B91A14F32123416400CCD686 /* chat.swift in Sources */,
 				17FC2F9F1E259F3200174015 /* ConfirmSignUpViewController.swift in Sources */,
 				B9C95E68211BC1A900E6DA06 /* setting.swift in Sources */,
@@ -542,13 +546,13 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		B95BA190214C5C0400AF7F5A /* English_String.strings */ = {
+		B95BA190214C5C0400AF7F5A /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B95BA18F214C5C0400AF7F5A /* en */,
 				B95BA193214C5C8400AF7F5A /* zh-Hans */,
 			);
-			name = English_String.strings;
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		B9D6951520EE924C0024F6FF /* awsconfiguration.json */ = {

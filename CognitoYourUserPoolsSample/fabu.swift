@@ -150,7 +150,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         
         
         self.renshu.delegate = self
-        self.renshu.add_placeholder(text: "人数", color: colour)
+        self.renshu.add_placeholder(text: "人数".toLocal(), color: colour)
         self.renshu.backgroundColor = mid
         self.renshu.setBottomBorder()
         self.renshu.textColor = colour
@@ -167,7 +167,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.view.backgroundColor = mid
         self.title_input.textColor = text_light
         self.title_input.backgroundColor = light
-        self.title_input.add_placeholder(text: "标题", color: text_mid)
+        self.title_input.add_placeholder(text: "标题".toLocal(), color: text_mid)
     
         self.view.addSubview(self.yuema_tag)
         self.yuema_tag.backgroundColor = light
@@ -177,10 +177,10 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.renwu_tag.backgroundColor = light
         self.view.addSubview(self.qita_tag)
         self.qita_tag.backgroundColor = light
-        self.yuema_tag.setTitle("约嘛", for: .normal)
-        self.huodong_tag.setTitle("活动", for: .normal)
-        self.renwu_tag.setTitle("任务", for: .normal)
-        self.qita_tag.setTitle("其他", for: .normal)
+        self.yuema_tag.setTitle("约嘛".toLocal(), for: .normal)
+        self.huodong_tag.setTitle("活动".toLocal(), for: .normal)
+        self.renwu_tag.setTitle("任务".toLocal(), for: .normal)
+        self.qita_tag.setTitle("其他".toLocal(), for: .normal)
         self.yuema_tag.tintColor = text_mid
         self.huodong_tag.tintColor = text_mid
         self.renwu_tag.tintColor = text_mid
@@ -208,7 +208,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         
         let padding2 = UIView(frame: CGRect(x:0, y:0, width:87, height:self.reward_number.frame.height))
         let paddingView2 = UILabel(frame: CGRect(x:0, y:0, width:150, height:self.reward_number.frame.height))
-        paddingView2.text = "     人数："
+        paddingView2.text = "     " + "人数".toLocal() + "："
         self.bonus_number.backgroundColor = colour
         self.bonus_number.textColor = sign_in_colour
         self.bonus_number.leftView = paddingView2
@@ -220,9 +220,9 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.button2.layer.cornerRadius = 5.0
         self.button2.backgroundColor = colour
         self.button2.tintColor = sign_in_colour
-        self.button2.setTitle("机会收费", for: .normal)
+        self.button2.setTitle("机会收费".toLocal(), for: .normal)
         //self.view.addSubview(button2)
-        self.button2.dropView.dropDownOptions = ["机会收费","机会奖励"]//, "Magenta", "White", "Black", "Pink"]
+        self.button2.dropView.dropDownOptions = ["机会收费".toLocal(),"机会奖励".toLocal()]//, "Magenta", "White", "Black", "Pink"]
         //self.button2.isHidden = true
     
         self.button.layer.cornerRadius = 5.0
@@ -271,7 +271,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         //self.view.backgroundColor = sign_in_colour
         
         //navigation bar
-        self.title = "发布"
+        self.title = "发布".toLocal()
       
     }
     
@@ -330,8 +330,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         var counter = 0
         
         guard let current_title = self.title_input.text, !current_title.isEmpty else {
-            let alertController = UIAlertController(title: "信息不足",
-                                                    message: "请输入标题",
+            let alertController = UIAlertController(title: "信息不足".toLocal(),
+                                                    message: "请输入标题".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -341,8 +341,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         }
         
         guard let current_content = self.content.text, !current_content.isEmpty else {
-            let alertController = UIAlertController(title: "信息不足",
-                                                    message: "请输入内容",
+            let alertController = UIAlertController(title: "信息不足".toLocal(),
+                                                    message: "请输入内容".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -352,8 +352,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         }
         
         if self.tag_ == 4 {
-            let alertController = UIAlertController(title: "信息不足",
-                                                    message: "请选择标签",
+            let alertController = UIAlertController(title: "信息不足".toLocal(),
+                                                    message: "请选择标签".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -363,8 +363,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         }
         
         if self.reward_number.text == nil || self.reward_number.text == "" {
-            let alertController = UIAlertController(title: "信息不足",
-                                                    message: "请输入金额",
+            let alertController = UIAlertController(title: "信息不足".toLocal(),
+                                                    message: "请输入金额" .toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -374,8 +374,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         }
         
         if self.bonus_number.text == "" || self.bonus_number.text == nil {
-            let alertController = UIAlertController(title: "信息不足",
-                                                    message: "请输入人数",
+            let alertController = UIAlertController(title: "信息不足".toLocal(),
+                                                    message: "请输入人数".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -391,7 +391,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         var queryExpression = AWSDynamoDBScanExpression()
         let user = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
         
-        if button2.title(for: .normal) == "机会奖励"{
+        if button2.title(for: .normal) == "机会奖励".toLocal(){
         var avail = 0.0
         var froz = 0.0
         
@@ -410,8 +410,8 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         haha.waitUntilFinished()
         
         if avail < expense {
-            let alertController = UIAlertController(title: "无法通过",
-                                                    message: "钱包可用金额不足",
+            let alertController = UIAlertController(title: "无法通过".toLocal(),
+                                                    message: "钱包可用金额不足".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -443,12 +443,16 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         let temp_time1 = UInt64(year * 10000000000 + month * 100000000 + day * 1000000)
         let temp_time2 = UInt64(hour * 10000 + minute * 100 + second)
         temp._time = (temp_time1 + temp_time2) as NSNumber
-if button2.title(for: .normal) == "机会奖励"{
+if button2.title(for: .normal) == "机会奖励".toLocal(){
     temp._fuFeiType = self.button.titleLabel?.text
     temp._fuFei = Double(self.reward_number.text!) as! NSNumber
+    temp._shouFei = 0
+    temp._shouFeiType = "nah"
     
 }else{
-    temp._shouFeiType = self.button2.titleLabel?.text
+    temp._shouFeiType = self.button.titleLabel?.text
+    temp._fuFei = 0
+    temp._fuFeiType = "nah"
     temp._shouFei = Double(self.reward_number.text!) as! NSNumber
         }
         temp._tag = tag_ as NSNumber

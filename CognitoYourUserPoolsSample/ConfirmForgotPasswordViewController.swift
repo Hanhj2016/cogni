@@ -39,11 +39,11 @@ class ConfirmForgotPasswordViewController: UIViewController,UITextFieldDelegate 
     }
     override func viewWillAppear(_ animated: Bool) {
         self.confirmationCode.textColor = colour
-        self.confirmationCode.add_placeholder(text: "验证码", color: colour)
+        self.confirmationCode.add_placeholder(text: "验证码".toLocal(), color: colour)
         self.confirmationCode.setBottomBorder()
         self.proposedPassword.isSecureTextEntry = true
         self.proposedPassword.textColor = colour
-        self.proposedPassword.add_placeholder(text: "新密码", color: colour)
+        self.proposedPassword.add_placeholder(text: "新密码".toLocal(), color: colour)
         self.proposedPassword.setBottomBorder()
         
         self.confirm.backgroundColor = colour
@@ -56,8 +56,8 @@ class ConfirmForgotPasswordViewController: UIViewController,UITextFieldDelegate 
     
     @IBAction func updatePassword(_ sender: AnyObject) {
         guard let confirmationCodeValue = self.confirmationCode.text, !confirmationCodeValue.isEmpty else {
-            let alertController = UIAlertController(title: "信息不足",
-                                                    message: "请输入新密码",
+            let alertController = UIAlertController(title: "信息不足".toLocal(),
+                                                    message: "请输入新密码".toLocal(),
                                                     preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alertController.addAction(okAction)

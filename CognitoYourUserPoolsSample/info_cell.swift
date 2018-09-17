@@ -26,7 +26,7 @@ class info_cell: UITableViewCell {
     }
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
-            print("done")
+            //print("done")
             textView.resignFirstResponder()
         }
         return true

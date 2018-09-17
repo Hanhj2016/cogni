@@ -494,7 +494,7 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePi
             cell.chat.backgroundColor = colour
             cell.chat.layer.cornerRadius = 5.0
             cell.chat_width.constant = width + 15
-            cell.chat_height.constant = height + 15
+            cell.chat_height.constant = height + 18
             cell.chat.isScrollEnabled = false
             cell.chat.isEditable = false
             cell.chat.text = p._chattingText![row]
@@ -511,11 +511,13 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePi
                 let message = p._chattingText![row].deletingPrefix(chat_image_preset)
                 if let cachedVersion = imageCache.object(forKey: message as NSString) {
                     cell.picture.image = cachedVersion
+                    cell.chat_height.constant = get_image_size(image: cell.picture.image!).0
+                    cell.chat_width.constant = get_image_size(image: cell.picture.image!).1
                 }
                 else{
                     downloadImage(key_: message, destination: cell.picture)
                 }
-                
+            
                 self.image_dic[row] = cell.picture.image
 
             }
@@ -733,7 +735,8 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePi
                 self.p = resultBook
                 self.user_index = 1
                 DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
+                    if pull_down != 0 {
+                        self.tableView.reloadData()}
                 })
             }
             return nil
@@ -751,7 +754,8 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePi
                 self.user_index = 2
                 self.p = resultBook
                 DispatchQueue.main.async(execute: {
-                    self.tableView.reloadData()
+                    if pull_down != 0 {
+                        self.tableView.reloadData()}
                 })
             }
             return nil

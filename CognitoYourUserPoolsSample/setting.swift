@@ -35,7 +35,7 @@ class setting: UIViewController,UITableViewDelegate,UITableViewDataSource {
          _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
-    let table_titles:[String] = ["个人信息","偏好设置","清除缓存","夜间模式","账号安全","隐私","语言","关于我们","小助手"]
+    let table_titles:[String] = ["个人信息".toLocal(),"偏好设置".toLocal(),"清除缓存".toLocal(),"夜间模式".toLocal(),"账号安全".toLocal(),"隐私".toLocal(),"语言".toLocal(),"关于我们".toLocal(),"小助手".toLocal()]
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "setting_cell", for: indexPath)
