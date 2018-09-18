@@ -145,7 +145,51 @@ func downloadImage(key_:String, destination:UIImageView){
     
    // return end
 }
-
+func downloadImage_to_cell(key_:String, destination:UIImageView, from: [UIImage])->[UIImage]{
+    let transferUtility = AWSS3TransferUtility.default()
+    let expression = AWSS3TransferUtilityDownloadExpression()
+    var completionHandler: AWSS3TransferUtilityDownloadCompletionHandlerBlock?
+    var end:UIImage = UIImage()
+    var final:[UIImage] = from
+    completionHandler = { (task, url, data, error) -> Void in
+        DispatchQueue.main.async(execute: {
+            if let error = error {
+                NSLog("Failed with error: \(error)")
+                print("failed: 169: \(error)")
+            }
+            else{
+                
+                end = UIImage(data: data!)!
+                set_image_cache(key: key_, image: end)
+                destination.image = end
+                var axiba = from
+                if !axiba.contains(end){
+                    axiba.append(end)
+                }
+                final = axiba
+                //print("118: \(end)")
+            }
+        })
+        
+    }
+    let heihei = transferUtility.downloadData(
+        fromBucket: "chance-userfiles-mobilehub-653619147",
+        key: key_,
+        expression: expression,
+        completionHandler: completionHandler)
+    heihei.continueWith { (task) -> AnyObject! in
+        //print("193")
+        if let error = task.error {
+            NSLog("Error: %@",error.localizedDescription);
+            // self.statusLabel.text = "Failed"
+            print("failed 191")
+        }
+        return nil;
+    }
+    heihei.waitUntilFinished()
+    return final
+    // return end
+}
 
 
 
