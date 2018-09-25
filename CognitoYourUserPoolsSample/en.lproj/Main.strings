@@ -459,7 +459,7 @@
 "meQ-8o-RRV.text" = "Got the Chance！";
 
 /* Class = "UILabel"; text = "选择标签"; ObjectID = "n1M-7I-Oqf"; */
-"n1M-7I-Oqf.text" = "Choose a Tag";
+"n1M-7I-Oqf.text" = "choose a tag";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "nvw-vw-l10"; */
 "nvw-vw-l10.text" = "Label";

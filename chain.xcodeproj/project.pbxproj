@@ -44,6 +44,7 @@
 		B934EB2821500F2900B82D5B /* main_page.swift in Sources */ = {isa = PBXBuildFile; fileRef = B934EB2721500F2900B82D5B /* main_page.swift */; };
 		B9445E2A211C9A210053F2BC /* change_info.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9445E29211C9A210053F2BC /* change_info.swift */; };
 		B9445E2C211C9A4C0053F2BC /* info_cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9445E2B211C9A4C0053F2BC /* info_cell.swift */; };
+		B94C455D21543A3100F64A77 /* table_functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B94C455C21543A3100F64A77 /* table_functions.swift */; };
 		B95289D62133A55500F6322F /* wode_fabu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D52133A55500F6322F /* wode_fabu.swift */; };
 		B95289D82134644D00F6322F /* tableView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D72134644D00F6322F /* tableView2.swift */; };
 		B95289DA2138DAFE00F6322F /* qianbao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95289D92138DAFE00F6322F /* qianbao.swift */; };
@@ -123,6 +124,7 @@
 		B934EB2721500F2900B82D5B /* main_page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main_page.swift; sourceTree = "<group>"; };
 		B9445E29211C9A210053F2BC /* change_info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = change_info.swift; sourceTree = "<group>"; };
 		B9445E2B211C9A4C0053F2BC /* info_cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = info_cell.swift; sourceTree = "<group>"; };
+		B94C455C21543A3100F64A77 /* table_functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = table_functions.swift; sourceTree = "<group>"; };
 		B95289D52133A55500F6322F /* wode_fabu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wode_fabu.swift; sourceTree = "<group>"; };
 		B95289D72134644D00F6322F /* tableView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableView2.swift; sourceTree = "<group>"; };
 		B95289D92138DAFE00F6322F /* qianbao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qianbao.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				17FC2F981E25940900174015 /* SignInViewController.swift */,
 				B9D6951520EE924C0024F6FF /* awsconfiguration.json */,
 				17FC2F9A1E259E0500174015 /* Constants.swift */,
+				B94C455C21543A3100F64A77 /* table_functions.swift */,
 				B91A14F6212A2C5D00CCD686 /* messagesViewController.swift */,
 				B91A14FC212A5A5400CCD686 /* chat_message_cell.swift */,
 				B91A14FA212A5A3100CCD686 /* chat_message.swift */,
@@ -335,6 +338,7 @@
 				17FC2F791E258FC500174015 /* Frameworks */,
 				17FC2F7A1E258FC500174015 /* Resources */,
 				E3AE3BC58D3D91C5DAC696FA /* [CP] Embed Pods Frameworks */,
+				B94C455E21575B5000F64A77 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -425,6 +429,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B94C455E21575B5000F64A77 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n\n";
+		};
 		E3AE3BC58D3D91C5DAC696FA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -490,6 +511,7 @@
 				B91A14F521237A5C00CCD686 /* chat_cell.swift in Sources */,
 				B91A14F1212219A700CCD686 /* other_zhuye.swift in Sources */,
 				B9F77BD4210F77060088E601 /* post_detail.swift in Sources */,
+				B94C455D21543A3100F64A77 /* table_functions.swift in Sources */,
 				B91A14ED2121ECAB00CCD686 /* guanzhu.swift in Sources */,
 				B9445E2A211C9A210053F2BC /* change_info.swift in Sources */,
 				B95289D62133A55500F6322F /* wode_fabu.swift in Sources */,

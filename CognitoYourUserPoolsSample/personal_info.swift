@@ -111,6 +111,40 @@ var renwu_list:[String] = []
         self.navigationController?.pushViewController(new_chat, animated: true)
     }
     
+    @objc func guanzhu_label_(sender : MyTapGesture){
+        title_name = "我的关注".toLocal()
+        performSegue(withIdentifier: "guanzhu", sender: self)
+    }
+    @objc func beiguanzhu_label_(sender : MyTapGesture){
+        let title_name = "被关注".toLocal()
+        
+        //performSegue(withIdentifier: "zhuye", sender: self)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "guanzhu") as! guanzhu
+        if p._guanZhu != nil
+        {new_chat.guanzhu_list = p._beiGuanZhu!}
+        else
+        {new_chat.guanzhu_list = []}
+        new_chat.p = self.p
+        
+        
+        new_chat.title = "被关注".toLocal()
+        self.navigationController?.pushViewController(new_chat, animated: true)
+    }
+    @objc func fabu_label_(sender : MyTapGesture){
+        title_name = "我的发布".toLocal()
+        
+        //performSegue(withIdentifier: "zhuye", sender: self)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "wode_fabu") as! wode_fabu
+        new_chat.p = self.p
+        new_chat.title = "我的发布".toLocal()
+        self.navigationController?.pushViewController(new_chat, animated: true)
+    }
     
     @IBAction func guanzhu(_ sender: Any) {
         title_name = "我的关注".toLocal()
@@ -173,6 +207,15 @@ var renwu_list:[String] = []
         
     }
     
+    @objc func imageViewTap(_ recognizer:UITapGestureRecognizer){
+        //图片索引
+        let index = 0
+        //进入图片全屏展示
+        if self.profile_picture.image != nil{
+        let previewVC = ImagePreviewVC(images: [self.profile_picture.image!], index: index)
+        //self.navigationController?.setToolbarHidden(true, animated: true)
+            self.navigationController?.pushViewController(previewVC, animated: true)}
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -194,11 +237,18 @@ var renwu_list:[String] = []
            // downloadImage(key_: "\(p._userId!).png", destination: self.profile_picture)
             self.profile_picture.layer.borderWidth = 1.0
             self.profile_picture.layer.masksToBounds = false
-            self.profile_picture.layer.borderColor = UIColor.white.cgColor
+            self.profile_picture.layer.borderColor = mid.cgColor
             self.profile_picture.layer.cornerRadius = self.profile_picture.frame.size.width / 2
             self.profile_picture.clipsToBounds = true
             
         }
+        
+       self.profile_picture.isUserInteractionEnabled = true
+        let tapSingle=UITapGestureRecognizer(target:self,
+                                             action:#selector(imageViewTap(_:)))
+        tapSingle.numberOfTapsRequired = 1
+        tapSingle.numberOfTouchesRequired = 1
+        self.profile_picture.addGestureRecognizer(tapSingle)
         
         
         if (p._userId != nil){
@@ -280,7 +330,25 @@ var renwu_list:[String] = []
         self.last_view.backgroundColor = mid
         self.more.image = UIImage(named:"more")
         
-        
+        let tap:MyTapGesture = MyTapGesture(target: self, action: #selector(guanzhu_label_))
+         let tap2:MyTapGesture = MyTapGesture(target: self, action: #selector(beiguanzhu_label_))
+         let tap3:MyTapGesture = MyTapGesture(target: self, action: #selector(fabu_label_))
+        let tap4:MyTapGesture = MyTapGesture(target: self, action: #selector(guanzhu_label_))
+        let tap5:MyTapGesture = MyTapGesture(target: self, action: #selector(beiguanzhu_label_))
+        let tap6:MyTapGesture = MyTapGesture(target: self, action: #selector(fabu_label_))
+        //tap3.cancelsTouchesInView = true
+        self.follow_label.isUserInteractionEnabled = true
+        self.follow_label.addGestureRecognizer(tap)
+        self.follow_value.isUserInteractionEnabled = true
+        self.follow_value.addGestureRecognizer(tap4)
+        self.followed_label.isUserInteractionEnabled = true
+        self.followed_label.addGestureRecognizer(tap2)
+        self.followed_value.isUserInteractionEnabled = true
+        self.followed_value.addGestureRecognizer(tap5)
+        self.fabu_label.isUserInteractionEnabled = true
+        self.fabu_label.addGestureRecognizer(tap3)
+        self.fabu_value.isUserInteractionEnabled = true
+        self.fabu_value.addGestureRecognizer(tap6)
         
         // Do any additional setup after loading the view.
     }

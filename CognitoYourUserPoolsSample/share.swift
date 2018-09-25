@@ -29,9 +29,10 @@ class share: UIViewController {
     @IBOutlet weak var title_label: UILabel!
     @IBOutlet weak var top_bar: UIView!
     
+    @IBOutlet weak var content_label: UILabel!
     @IBOutlet weak var back: UIButton!
     @IBOutlet weak var share: UIButton!
-    
+    var content = ""
     var profile_picture_link = ""
     var username_ = ""
     var title_ = ""
@@ -89,16 +90,20 @@ class share: UIViewController {
         var temp:ChanceWithValue = ChanceWithValue()
         let date = Date()
         let calendar = Calendar.current
-        let year  = calendar.component(.year, from: date) // 0
-        let month = calendar.component(.month, from: date) // 1
-        let day = calendar.component(.day, from: date) //2
-        let hour = calendar.component(.hour, from: date) // 3
-        let minute = calendar.component(.minute, from: date) // 4
-        let second = calendar.component(.second, from: date) // 5
-        let temp_time1 = Int(year * 10000000000 + month * 100000000 + day * 1000000)
-        let temp_time2 = Int(hour * 10000 + minute * 100 + second)
+        let year:Int64  = Int64(calendar.component(.year, from: date)) // 0
+        let month:Int64 = Int64(calendar.component(.month, from: date)) // 1
+        let day:Int64 = Int64(calendar.component(.day, from: date)) //2
+        let hour:Int64 = Int64(calendar.component(.hour, from: date)) // 3
+        let minute:Int64 = Int64(calendar.component(.minute, from: date)) // 4
+        let second:Int64 = Int64(calendar.component(.second, from: date)) // 5
+        let temp_time1 = (year * 10000000000 + month * 100000000 + day * 1000000)
+        let temp_time2 = (hour * 10000 + minute * 100 + second)
         temp._time = (temp_time1 + temp_time2) as NSNumber
-        temp._title = self.input.text
+        var message = self.input.text
+        if message == "" || message == nil{
+            message = " "
+        }
+        temp._title = message
         temp._username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
         
         
@@ -128,7 +133,7 @@ class share: UIViewController {
                     })
                     haha.waitUntilFinished()
                     
-                    temp._sharedFrom = ["\(self.id)","\(self.username_)","\(self.title_)","\(self.profile_picture_link)"]
+                    temp._sharedFrom = ["\(self.id)","\(self.username_)","\(self.title_)","\(self.profile_picture_link)","\(self.content)"]
                     temp._fuFeiType = "cc"
                     temp._fuFei = 0
                     temp._shouFei = 0
@@ -170,17 +175,17 @@ class share: UIViewController {
         self.share.backgroundColor = colour
         self.share.tintColor = sign_in_colour
         self.share.layer.cornerRadius = 15
-//        let url = URL(string:profile_picture_link)!
-//        self.profile_picture.image = UIImage(data:try! Data(contentsOf: url))
+self.content_label.text = self.content
+        self.profile_picture.image = UIImage(named:"morenzhuanfa")
+        var link = self.profile_picture_link.deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
         
-        //downloadImage(key_: "\(username_).png", destination: self.profile_picture)
-        if let cachedVersion = imageCache.object(forKey: "\(username_).png" as NSString) {
+        if let cachedVersion = imageCache.object(forKey: link as NSString) {
             self.profile_picture.image = cachedVersion
         }
         else{
-            downloadImage(key_: "\(username_).png", destination: self.profile_picture)
+            downloadImage(key_: link, destination: self.profile_picture)
         }
-        
+        self.profile_picture.contentMode = .scaleAspectFit
         
         
         
@@ -192,11 +197,12 @@ class share: UIViewController {
         self.username.textColor = text_light
     
         self.title_label.text = title_
-        self.title_label.font = self.title_label.font.withSize(14)
-        self.title_label.textColor = text_mid
-        self.title_label.numberOfLines = 0
-        self.title_label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        self.title_label.sizeToFit()
+        self.title_label.font = self.title_label.font.withSize(17)
+        self.title_label.textColor = text_light
+        self.content_label.textColor = text_light
+//        self.title_label.numberOfLines = 0
+//        self.title_label.lineBreakMode = NSLineBreakMode.byWordWrapping
+//        self.title_label.sizeToFit()
         
         self.input.textColor = text_mid
         self.input.backgroundColor = mid

@@ -12,7 +12,7 @@ class tableView2: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // print("count:\(images.count)")
-        return images.count
+        return image_links.count
         
     }
     
@@ -20,11 +20,21 @@ class tableView2: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell",
                                                        for: indexPath) as! MyCollectionViewCell
         
-        cell.photo.image = images[indexPath.row]
+        let message = self.image_links[indexPath.row].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
+        if let cachedVersion = imageCache.object(forKey: message as NSString) {
+            cell.photo.image = cachedVersion
+            if !self.images.contains(cachedVersion){
+                self.images.append(cachedVersion)}
+        }
+        else{
+            downloadImage(key_: message, destination: cell.photo)
+            //print("title: \(self.title.text) count: \(self.images.count)" )
+        }
+        
+        cell.photo.backgroundColor = sign_in_colour
+        cell.photo.contentMode = .scaleAspectFit
         cell.photo.tag = indexPath.row
         cell.photo.isUserInteractionEnabled = true
-        //self.myViewController.view.addSubview(cell.photo)
-        // this above line makes images big dont know why
         let tapSingle=UITapGestureRecognizer(target:self,
                                              action:#selector(imageViewTap(_:)))
         tapSingle.numberOfTapsRequired = 1
@@ -33,17 +43,30 @@ class tableView2: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
         return cell
         
     }
-    
     @objc func imageViewTap(_ recognizer:UITapGestureRecognizer){
         //图片索引
         let index = recognizer.view!.tag
         //进入图片全屏展示
-        let previewVC = ImagePreviewVC(images: images, index: index)
+        //print("count: \(images.count) index: \(index)" )
+        images = []
+        var image_dick:[Int:Int] = [:]
+        var counter = 0
+        for a in 0...self.image_links.count - 1
+        {
+            let indexPath = IndexPath(item: a, section: 0)
+            if let x = (self.image_collection.cellForItem(at: indexPath) as! MyCollectionViewCell).photo.image
+            {
+                images.append(x)
+                image_dick[a] = counter
+                counter = counter + 1
+            }
+        }
+        
+        let previewVC = ImagePreviewVC(images: images, index: image_dick[index]!)
         //self.navigationController?.setToolbarHidden(true, animated: true)
         self.firstViewController()?.navigationController?.pushViewController(previewVC, animated: true)
     }
-    
-    
+     var image_links:[String] = []
     @IBOutlet weak var profile_picture: UIImageView!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var time_label: UILabel!
@@ -78,6 +101,10 @@ class tableView2: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
     @IBOutlet weak var cancel: UIButton!
     @IBOutlet weak var confirm: UIButton!
     @IBOutlet weak var finish_label: UILabel!
+   
+    @IBOutlet weak var tag_label: UILabel!
+    @IBOutlet weak var xiala: UIButton!
+    @IBOutlet weak var content_height: NSLayoutConstraint!
     
     
     

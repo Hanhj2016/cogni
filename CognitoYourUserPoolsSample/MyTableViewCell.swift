@@ -30,7 +30,8 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
             //print("title: \(self.title.text) count: \(self.images.count)" )
         }
         
-        
+        cell.photo.backgroundColor = sign_in_colour
+        cell.photo.contentMode = .scaleAspectFit
         cell.photo.tag = indexPath.row
         cell.photo.isUserInteractionEnabled = true
         let tapSingle=UITapGestureRecognizer(target:self,
@@ -78,6 +79,7 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
     
     @IBOutlet weak var image_collection: UICollectionView!
     
+    @IBOutlet weak var content_height: NSLayoutConstraint!
     @IBOutlet weak var tool_bar: UIView!
     @IBOutlet weak var bot_bar: UIView!
     @IBOutlet weak var zhanwaifenxiang: UIButton!
@@ -95,8 +97,10 @@ class MyTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionVi
     
     @IBOutlet weak var share_detail: UIButton!
     @IBOutlet weak var xiala: UIButton!
+    @IBOutlet weak var tag_label: UILabel!
     
     
+    @IBOutlet weak var share_content: UILabel!
     
      var myViewController: UIViewController!
     var images:[UIImage] = []

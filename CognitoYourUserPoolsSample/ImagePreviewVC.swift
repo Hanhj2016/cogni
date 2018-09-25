@@ -85,14 +85,16 @@ class ImagePreviewVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //隐藏导航栏
+        self.navigationController?.toolbar.isHidden = true
        // self.navigationController?.setToolbarHidden(true, animated: true)
-       // self.navigationController?.setNavigationBarHidden(true, animated: false)
+        //self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
  
     //视图消失时
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //显示导航栏
+        //self.navigationController?.toolbar.isHidden = false
      //   self.navigationController?.setToolbarHidden(false, animated: true)
       //  self.navigationController?.setNavigationBarHidden(false, animated: false)
     }

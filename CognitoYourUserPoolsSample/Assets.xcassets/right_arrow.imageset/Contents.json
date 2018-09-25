@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "filename" : "kisspng-green-arrow-desktop-wallpaper-computer-icons-clip-right-curved-white-arrow-png-5ab1bd6ad16d80.5039852815215978028578.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "kisspng-green-arrow-desktop-wallpaper-computer-icons-clip-right-curved-white-arrow-png-5ab1bd6ad16d80.5039852815215978028578-1.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "kisspng-green-arrow-desktop-wallpaper-computer-icons-clip-right-curved-white-arrow-png-5ab1bd6ad16d80.5039852815215978028578-2.png",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

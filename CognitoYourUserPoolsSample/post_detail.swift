@@ -20,11 +20,39 @@ import Foundation
 import PCLBlurEffectAlert
 class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource {
     
+    @IBOutlet weak var tag_label: UILabel!
+    @IBOutlet weak var content_height: NSLayoutConstraint!
+    @IBOutlet weak var button_height: NSLayoutConstraint!
     @IBOutlet weak var alertview: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var share_detail: UIButton!
+    @IBAction func share_detail(_ sender: Any) {
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        //print("in")
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "post_detail") as! post_detail
+        let id = p._sharedFrom![0]
+        
+        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil)
+        heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+            if let error = task.error as? NSError {
+                print("The request failed. Error: \(error)")
+            } else if let resultBook = task.result as? ChanceWithValue {
+                nextViewController.p = resultBook
+                
+            }
+            return nil
+        })
+        heihei.waitUntilFinished()
+        nextViewController.navigationController?.navigationBar.isHidden = false
+        self.navigationController!.pushViewController(nextViewController, animated: true)
+        //self.present(nextViewController, animated:true, completion:nil)
+        
+    }
     
     
-    
+ 
+    @IBOutlet weak var post_content: UILabel!
     @IBOutlet weak var ok: UILabel!
     @IBOutlet weak var wodejihui: UILabel!
     @IBOutlet weak var top_view: UIView!
@@ -77,6 +105,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     @IBOutlet weak var label1: UILabel!
     @IBOutlet weak var label2: UILabel!
     @IBOutlet weak var label3: UILabel!
+    @IBOutlet weak var tool_bar_height: NSLayoutConstraint!
     
     
     
@@ -197,7 +226,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         dynamoDbObjectMapper.save(p,completionHandler:nil)
         
         
-        
+      
         
         
        
@@ -212,15 +241,16 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     
     
     
-    @IBAction func share_detail(_ sender: Any) {
+     @objc func share_tap(sender : MyTapGesture){
         //print("in")
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
+        //print("in")
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "post_detail") as! post_detail
         let id = p._sharedFrom![0]
         
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+        let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil)
+            heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
             if let error = task.error as? NSError {
                 print("The request failed. Error: \(error)")
             } else if let resultBook = task.result as? ChanceWithValue {
@@ -229,6 +259,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             }
             return nil
         })
+       heihei.waitUntilFinished()
         nextViewController.navigationController?.navigationBar.isHidden = false
         self.navigationController!.pushViewController(nextViewController, animated: true)
         //self.present(nextViewController, animated:true, completion:nil)
@@ -245,14 +276,14 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
     func get_time() -> String{
         let date = Date()
         let calendar = Calendar.current
-        let year  = calendar.component(.year, from: date) // 0
-        let month = calendar.component(.month, from: date) // 1
-        let day = calendar.component(.day, from: date) //2
-        let hour = calendar.component(.hour, from: date) // 3
-        let minute = calendar.component(.minute, from: date) // 4
-        let second = calendar.component(.second, from: date) // 5
-        let temp_time1 = Int(year * 10000000000 + month * 100000000 + day * 1000000)
-        let temp_time2 = Int(hour * 10000 + minute * 100 + second)
+        let year:Int64  = Int64(calendar.component(.year, from: date)) // 0
+        let month:Int64 = Int64(calendar.component(.month, from: date)) // 1
+        let day:Int64 = Int64(calendar.component(.day, from: date)) //2
+        let hour:Int64 = Int64(calendar.component(.hour, from: date)) // 3
+        let minute:Int64 = Int64(calendar.component(.minute, from: date)) // 4
+        let second:Int64 = Int64(calendar.component(.second, from: date)) // 5
+        let temp_time1 = (year * 10000000000 + month * 100000000 + day * 1000000)
+        let temp_time2 = (hour * 10000 + minute * 100 + second)
         let temp_time = (temp_time1 + temp_time2)
         return String(temp_time)
     }
@@ -361,7 +392,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             offset = Int(200 - difference)
         }
         self.input_height.constant = keyboardframe!.height
-        print("height: \(self.input_height.constant)")
+      //  print("height: \(self.input_height.constant)")
         
     }
     
@@ -501,14 +532,31 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        if p._pictures != nil{
+            return p._pictures!.count}
+        else
+        {
+            return 0
+        }
         
     }
-    
+     var image_links:[String] = []
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell",
                                                        for: indexPath) as! MyCollectionViewCell
+        let message = self.image_links[indexPath.row].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
+        if let cachedVersion = imageCache.object(forKey: message as NSString) {
+            cell.photo.image = cachedVersion
+            if !self.images.contains(cachedVersion){
+                self.images.append(cachedVersion)}
+        }
+        else{
+            downloadImage(key_: message, destination: cell.photo)
+            //print("title: \(self.title.text) count: \(self.images.count)" )
+        }
         
+        cell.photo.backgroundColor = sign_in_colour
+        cell.photo.contentMode = .scaleAspectFit
         cell.photo.image = images[indexPath.row]
         cell.photo.tag = indexPath.row
         cell.photo.isUserInteractionEnabled = true
@@ -526,7 +574,22 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         //图片索引
         let index = recognizer.view!.tag
         //进入图片全屏展示
-        let previewVC = ImagePreviewVC(images: images, index: index)
+        //print("count: \(images.count) index: \(index)" )
+        images = []
+        var image_dick:[Int:Int] = [:]
+        var counter = 0
+        for a in 0...self.image_links.count - 1
+        {
+            let indexPath = IndexPath(item: a, section: 0)
+            if let x = (self.image_collection.cellForItem(at: indexPath) as! MyCollectionViewCell).photo.image
+            {
+                images.append(x)
+                image_dick[a] = counter
+                counter = counter + 1
+            }
+        }
+        
+        let previewVC = ImagePreviewVC(images: images, index: image_dick[index]!)
         //self.navigationController?.setToolbarHidden(true, animated: true)
         self.navigationController?.pushViewController(previewVC, animated: true)
     }
@@ -602,15 +665,39 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         self.alertview.layer.cornerRadius = 5.0
         
-        
+        let tap8:MyTapGesture = MyTapGesture(target: self, action: #selector(share_tap))
+         let tap9:MyTapGesture = MyTapGesture(target: self, action: #selector(share_tap))
+         let tap10:MyTapGesture = MyTapGesture(target: self, action: #selector(share_tap))
+        if p._sharedFrom != nil{
+            tap8.username = p._sharedFrom![0]
+            tap9.username = p._sharedFrom![0]
+            tap10.username = p._sharedFrom![0]
+           self.share_profile_picture.backgroundColor = sign_in_colour
+            self.share_profile_picture.contentMode = .scaleAspectFit
+            self.share_detail.isHidden = false
+            
+            self.image_collection.isHidden = true
+            
+            self.share_view.isHidden = false
+            self.share_view.isUserInteractionEnabled = true
+           self.share_view.addGestureRecognizer(tap8)
+            
+
+        }
+        else
+        {
+            self.share_view.isHidden = true
+            self.share_detail.isHidden = true
+            self.image_collection.isHidden = false
+        }
         
         
         self.alertview.isHidden = true
         let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
         let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
         tap.username = p._username!
-        tap.cancelsTouchesInView = true
-        tap2.username = p._username!
+        //tap.cancelsTouchesInView = true
+        //tap2.username = p._username!
         tap2.cancelsTouchesInView = true
         
         
@@ -655,11 +742,8 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         
         let left = ren - ge - conf - unconf
         
-        if self.p._sharedFrom != nil || con_count + uncon_count == Int(p._renShu!)
-        {self.get.isHidden = false
-        }
-        else
-        {self.get.isHidden = true}
+      
+        
         self.profile_picture.isUserInteractionEnabled = true
         self.profile_picture.addGestureRecognizer(tap)
         
@@ -777,11 +861,12 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             self.content.numberOfLines = 0
             self.content.lineBreakMode = NSLineBreakMode.byWordWrapping
             self.content.sizeToFit()
-            self.content.backgroundColor = mid
+            self.content_height.constant = self.content.text!.height(withConstrainedWidth: self.content.frame.width, font: self.content.font)
         }
         else
         {
-            self.content.isHidden = true
+            //self.content.isHidden = true
+            self.content_height.constant = 0
         }
         
         
@@ -870,32 +955,32 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
                         else
                         {
                             if Minute < 10{
-                                output = "\(hour):0\(Minute)"
+                                output = " \(hour):0\(Minute)"
                             }else{
-                                output = "\(hour):\(Minute)"}}
+                                output = " \(hour):\(Minute)"}}
                     }
                     else
                     {
                         if Minute < 10{
-                            output = "\(hour):0\(Minute)"
+                            output = " \(hour):0\(Minute)"
                         }else{
-                            output = "\(hour):\(Minute)"}
+                            output = " \(hour):\(Minute)"}
                     }
                 }
                 else if time__[2] == (day + 1)
                 {
                     if Minute < 10{
-                        output = "\(hour):0\(Minute)"
+                        output = " \(hour):0\(Minute)"
                     }else{
-                        output = "\(hour):\(Minute)"}
+                        output = " \(hour):\(Minute)"}
                     output = "昨天".toLocal() + output
                 }
                 else if time__[2] == day + 2
                 {
                     if Minute < 10{
-                        output = "\(hour):0\(Minute)"
+                        output = " \(hour):0\(Minute)"
                     }else{
-                        output = "\(hour):\(Minute)"}
+                        output = " \(hour):\(Minute)"}
                     output = "昨天".toLocal() + output
                 }
                 else
@@ -915,25 +1000,41 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             
         }
         
+        self.tagg.isHidden = true
+        //cell.tag_label.isHidden = true
+        self.tag_label.backgroundColor = tag_colour
+        self.tag_label.layer.cornerRadius = 8.0
+        self.tag_label.layer.masksToBounds = false
+        self.tag_label.clipsToBounds = true
+        self.tag_label.font = self.tag_label.font.withSize(9)
         if ((p._tag) != nil)
         {
             let t = p._tag
             if t == 1
-            {self.tagg.image = UIImage(named: "huodong")}
+            {//cell.tagg.image = UIImage(named: "huodong")
+                self.tag_label.text = "活动".toLocal()
+            }
             else if t == 2
-            {self.tagg.image = UIImage(named: "renwu")}
+            {//cell.tagg.image = UIImage(named: "renwu")
+                self.tag_label.text = "任务".toLocal()
+            }
             else if t == 0
-            {self.tagg.image = UIImage(named: "yuema")}
+            {//cell.tagg.image = UIImage(named: "yuema")
+                self.tag_label.text = "约嘛".toLocal()
+            }
             else if t == 3
-            {self.tagg.image = UIImage(named: "qita")}
+            {//cell.tagg.image = UIImage(named: "qita")
+                self.tag_label.text = "其他".toLocal()
+            }
         }
+        
         if ((p._profilePicture != nil))
         {
             
             // self.profile_picture.image = UIImage(data: data!)
             self.profile_picture.layer.borderWidth = 1.0
             self.profile_picture.layer.masksToBounds = false
-            self.profile_picture.layer.borderColor = UIColor.white.cgColor
+            self.profile_picture.layer.borderColor = mid.cgColor
             self.profile_picture.layer.cornerRadius = self.profile_picture.frame.size.width / 2
             self.profile_picture.clipsToBounds = true
         }
@@ -943,14 +1044,31 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.get.backgroundColor = colour
         self.get.tintColor = mid
         
+        self.image_links = []
+        if (p._pictures != nil)&&(p._pictures?.count != 0)
+        {
+            for i in 0...(p._pictures?.count)!-1
+            {
+                
+                self.image_links.append(p._pictures![i])
+            }
+        }
         self.image_collection.reloadData()
         let contentSize = self.image_collection.collectionViewLayout.collectionViewContentSize
-        let text_content_size = self.content.frame.height
+        
+        var text_content_size:CGFloat = 0.0
+        if p._text != nil{ text_content_size = self.content.frame.height}
         self.image_collection.collectionViewLayout.invalidateLayout()
+     
         self.collectionViewHeight.constant = contentSize.height
+       // self.button_height.constant = contentSize.height
+       // print("height: \(contentSize.height)")
         self.top_view_height.constant = 70 + text_content_size + contentSize.height + 80
         self.image_collection.backgroundColor = mid
         
+       // self.share_detail.backgroundColor = UIColor.red
+       // self.button_height.constant = 150
+       // self.view.addSubview(self.share_detail)
         self.tool_bar.backgroundColor = mid
         self.like_number.backgroundColor = mid
         self.like_number.tintColor = colour
@@ -1000,6 +1118,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             self.share_number.isHidden = true
             self.like_number.isHidden = true
             self.comment_number.isHidden = true
+            self.tool_bar_height.constant = 0
         }
         
         
@@ -1069,35 +1188,51 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.bot_comment.backgroundColor = sign_in_colour
         self.bot_share.backgroundColor = sign_in_colour
          //print("before top height: \(self.top_view_height)")
-        
         if p._sharedFrom == nil //no share
         {
             self.share_view.isHidden = true
-            self.get.isHidden = false
+            self.share_profile_picture.isHidden = true
+            self.content.isHidden = false
+           // self.content_height.constant = 0
+            
         }
         else
         {
-            self.get.isHidden = true
+            self.content_height.constant = 0
+            self.content.isHidden = true
             self.share_view.isHidden = false
-           
+            self.share_profile_picture.isHidden = false
+            //print("height: \(cell.share_view.frame.height)")
             self.collectionViewHeight.constant = 130
-
-            if let cachedVersion = imageCache.object(forKey: "\(p._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
+            self.share_profile_picture.backgroundColor = sign_in_colour
+            self.share_profile_picture.contentMode = .scaleAspectFit
+            self.share_profile_picture.image = UIImage(named:"morenzhuanfa")
+            var link = p._sharedFrom![3].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
+            
+            if let cachedVersion = imageCache.object(forKey: link as NSString) {
                 self.share_profile_picture.image = cachedVersion
             }
             else{
-                downloadImage(key_: "\(p._sharedFrom![1]).png".deletingPrefix("@"), destination: self.share_profile_picture)
+                downloadImage(key_: link, destination: self.share_profile_picture)
             }
-            
+            //downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
             self.share_title.text = p._sharedFrom![2]
+            self.post_content.textColor = text_light
+            if p._sharedFrom!.count > 4{
+                self.post_content.text = p._sharedFrom![4]
+                self.post_content.textColor = text_light
+                self.post_content.isHidden = false
+            }
+            else
+            {
+                self.post_content.isHidden = true
+            }
             self.share_username.text = p._sharedFrom![1]
-            self.share_username.textColor = text_light
             self.share_view.backgroundColor = sign_in_colour
+            self.share_username.textColor = text_light
             self.share_title.textColor = text_light
-            self.share_title.font = self.share_title.font.withSize(14)
-            self.share_title.numberOfLines = 0
-            self.share_title.lineBreakMode = NSLineBreakMode.byWordWrapping
-            self.share_title.sizeToFit()
+        
+
         }
         
         
@@ -1114,7 +1249,26 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         self.label1.isHidden = true
         self.label2.isHidden = true
         self.label3.isHidden = true
+        // get show
+        if self.p._sharedFrom != nil || left == 0
+        {self.get.isHidden = true
+        }
+        else
+        {self.get.isHidden = false}
+       if p._getList != nil && p._getList!.contains(user!)
+       {self.get.isHidden = true
+       }
+        if p._confirmList != nil && p._confirmList!.contains(user!)
+        {self.get.isHidden = true
+        }
+        if p._unConfirmList != nil && p._unConfirmList!.contains(user!)
+        {self.get.isHidden = true
+        }
+       // p._confirmList!.contains(user!) || p._unConfirmList!.contains(user!)
         
+     //   self.share_title.backgroundColor = UIColor.green
+     //   self.share_username.backgroundColor = UIColor.green
+    
     }
     
     func sort_comments(){
@@ -1205,7 +1359,7 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             //downloadImage(key_: "\(comments[index]._userId!).png".deletingPrefix("@"), destination: cell.profile_picture)
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
-            cell.profile_picture.layer.borderColor = UIColor.white.cgColor
+            cell.profile_picture.layer.borderColor = mid.cgColor
             cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
             cell.profile_picture.clipsToBounds = true
             //print("438")

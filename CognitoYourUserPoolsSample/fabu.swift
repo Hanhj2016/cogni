@@ -142,7 +142,17 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
     
     
     
-    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        guard let text = textField.text else { return true }
+        if textField == self.inputView{
+        let newLength = text.characters.count + string.characters.count - range.length
+            return newLength <= 140}
+        if textField == self.title_input{
+            let newLength = text.characters.count + string.characters.count - range.length
+            return newLength <= 100}
+        return true
+    }
     @IBOutlet weak var renshu: UITextField!
     
     override func viewDidLoad() {
@@ -209,6 +219,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         let padding2 = UIView(frame: CGRect(x:0, y:0, width:87, height:self.reward_number.frame.height))
         let paddingView2 = UILabel(frame: CGRect(x:0, y:0, width:150, height:self.reward_number.frame.height))
         paddingView2.text = "     " + "人数".toLocal() + "："
+        paddingView2.font = paddingView2.font.withSize(15)
         self.bonus_number.backgroundColor = colour
         self.bonus_number.textColor = sign_in_colour
         self.bonus_number.leftView = paddingView2
@@ -220,7 +231,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.button2.layer.cornerRadius = 5.0
         self.button2.backgroundColor = colour
         self.button2.tintColor = sign_in_colour
-        self.button2.setTitle("机会收费".toLocal(), for: .normal)
+        self.button2.setTitle("机会收费".toLocal() + " ▼", for: .normal)
         //self.view.addSubview(button2)
         self.button2.dropView.dropDownOptions = ["机会收费".toLocal(),"机会奖励".toLocal()]//, "Magenta", "White", "Black", "Pink"]
         //self.button2.isHidden = true
@@ -228,7 +239,7 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         self.button.layer.cornerRadius = 5.0
         self.button.backgroundColor = colour
         self.button.tintColor = sign_in_colour
-       self.button.setTitle("cc", for: .normal)
+       self.button.setTitle("cc" + "  ▼", for: .normal)
         //self.view.addSubview(button)
         self.button.dropView.dropDownOptions = ["cc","btc", "Candy"]//, "Magenta", "White", "Black", "Pink"]
       //print("dude")
@@ -434,16 +445,20 @@ class fabu: UIViewController, UIImagePickerControllerDelegate,UINavigationContro
         var temp:ChanceWithValue = ChanceWithValue()
         let date = Date()
         let calendar = Calendar.current
-        let year  = calendar.component(.year, from: date) // 0
-        let month = calendar.component(.month, from: date) // 1
-        let day = calendar.component(.day, from: date) //2
-        let hour = calendar.component(.hour, from: date) // 3
-        let minute = calendar.component(.minute, from: date) // 4
-        let second = calendar.component(.second, from: date) // 5
-        let temp_time1 = UInt64(year * 10000000000 + month * 100000000 + day * 1000000)
-        let temp_time2 = UInt64(hour * 10000 + minute * 100 + second)
+        let year:Int64  = Int64(calendar.component(.year, from: date)) // 0
+        let month:Int64 = Int64(calendar.component(.month, from: date)) // 1
+        let day:Int64 = Int64(calendar.component(.day, from: date)) //2
+        let hour:Int64 = Int64(calendar.component(.hour, from: date)) // 3
+        let minute:Int64 = Int64(calendar.component(.minute, from: date)) // 4
+        let second:Int64 = Int64(calendar.component(.second, from: date)) // 5
+        let temp_time1 = (year * 10000000000 + month * 100000000 + day * 1000000)
+        let temp_time2 = (hour * 10000 + minute * 100 + second)
         temp._time = (temp_time1 + temp_time2) as NSNumber
-if button2.title(for: .normal) == "机会奖励".toLocal(){
+        if self.button.titleLabel?.text == "cc  ▼"
+        {self.button.setTitle("cc", for: .normal)}
+if button2.title(for: .normal) == "机会奖励".toLocal() || button2.title(for: .normal) == "机会奖励".toLocal() + " ▼"{
+    if self.button.titleLabel?.text == "cc  ▼"
+    {self.button.setTitle("cc", for: .normal)}
     temp._fuFeiType = self.button.titleLabel?.text
     temp._fuFei = Double(self.reward_number.text!) as! NSNumber
     temp._shouFei = 0

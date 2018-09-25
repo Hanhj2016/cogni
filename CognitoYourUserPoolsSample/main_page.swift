@@ -22,28 +22,25 @@ import Foundation
 
 class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
-    
+    var xiala_dick:[Int:Int] = [:]
     @IBOutlet weak var top_bar: UIView!
     @IBAction func xiala(_ sender: Any) {
         let row = (sender as! UIButton).tag
         let temp = posts[row]
         let indexPath = IndexPath(item: row, section: 0)
-        let cell = self.tableView.cellForRow(at: indexPath) as! MyTableViewCell
-       //  DispatchQueue.main.async(execute: {
-            print("row: \(row)")
-//        cell.content.text = temp._text
-//        cell.content.font = cell.content.font.withSize(14)
-//        cell.content.textColor = text_light
-//        cell.content.numberOfLines = 0
-//        cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
-//        cell.content.sizeToFit()
-//        cell.xiala.isHidden = true
-            cell.unlocked = 1
+    xiala_dick[row] = 1
             self.tableView.reloadRows(at: [indexPath], with: .fade)
-            print("row: \(indexPath)")
-      //  })
+
         
     }
+    
+    @IBAction func fabu(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var new_chat = storyboard.instantiateViewController(withIdentifier: "post_page") as! fabu
+      
+        self.navigationController?.pushViewController(new_chat, animated: true)
+    }
+    
     
     @IBOutlet weak var bot_tool_bar: UIView!
     @IBOutlet weak var tableView: UITableView!
@@ -91,28 +88,7 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
         }()
         
         
-        func load_UserChat(key:String) -> UserChat{
-            var temp:UserChat = UserChat()
-            var dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-            var aiya = dynamoDbObjectMapper.load(UserChat.self, hashKey: key, rangeKey:nil)
-            aiya.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
-                if let error = task.error as? NSError {
-                    print("The request failed. Error: \(error)")
-                } else if let resultBook = task.result as? UserChat {
-                    temp = resultBook
-                }
-                return nil
-            })
-            aiya.waitUntilFinished()
-            if aiya.isCancelled
-            {print("cancelled")}
-            if aiya.isCompleted
-            {print("completed")}
-            if aiya.isFaulted
-            {print("faulted")}
-            //print(aiya.result)
-            return temp
-        }
+    
         
         @IBOutlet weak var notification: UILabel!
         
@@ -122,7 +98,7 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
             let username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
             //print("91")
             DispatchQueue.main.async(execute: {
-                let temp_chat = self.load_UserChat(key: username!)
+                let temp_chat = load_UserChat(key: username!)
                 //print(temp_chat)
                 if temp_chat._totalUnread != nil && temp_chat._totalUnread != 0
                 {
@@ -303,11 +279,18 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
           
             let temp = posts[s.tag]
             if temp._sharedFrom == nil{
-                new_chat.profile_picture_link = temp._profilePicture!
+                if temp._pictures == nil{
+                    new_chat.profile_picture_link = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/morenzhuanfa.png"}
+                else
+                {
+                    new_chat.profile_picture_link = temp._pictures![0]
+                }
                 new_chat.username_ = "@" + temp._username!
                 new_chat.title_ = temp._title!
                 new_chat.id = temp._id!
-                new_chat.tag = Int(temp._tag!)}
+                new_chat.tag = Int(temp._tag!)
+                new_chat.content = temp._text!
+            }
             else
             {
                 new_chat.profile_picture_link = temp._sharedFrom![3]
@@ -316,6 +299,8 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
                 new_chat.id = temp._sharedFrom![0]
                 new_chat.tag = Int(temp._tag!)
                 new_chat.share_from = temp._id!
+                if temp._sharedFrom!.count > 4 {
+                    new_chat.content = temp._sharedFrom![4]}
             }
             
              self.navigationController?.pushViewController(new_chat, animated: true)
@@ -336,88 +321,7 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
         self.navigationController?.pushViewController(new_chat, animated: true)
         
         }
-        
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "show_post_detail"
-            {
-                
-                var upcoming: post_detail = segue.destination as! post_detail
-                let indexPath = self.tableView.indexPathForSelectedRow!
-                upcoming.p = posts[indexPath.row]
-                
-                
-            }
-            else if segue.identifier == "share_detail"
-            {
-                var upcoming: post_detail = segue.destination as! post_detail
-                let s = sender as! UIButton
-                let temp = posts[s.tag]
-                let id = temp._sharedFrom![0]
-                let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-                dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
-                    if let error = task.error as? NSError {
-                        print("The request failed. Error: \(error)")
-                    } else if let resultBook = task.result as? ChanceWithValue {
-                        upcoming.p = resultBook
-                        
-                    }
-                    return nil
-                })
-            }
-            else if segue.identifier == "wode"
-            {
-                var upcoming: personal_info = segue.destination as! personal_info
-                
-                let username = AWSCognitoUserPoolsSignInProvider.sharedInstance().getUserPool().currentUser()?.username
-                
-                let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-                dynamoDbObjectMapper.load(UserPool.self, hashKey: username, rangeKey:nil).continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
-                    if let error = task.error as? NSError {
-                        print("The request failed. Error: \(error)")
-                    } else if let resultBook = task.result as? UserPool {
-                        upcoming.p = resultBook
-                        
-                    }
-                    return nil
-                })
-            }
-            else if segue.identifier == "comment" || segue.identifier == "share"
-            {
-                var upcoming: post_detail = segue.destination as! post_detail
-                let s = sender as! UIButton
-                upcoming.p = posts[s.tag]
-                upcoming.share_click = self.share_click
-                upcoming.comment_click = self.comment_click
-                
-            }
-            else if segue.identifier == "pyq_share"
-            {
-                var upcoming: share = segue.destination as! share
-                let s = sender as! UIButton
-                let temp = posts[s.tag]
-                if temp._sharedFrom == nil{
-                    upcoming.profile_picture_link = temp._profilePicture!
-                    upcoming.username_ = "@" + temp._username!
-                    upcoming.title_ = temp._title!
-                    upcoming.id = temp._id!
-                    upcoming.tag = Int(temp._tag!)}
-                else
-                {
-                    upcoming.profile_picture_link = temp._sharedFrom![3]
-                    upcoming.username_ =  temp._sharedFrom![1]
-                    upcoming.title_ = temp._sharedFrom![2]
-                    upcoming.id = temp._sharedFrom![0]
-                    upcoming.tag = Int(temp._tag!)
-                    upcoming.share_from = temp._id!
-                }
-                
-            }
-            
-            
-            
-            
-        }
-        
+
         
         
         
@@ -426,16 +330,21 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
             let temp:ChanceWithValue = posts[indexPath.row]
             let temp_time:[Int] = time
             
-            
+        
+        
+        
             let tap: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
             let tap2: MyTapGesture = MyTapGesture(target: self, action: #selector(show_zhuye))
             tap.username = temp._username!
             tap.cancelsTouchesInView = true
             tap2.username = temp._username!
+        
+        
+        
             tap2.cancelsTouchesInView = true
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
-            cell.profile_picture.layer.borderColor = UIColor.white.cgColor
+            cell.profile_picture.layer.borderColor = mid.cgColor
             cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
             cell.profile_picture.clipsToBounds = true
             
@@ -455,7 +364,7 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
             cell.like.tag = indexPath.row
             cell.comments.tag = indexPath.row
             cell.share.tag = indexPath.row
-            cell.share_detail.tag = indexPath.row
+            //cell.share_detail.tag = indexPath.row
             cell.xiala.tag = indexPath.row
         
             cell.image_collection.backgroundColor = mid
@@ -524,8 +433,8 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
             
             if ((temp._text) != nil)
             {   cell.content.isHidden = false
-                cell.unlocked = 1
-                if cell.unlocked == 0{
+                //cell.unlocked = 1
+                if self.xiala_dick[indexPath.row] == nil{
                 if temp._text!.height(withConstrainedWidth: self.view.frame.width - 30, font: cell.content.font!) < 50 {
                     cell.content.text = temp._text
                     cell.content.font = cell.content.font.withSize(14)
@@ -533,22 +442,20 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
                     cell.content.numberOfLines = 0
                     cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
                     cell.content.sizeToFit()
+                    cell.content_height.constant = cell.content.text!.height(withConstrainedWidth: cell.content.frame.width, font: cell.content.font)
                     cell.xiala.isHidden = true
                 }else
                 {
                     cell.content.text = temp._text
                     cell.content.font = cell.content.font.withSize(14)
                     cell.content.textColor = text_light
-                    cell.content.numberOfLines = 2
+                    cell.content_height.constant = 50
                     let origImage = UIImage(named: "xiala")
                     let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                     cell.xiala.setImage(tintedImage, for: .normal)
                     cell.xiala.tintColor = text_light
                     cell.xiala.backgroundColor = light
                     cell.xiala.layer.cornerRadius = 3.0
-                    //ce cell.xiala.image(for: .normal)!.withRenderingMode(.alwaysTemplate)
-                    //cell.xiala.tintColor = light
-                    
                     cell.xiala.isHidden = false
                     }}
                 else
@@ -559,22 +466,14 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
                     cell.content.numberOfLines = 0
                     cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
                     cell.content.sizeToFit()
+                    cell.content_height.constant = cell.content.text!.height(withConstrainedWidth: cell.content.frame.width, font: cell.content.font)
                     cell.xiala.isHidden = true
                 }
-                
-                
-                
-                
-//                cell.content.text = temp._text
-//                cell.content.font = cell.content.font.withSize(14)
-//                cell.content.textColor = text_light
-//                cell.content.numberOfLines = 0
-//                cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
-//                cell.content.sizeToFit()
-//                cell.content.backgroundColor = mid
             }
             else{
-                cell.content.isHidden = true
+                //cell.content.isHidden = true
+                cell.content_height.constant = 0
+                cell.xiala.isHidden = true
             }
             
             
@@ -653,32 +552,32 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
                             else
                             {
                                 if Minute < 10{
-                                    output = "\(hour):0\(Minute)"
+                                    output = " \(hour):0\(Minute)"
                                 }else{
-                                    output = "\(hour):\(Minute)"}}
+                                    output = " \(hour):\(Minute)"}}
                         }
                         else
                         {
                             if Minute < 10{
-                                output = "\(hour):0\(Minute)"
+                                output = " \(hour):0\(Minute)"
                             }else{
-                                output = "\(hour):\(Minute)"}
+                                output = " \(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
                         if Minute < 10{
-                            output = "\(hour):0\(Minute)"
+                            output = " \(hour):0\(Minute)"
                         }else{
-                            output = "\(hour):\(Minute)"}
+                            output = " \(hour):\(Minute)"}
                         output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
                         if Minute < 10{
-                            output = "\(hour):0\(Minute)"
+                            output = " \(hour):0\(Minute)"
                         }else{
-                            output = "\(hour):\(Minute)"}
+                            output = " \(hour):\(Minute)"}
                         output = "昨天".toLocal() + output
                     }
                     else
@@ -693,18 +592,33 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
                 cell.time_label.text = output
                 cell.time_label.textColor = text_mid
             }
-            
+        
+        cell.tagg.isHidden = true
+        //cell.tag_label.isHidden = true
+        cell.tag_label.backgroundColor = tag_colour
+        cell.tag_label.layer.cornerRadius = 8.0
+        cell.tag_label.layer.masksToBounds = false
+        cell.tag_label.clipsToBounds = true
+        cell.tag_label.font = cell.tag_label.font.withSize(9)
             if ((temp._tag) != nil)
             {
                 let t = temp._tag
                 if t == 1
-                {cell.tagg.image = UIImage(named: "huodong")}
+                {//cell.tagg.image = UIImage(named: "huodong")
+                    cell.tag_label.text = "活动".toLocal()
+                }
                 else if t == 2
-                {cell.tagg.image = UIImage(named: "renwu")}
+                {//cell.tagg.image = UIImage(named: "renwu")
+                    cell.tag_label.text = "任务".toLocal()
+                }
                 else if t == 0
-                {cell.tagg.image = UIImage(named: "yuema")}
+                {//cell.tagg.image = UIImage(named: "yuema")
+                    cell.tag_label.text = "约嘛".toLocal()
+                }
                 else if t == 3
-                {cell.tagg.image = UIImage(named: "qita")}
+                {//cell.tagg.image = UIImage(named: "qita")
+                    cell.tag_label.text = "其他".toLocal()
+                }
             }
             
             
@@ -725,29 +639,43 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
             {
                 cell.share_view.isHidden = true
                 cell.share_profile_picture.isHidden = true
+                cell.content.isHidden = false
             }
             else
             {
+                cell.content.isHidden = true
                 cell.share_view.isHidden = false
                 cell.share_profile_picture.isHidden = false
                 //print("height: \(cell.share_view.frame.height)")
                 cell.collectionViewHeight.constant = 130
-                if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
+                cell.share_profile_picture.backgroundColor = sign_in_colour
+                cell.share_profile_picture.contentMode = .scaleAspectFit
+                cell.share_profile_picture.image = UIImage(named:"morenzhuanfa")
+                var link = temp._sharedFrom![3].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
+                
+                if let cachedVersion = imageCache.object(forKey: link as NSString) {
                     cell.share_profile_picture.image = cachedVersion
                 }
                 else{
-                    downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
+                    downloadImage(key_: link, destination: cell.share_profile_picture)
                 }
-                //downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
+                if temp._sharedFrom!.count > 4{
+                    cell.share_content.text = temp._sharedFrom![4]
+                    cell.share_content.isHidden = false
+                }else
+                {
+                    cell.share_content.isHidden = true
+                }
+                cell.share_content.textColor = text_light
                 cell.share_title.text = temp._sharedFrom![2]
                 cell.share_username.text = temp._sharedFrom![1]
                 cell.share_view.backgroundColor = sign_in_colour
                 cell.share_username.textColor = text_light
                 cell.share_title.textColor = text_light
                 cell.share_title.font = cell.share_title.font.withSize(14)
-                cell.share_title.numberOfLines = 0
+//                cell.share_title.numberOfLines = 2
                 cell.share_title.lineBreakMode = NSLineBreakMode.byWordWrapping
-                cell.share_title.sizeToFit()
+//                cell.share_title.sizeToFit()
                 //let tap = UITapGestureRecognizer(target:self,action:#selector(bigButtonTapped(_:)))
                 //cell.share_view.addGestureRecognizer(tap)
                 
@@ -760,13 +688,43 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
             cell.tool_bar.layer.borderWidth = 1
             cell.bot_bar.backgroundColor = light
             cell.zhanwaifenxiang.isHidden = true
-            
-            
+        cell.image_collection.tag = indexPath.row
+        let tap3:MyTapGesture = MyTapGesture(target: self, action: #selector(share_tap))
+       
+        if temp._sharedFrom != nil{
+             tap3.username = temp._sharedFrom![0]
+        cell.image_collection.isUserInteractionEnabled = true
+       cell.image_collection.addGestureRecognizer(tap3)
+        }
             cell.backgroundColor = mid
             return cell
         }
         
-        
+    
+  @objc func share_tap(sender : MyTapGesture){
+        //图片索引
+    
+        //进入图片全屏展示
+    
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    
+    var new_chat = storyboard.instantiateViewController(withIdentifier: "post_detail") as! post_detail
+    
+    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+    let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: sender.username, rangeKey:nil)
+        heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
+        if let error = task.error as? NSError {
+            print("The request failed. Error: \(error)")
+        } else if let resultBook = task.result as? ChanceWithValue {
+            new_chat.p = resultBook
+            
+        }
+        return nil
+    })
+    heihei.waitUntilFinished()
+    self.navigationController?.pushViewController(new_chat, animated: true)
+    }
+    
         @IBAction func share_detail(_ sender: Any) {
             //print("row: \((sender as! UIButton).tag)")
             //self.performSegue(withIdentifier: "share_detail", sender: sender)
@@ -794,24 +752,8 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
         }
         
         
-        
-        
-        @objc func bigButtonTapped(_ recognizer:UITapGestureRecognizer) {
-            //print("bigButtonTapped")
-            self.performSegue(withIdentifier: "share_detail", sender: self)
-        }
-        
-        // MARK: - IBActions
-        
-        //
-        //    @IBAction func signOut(_ sender: Any) {
-        //        self.user?.signOut()
-        //        //self.title = nil
-        //        self.response = nil
-        //        //self.tableView.reloadData()
-        //        self.refresh()
-        //    }
-        //
+    
+    
         func signOut() {
             self.user?.signOut()
             self.title = nil

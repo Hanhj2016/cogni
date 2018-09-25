@@ -39,12 +39,19 @@ class setting: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "setting_cell", for: indexPath)
+        let row = indexPath.row
+        
         cell.textLabel?.textColor = text_light
         cell.textLabel?.text = table_titles[indexPath.row]
         cell.backgroundColor = mid
         cell.accessoryType = .disclosureIndicator
         cell.layer.borderWidth = 0.2
         cell.layer.borderColor = text_mid.cgColor
+        if row != 0
+        {
+           // cell.backgroundColor = UIColor.gray
+            cell.textLabel?.textColor = UIColor.gray
+        }
         return cell
         //cell.title = table_titles[indexPath.row]
     }

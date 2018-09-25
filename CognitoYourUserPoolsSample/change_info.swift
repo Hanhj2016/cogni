@@ -29,10 +29,13 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 8
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = self.table.indexPathForSelectedRow!.row
+        let cell = self.table.cellForRow(at: indexPath) as! info_cell
+        cell.info.isEditable = true
         if row == 0
         {
             imagePicker.allowsEditing = false
@@ -40,10 +43,15 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
             present(imagePicker, animated: true, completion: nil)
             
         }
-        else
+        else if row != 3
         {
             let cell = self.table.cellForRow(at: indexPath) as! info_cell
             cell.info.becomeFirstResponder()
+        }
+        else
+        {
+            let cell = self.table.cellForRow(at: indexPath) as! info_cell
+            cell.info.isEditable = false
         }
     }
 
@@ -150,6 +158,8 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
             if indexPath.row == 3
             {
                 cell.info.text = p._walletAddress
+                cell.info_width.constant = 200
+                cell.image_height.constant = (cell.info.text?.height(withConstrainedWidth: 200, font: cell.info.font!))! + 20
             }
             if indexPath.row == 4
             {
@@ -176,6 +186,10 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
             
         }
        
+        if indexPath.row != 0 && indexPath.row != 7
+        {
+            //cell.textLabel?.textColor = UIColor.gray
+        }
         
         return cell
         

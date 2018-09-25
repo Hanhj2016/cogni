@@ -346,14 +346,14 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePi
     func get_current_time() -> String{
         let date = Date()
         let calendar = Calendar.current
-        let year  = calendar.component(.year, from: date) // 0
-        let month = calendar.component(.month, from: date) // 1
-        let day = calendar.component(.day, from: date) //2
-        let hour = calendar.component(.hour, from: date) // 3
-        let minute = calendar.component(.minute, from: date) // 4
-        let second = calendar.component(.second, from: date) // 5
-        let temp_time1 = Int(year * 10000000000 + month * 100000000 + day * 1000000)
-        let temp_time2 = Int(hour * 10000 + minute * 100 + second)
+        let year:Int64  = Int64(calendar.component(.year, from: date)) // 0
+        let month:Int64 = Int64(calendar.component(.month, from: date)) // 1
+        let day:Int64 = Int64(calendar.component(.day, from: date)) //2
+        let hour:Int64 = Int64(calendar.component(.hour, from: date)) // 3
+        let minute:Int64 = Int64(calendar.component(.minute, from: date)) // 4
+        let second:Int64 = Int64(calendar.component(.second, from: date)) // 5
+        let temp_time1 = (year * 10000000000 + month * 100000000 + day * 1000000)
+        let temp_time2 = (hour * 10000 + minute * 100 + second)
         let temp_time = (temp_time1 + temp_time2)
         return String(temp_time)
     }
@@ -504,11 +504,17 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePi
             if cell.chat.text.hasPrefix(chat_image_preset)
             {
                 cell.chat.text = ""
-                cell.chat_height.constant = 80
-                cell.chat_width.constant = 60
-                cell.picture.isHidden = false
-
                 let message = p._chattingText![row].deletingPrefix(chat_image_preset)
+                let link = s3_prefix + message
+                cell.chat_height.constant = 200
+                cell.chat_width.constant = 200
+                
+                cell.picture.backgroundColor = self.view.backgroundColor
+                cell.picture.contentMode = .scaleAspectFit
+                cell.picture.isHidden = false
+                cell.picture.image = UIImage(named:"chat_loading")
+                
+              //  let message = p._chattingText![row].deletingPrefix(chat_image_preset)
                 if let cachedVersion = imageCache.object(forKey: message as NSString) {
                     cell.picture.image = cachedVersion
                     cell.chat_height.constant = get_image_size(image: cell.picture.image!).0

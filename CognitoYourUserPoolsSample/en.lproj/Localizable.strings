@@ -61,9 +61,10 @@
 "30日" = "30th";
 "31日" = "31st";
 "日" = "day";
-"取消" = "cancel";
+"取消" = "Reject";
 "查看信息" = "view profile";
 "确认" = "confirm";
+"确认完成" = "complete";
 "已被确认完成" = "Completion Confirmed";
 "全部完成" = "All Completed";
 "糖果币" = "CandyCoin";
@@ -88,9 +89,9 @@
 "关注" = "Follow";
 "简介" = "Introduction";
 "声望" = "Fame";
-"被关注" = "Fans";
+"被关注" = "Follower";
 "发布" = "Post";
-"他的关注" = "Follows";
+"他的关注" = "Following";
 "发送私信" = "Send Messages";
 "取消关注" = "Unfollow";
 "说说分享心得..." = "Say Something...";
@@ -110,8 +111,8 @@
 "赞" = "like";
 "转发" = "Share";
 "评论" = "Comment";
-"收费" = "Charging";
-"付费" = "Paying";
+"收费" = "Charge";
+"付费" = "Pay";
 "回复" = "Reply to";
 "我的关注" = "Following";
 "我的机会" = "My Chances";
@@ -141,8 +142,8 @@
 "活动" = "Activity";
 "任务" = "Quest";
 "其他" = "Other";
-"机会收费" = "Charging";
-"机会奖励" = "Paying";
+"机会收费" = "Receive";
+"机会奖励" = "Pay";
 "信息不足" = "Insufficient information";
 "请输入标题" = "Please put a title";
 "请输入内容" = "Please put a content";

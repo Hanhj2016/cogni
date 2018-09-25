@@ -23,10 +23,17 @@ let CognitoIdentityUserPoolId = "us-east-1_OyEPKqrHG"
 let CognitoIdentityUserPoolAppClientId = "1topa7t6d5nspmikm8tpbdp7bt"
 let CognitoIdentityUserPoolAppClientSecret = "18ijf5nnejosukdfgu2u0208ko63opah0c804ef88thq89pusq58"
 let pictures = "chance-userfiles-mobilehub-653619147"
-
+let s3_prefix = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"
 
 
 let AWSCognitoUserPoolsSignInProviderKey = "UserPool"
+
+
+let tag_colour: UIColor = UIColor(red: CGFloat((0xf9d986 & 0xFF0000) >> 16) / 255.0,
+                              green: CGFloat((0xf9d986 & 0x00FF00) >> 8) / 255.0,
+                              blue: CGFloat(0xf9d986 & 0x0000FF) / 255.0,
+                              alpha: CGFloat(1.0))
+
 let colour: UIColor = UIColor(red: CGFloat((0xffd978 & 0xFF0000) >> 16) / 255.0,
                               green: CGFloat((0xffd978 & 0x00FF00) >> 8) / 255.0,
                               blue: CGFloat(0xffd978 & 0x0000FF) / 255.0,

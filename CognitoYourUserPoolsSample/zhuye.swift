@@ -12,6 +12,25 @@ import BSImagePicker
 import Foundation
 
 class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    
+    var xiala_dick1:[Int:Int] = [:]
+    var xiala_dick2:[Int:Int] = [:]
+    @IBAction func xiala1(_ sender: Any) {
+        let row = (sender as! UIButton).tag
+        let temp = posts[row]
+        let indexPath = IndexPath(item: row, section: 0)
+        xiala_dick1[row] = 1
+        self.tableView1.reloadRows(at: [indexPath], with: .fade)
+        
+    }
+    @IBAction func xiala2(_ sender: Any) {
+        let row = (sender as! UIButton).tag
+        let temp = posts2[row]
+        let indexPath = IndexPath(item: row, section: 0)
+        xiala_dick2[row] = 1
+        self.tableView2.reloadRows(at: [indexPath], with: .fade)
+        
+    }
     @IBOutlet weak var top_bar: UIView!
     @IBOutlet weak var button1: UIButton!
     @IBAction func button1(_ sender: Any) {
@@ -133,30 +152,6 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
         return 0
     }
     
-    @IBAction func share_detail(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        var upcoming = storyboard.instantiateViewController(withIdentifier: "post_detail") as! post_detail
-        let s = sender as! UIButton
-        let temp = posts[s.tag]
-        let id = temp._sharedFrom![0]
-        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil)
-        heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
-            if let error = task.error as? NSError {
-                print("The request failed. Error: \(error)")
-            } else if let resultBook = task.result as? ChanceWithValue {
-                upcoming.p = resultBook
-                
-            }
-            return nil
-        })
-        heihei.waitUntilFinished()
-        
-        self.navigationController?.pushViewController(upcoming, animated: true)
-    }
-    
     
     
     
@@ -238,29 +233,6 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     
     
-    @IBAction func share_detail2(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        var upcoming = storyboard.instantiateViewController(withIdentifier: "post_detail") as! post_detail
-        let s = sender as! UIButton
-        let temp = posts2[s.tag]
-        let id = temp._sharedFrom![0]
-        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        let heihei = dynamoDbObjectMapper.load(ChanceWithValue.self, hashKey: id, rangeKey:nil)
-        heihei.continueWith(block: { (task:AWSTask<AnyObject>!) -> Any? in
-            if let error = task.error as? NSError {
-                print("The request failed. Error: \(error)")
-            } else if let resultBook = task.result as? ChanceWithValue {
-                upcoming.p = resultBook
-                
-            }
-            return nil
-        })
-        heihei.waitUntilFinished()
-        
-        self.navigationController?.pushViewController(upcoming, animated: true)
-    }
     
     
     
@@ -535,18 +507,9 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.username.isUserInteractionEnabled = true
             cell.username.addGestureRecognizer(tap2)
             
-//            if ((temp._profilePicture != nil))
-//            {
-//                downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
-//            }
-//            else
-//            {
-//                cell.profile_picture.image = UIImage(named: "boy")
-//            }
-//
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
-            cell.profile_picture.layer.borderColor = UIColor.white.cgColor
+            cell.profile_picture.layer.borderColor = mid.cgColor
             cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
             cell.profile_picture.clipsToBounds = true
             
@@ -555,7 +518,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.like.tag = indexPath.row
             cell.comments.tag = indexPath.row
             cell.share.tag = indexPath.row
-            cell.share_detail.tag = indexPath.row
+           cell.xiala.tag = indexPath.row
             
             let origImage = UIImage(named: "dianzan")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -622,56 +585,63 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             
             if ((temp._text) != nil)
             {   cell.content.isHidden = false
-                cell.content.text = temp._text
-                cell.content.font = cell.content.font.withSize(14)
-                cell.content.textColor = text_light
-                cell.content.numberOfLines = 0
-                cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
-                cell.content.sizeToFit()
-                cell.content.backgroundColor = mid
+                //cell.unlocked = 1
+                if self.xiala_dick1[indexPath.row] == nil{
+                    if temp._text!.height(withConstrainedWidth: self.view.frame.width - 30, font: cell.content.font!) < 50 {
+                        cell.content.text = temp._text
+                        cell.content.font = cell.content.font.withSize(14)
+                        cell.content.textColor = text_light
+                        cell.content.numberOfLines = 0
+                        cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
+                        cell.content.sizeToFit()
+                        cell.content_height.constant = cell.content.text!.height(withConstrainedWidth: cell.content.frame.width, font: cell.content.font)
+                        cell.xiala.isHidden = true
+                    }else
+                    {
+                        cell.content.text = temp._text
+                        cell.content.font = cell.content.font.withSize(14)
+                        cell.content.textColor = text_light
+                        cell.content_height.constant = 50
+                        let origImage = UIImage(named: "xiala")
+                        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+                        cell.xiala.setImage(tintedImage, for: .normal)
+                        cell.xiala.tintColor = text_light
+                        cell.xiala.backgroundColor = light
+                        cell.xiala.layer.cornerRadius = 3.0
+                        cell.xiala.isHidden = false
+                    }}
+                else
+                {
+                    cell.content.text = temp._text
+                    cell.content.font = cell.content.font.withSize(14)
+                    cell.content.textColor = text_light
+                    cell.content.numberOfLines = 0
+                    cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
+                    cell.content.sizeToFit()
+                    cell.content_height.constant = cell.content.text!.height(withConstrainedWidth: cell.content.frame.width, font: cell.content.font)
+                    cell.xiala.isHidden = true
+                }
             }
             else{
-                cell.content.isHidden = true
+                //cell.content.isHidden = true
+                cell.content_height.constant = 0
+                cell.xiala.isHidden = true
             }
             
             
             
-//            cell.images = []
-//            if (temp._pictures != nil)&&(temp._pictures?.count != 0)
-//            {
-//                for i in 0...(temp._pictures?.count)!-1
-//                {
-//
-//                    var message = temp._pictures![i]
-//                    message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-//                    var data:NSData = try! NSData(contentsOf: URL(string:message)!)
-//                    let image = UIImage(data: data as Data)!
-//                    cell.images.append(image)
-//
-//                }
-//            }
             cell.images = []
+            cell.image_links = []
             if (temp._pictures != nil)&&(temp._pictures?.count != 0)
             {
                 for i in 0...(temp._pictures?.count)!-1
                 {
                     
-                    var message = temp._pictures![i]
-                    if let cachedVersion = imageCache.object(forKey: message as NSString) {
-                        cell.images.append(cachedVersion)
-                        //print("1")
-                    }
-                    else{
-                        message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-                        var data:NSData = try! NSData(contentsOf: URL(string:message)!)
-                        let image = UIImage(data: data as Data)!
-                        set_image_cache(key: message, image: image)
-                        // print("2")
-                    }
-                    
-                    
+                    cell.image_links.append(temp._pictures![i])
                 }
             }
+            cell.image_collection.reloadData()
+            
             if (temp._profilePicture != nil){
                 
                 if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
@@ -686,6 +656,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             
             
             
+           
             if ((temp._time) != nil)
             {
                 var output = ""
@@ -728,32 +699,32 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                             else
                             {
                                 if Minute < 10{
-                                    output = "\(hour):0\(Minute)"
+                                    output = " \(hour):0\(Minute)"
                                 }else{
-                                    output = "\(hour):\(Minute)"}}
+                                    output = " \(hour):\(Minute)"}}
                         }
                         else
                         {
                             if Minute < 10{
-                                output = "\(hour):0\(Minute)"
+                                output = " \(hour):0\(Minute)"
                             }else{
-                                output = "\(hour):\(Minute)"}
+                                output = " \(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
                         if Minute < 10{
-                            output = "\(hour):0\(Minute)"
+                            output = " \(hour):0\(Minute)"
                         }else{
-                            output = "\(hour):\(Minute)"}
+                            output = " \(hour):\(Minute)"}
                         output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
                         if Minute < 10{
-                            output = "\(hour):0\(Minute)"
+                            output = " \(hour):0\(Minute)"
                         }else{
-                            output = "\(hour):\(Minute)"}
+                            output = " \(hour):\(Minute)"}
                         output = "昨天".toLocal() + output
                     }
                     else
@@ -769,17 +740,32 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.time_label.textColor = text_mid
             }
             
+            cell.tagg.isHidden = true
+            //cell.tag_label.isHidden = true
+            cell.tag_label.backgroundColor = tag_colour
+            cell.tag_label.layer.cornerRadius = 8.0
+            cell.tag_label.layer.masksToBounds = false
+            cell.tag_label.clipsToBounds = true
+            cell.tag_label.font = cell.tag_label.font.withSize(9)
             if ((temp._tag) != nil)
             {
                 let t = temp._tag
                 if t == 1
-                {cell.tagg.image = UIImage(named: "huodong")}
+                {//cell.tagg.image = UIImage(named: "huodong")
+                    cell.tag_label.text = "活动".toLocal()
+                }
                 else if t == 2
-                {cell.tagg.image = UIImage(named: "renwu")}
+                {//cell.tagg.image = UIImage(named: "renwu")
+                    cell.tag_label.text = "任务".toLocal()
+                }
                 else if t == 0
-                {cell.tagg.image = UIImage(named: "yuema")}
+                {//cell.tagg.image = UIImage(named: "yuema")
+                    cell.tag_label.text = "约嘛".toLocal()
+                }
                 else if t == 3
-                {cell.tagg.image = UIImage(named: "qita")}
+                {//cell.tagg.image = UIImage(named: "qita")
+                    cell.tag_label.text = "其他".toLocal()
+                }
             }
             
             
@@ -787,37 +773,11 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             
             
             cell.image_collection.backgroundColor = mid
-            cell.image_collection.reloadData()
+           // cell.image_collection.reloadData()
             let contentSize = cell.image_collection.collectionViewLayout.collectionViewContentSize
             cell.image_collection.collectionViewLayout.invalidateLayout()
             cell.collectionViewHeight.constant = contentSize.height
-            if temp._sharedFrom == nil //no share
-            {
-                cell.share_view.isHidden = true
-            }
-            else
-            {
-                cell.share_view.isHidden = false
-                cell.collectionViewHeight.constant = 130
-                if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                    cell.share_profile_picture.image = cachedVersion
-                }
-                else{
-                    downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
-                }
-               // downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
-                cell.share_title.text = temp._sharedFrom![2]
-                cell.share_username.text = temp._sharedFrom![1]
-                cell.share_view.backgroundColor = sign_in_colour
-                cell.share_username.textColor = text_light
-                cell.share_title.textColor = text_light
-                cell.share_title.font = cell.share_title.font.withSize(14)
-                cell.share_title.numberOfLines = 0
-                cell.share_title.lineBreakMode = NSLineBreakMode.byWordWrapping
-                cell.share_title.sizeToFit()
-                
-            }
-            
+       
             
             
             cell.tool_bar.backgroundColor = mid
@@ -847,7 +807,6 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.cancel.setTitleColor(text_light, for: .normal)
             cell.cancel.layer.cornerRadius = 5.0
            
-            cell.finish_label.isHidden = true
             cell.confirm.isHidden = true
             cell.dropdown.isHidden = true
             cell.cancel.isHidden = false
@@ -856,6 +815,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             {
                 cell.finish_label.isHidden = false
                 cell.finish_label.text = "已被确认完成".toLocal()
+                cell.cancel.isHidden = true
             }else if temp._unConfirmList != nil
             {if (temp._unConfirmList?.contains(p._userId!))!
             {
@@ -881,18 +841,10 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.username.isUserInteractionEnabled = true
             cell.username.addGestureRecognizer(tap2)
             
-//            if ((temp._profilePicture != nil))
-//            {
-//                downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
-//            }
-//            else
-//            {
-//                cell.profile_picture.image = UIImage(named: "boy")
-//            }
-//
+
             cell.profile_picture.layer.borderWidth = 1.0
             cell.profile_picture.layer.masksToBounds = false
-            cell.profile_picture.layer.borderColor = UIColor.white.cgColor
+            cell.profile_picture.layer.borderColor = mid.cgColor
             cell.profile_picture.layer.cornerRadius = cell.profile_picture.frame.size.width / 2
             cell.profile_picture.clipsToBounds = true
             
@@ -901,8 +853,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.like.tag = indexPath.row
             cell.comments.tag = indexPath.row
             cell.share.tag = indexPath.row
-            cell.share_detail.tag = indexPath.row
-            
+            cell.xiala.tag = indexPath.row
             let origImage = UIImage(named: "dianzan")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
             cell.like.setImage(tintedImage, for: .normal)
@@ -966,44 +917,65 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 
             }
             
+            
             if ((temp._text) != nil)
             {   cell.content.isHidden = false
-                cell.content.text = temp._text
-                cell.content.font = cell.content.font.withSize(14)
-                cell.content.textColor = text_light
-                cell.content.numberOfLines = 0
-                cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
-                cell.content.sizeToFit()
-                cell.content.backgroundColor = mid
+                //cell.unlocked = 1
+                if self.xiala_dick2[indexPath.row] == nil{
+                    if temp._text!.height(withConstrainedWidth: self.view.frame.width - 30, font: cell.content.font!) < 50 {
+                        cell.content.text = temp._text
+                        cell.content.font = cell.content.font.withSize(14)
+                        cell.content.textColor = text_light
+                        cell.content.numberOfLines = 0
+                        cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
+                        cell.content.sizeToFit()
+                        cell.content_height.constant = cell.content.text!.height(withConstrainedWidth: cell.content.frame.width, font: cell.content.font)
+                        cell.xiala.isHidden = true
+                    }else
+                    {
+                        cell.content.text = temp._text
+                        cell.content.font = cell.content.font.withSize(14)
+                        cell.content.textColor = text_light
+                        cell.content_height.constant = 50
+                        let origImage = UIImage(named: "xiala")
+                        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+                        cell.xiala.setImage(tintedImage, for: .normal)
+                        cell.xiala.tintColor = text_light
+                        cell.xiala.backgroundColor = light
+                        cell.xiala.layer.cornerRadius = 3.0
+                        cell.xiala.isHidden = false
+                    }}
+                else
+                {
+                    cell.content.text = temp._text
+                    cell.content.font = cell.content.font.withSize(14)
+                    cell.content.textColor = text_light
+                    cell.content.numberOfLines = 0
+                    cell.content.lineBreakMode = NSLineBreakMode.byWordWrapping
+                    cell.content.sizeToFit()
+                    cell.content_height.constant = cell.content.text!.height(withConstrainedWidth: cell.content.frame.width, font: cell.content.font)
+                    cell.xiala.isHidden = true
+                }
             }
             else{
-                cell.content.isHidden = true
+                //cell.content.isHidden = true
+                cell.content_height.constant = 0
+                cell.xiala.isHidden = true
             }
             
             
-
+            
             cell.images = []
+            cell.image_links = []
             if (temp._pictures != nil)&&(temp._pictures?.count != 0)
             {
                 for i in 0...(temp._pictures?.count)!-1
                 {
                     
-                    var message = temp._pictures![i]
-                    if let cachedVersion = imageCache.object(forKey: message as NSString) {
-                        cell.images.append(cachedVersion)
-                        //print("1")
-                    }
-                    else{
-                        message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-                        var data:NSData = try! NSData(contentsOf: URL(string:message)!)
-                        let image = UIImage(data: data as Data)!
-                        set_image_cache(key: message, image: image)
-                        // print("2")
-                    }
-                    
-                    
+                    cell.image_links.append(temp._pictures![i])
                 }
             }
+            cell.image_collection.reloadData()
             if (temp._profilePicture != nil){
                 
                 if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
@@ -1017,7 +989,7 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             {cell.profile_picture.image = UIImage(named: "girl")}
             
             
-            
+           
             if ((temp._time) != nil)
             {
                 var output = ""
@@ -1060,32 +1032,32 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                             else
                             {
                                 if Minute < 10{
-                                    output = "\(hour):0\(Minute)"
+                                    output = " \(hour):0\(Minute)"
                                 }else{
-                                    output = "\(hour):\(Minute)"}}
+                                    output = " \(hour):\(Minute)"}}
                         }
                         else
                         {
                             if Minute < 10{
-                                output = "\(hour):0\(Minute)"
+                                output = " \(hour):0\(Minute)"
                             }else{
-                                output = "\(hour):\(Minute)"}
+                                output = " \(hour):\(Minute)"}
                         }
                     }
                     else if time[2] == (day + 1)
                     {
                         if Minute < 10{
-                            output = "\(hour):0\(Minute)"
+                            output = " \(hour):0\(Minute)"
                         }else{
-                            output = "\(hour):\(Minute)"}
+                            output = " \(hour):\(Minute)"}
                         output = "昨天".toLocal() + output
                     }
                     else if time[2] == day + 2
                     {
                         if Minute < 10{
-                            output = "\(hour):0\(Minute)"
+                            output = " \(hour):0\(Minute)"
                         }else{
-                            output = "\(hour):\(Minute)"}
+                            output = " \(hour):\(Minute)"}
                         output = "昨天".toLocal() + output
                     }
                     else
@@ -1100,54 +1072,44 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
                 cell.time_label.text = output
                 cell.time_label.textColor = text_mid
             }
+            cell.tagg.isHidden = true
+            //cell.tag_label.isHidden = true
+            cell.tag_label.backgroundColor = tag_colour
+            cell.tag_label.layer.cornerRadius = 8.0
+            cell.tag_label.layer.masksToBounds = false
+            cell.tag_label.clipsToBounds = true
+            cell.tag_label.font = cell.tag_label.font.withSize(9)
             if ((temp._tag) != nil)
             {
                 let t = temp._tag
                 if t == 1
-                {cell.tagg.image = UIImage(named: "huodong")}
+                {//cell.tagg.image = UIImage(named: "huodong")
+                    cell.tag_label.text = "活动".toLocal()
+                }
                 else if t == 2
-                {cell.tagg.image = UIImage(named: "renwu")}
+                {//cell.tagg.image = UIImage(named: "renwu")
+                    cell.tag_label.text = "任务".toLocal()
+                }
                 else if t == 0
-                {cell.tagg.image = UIImage(named: "yuema")}
+                {//cell.tagg.image = UIImage(named: "yuema")
+                    cell.tag_label.text = "约嘛".toLocal()
+                }
                 else if t == 3
-                {cell.tagg.image = UIImage(named: "qita")}
+                {//cell.tagg.image = UIImage(named: "qita")
+                    cell.tag_label.text = "其他".toLocal()
+                }
             }
+            
             
             
             
             
             
             cell.image_collection.backgroundColor = mid
-            cell.image_collection.reloadData()
+            //cell.image_collection.reloadData()
             let contentSize = cell.image_collection.collectionViewLayout.collectionViewContentSize
             cell.image_collection.collectionViewLayout.invalidateLayout()
             cell.collectionViewHeight.constant = contentSize.height
-            if temp._sharedFrom == nil //no share
-            {
-                cell.share_view.isHidden = true
-            }
-            else
-            {
-                cell.share_view.isHidden = false
-                cell.collectionViewHeight.constant = 130
-                if let cachedVersion = imageCache.object(forKey: "\(temp._sharedFrom![1]).png".deletingPrefix("@") as NSString) {
-                    cell.share_profile_picture.image = cachedVersion
-                }
-                else{
-                    downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
-                }
-                //downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
-                cell.share_title.text = temp._sharedFrom![2]
-                cell.share_username.text = temp._sharedFrom![1]
-                cell.share_view.backgroundColor = sign_in_colour
-                cell.share_username.textColor = text_light
-                cell.share_title.textColor = text_light
-                cell.share_title.font = cell.share_title.font.withSize(14)
-                cell.share_title.numberOfLines = 0
-                cell.share_title.lineBreakMode = NSLineBreakMode.byWordWrapping
-                cell.share_title.sizeToFit()
-                
-            }
             
             
             
