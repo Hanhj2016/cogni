@@ -515,21 +515,40 @@ class chat: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePi
                 cell.picture.image = UIImage(named:"chat_loading")
                 
               //  let message = p._chattingText![row].deletingPrefix(chat_image_preset)
-                if let cachedVersion = imageCache.object(forKey: message as NSString) {
-                    cell.picture.image = cachedVersion
+//                if let cachedVersion = imageCache.object(forKey: message as NSString) {
+//                    cell.picture.image = cachedVersion
+//                    cell.chat_height.constant = get_image_size(image: cell.picture.image!).0
+//                    cell.chat_width.constant = get_image_size(image: cell.picture.image!).1
+//                }
+//                else{
+//                    downloadImage(key_: message, destination: cell.picture)
+//                }
+//
+                
+
+                if let value = cache.secondaryCache?.load(key: message) {
+                    cell.picture.image = UIImage(data:value)!
                     cell.chat_height.constant = get_image_size(image: cell.picture.image!).0
                     cell.chat_width.constant = get_image_size(image: cell.picture.image!).1
-                }
-                else{
+                }else
+                {
+                    // print("out")
                     downloadImage(key_: message, destination: cell.picture)
                 }
-            
                 self.image_dic[row] = cell.picture.image
-
+                
+                
+                
             }
             else
             {cell.picture.isHidden = true}
 
+            
+            
+            
+            
+            
+            
             
             if row == 0
             {

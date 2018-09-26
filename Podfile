@@ -14,4 +14,5 @@ target 'chain' do
     pod 'BSImagePicker', '~> 2.7'
     pod 'Kingfisher', '~> 4.0'
     pod 'PCLBlurEffectAlert'
+    pod 'DACache'
 end

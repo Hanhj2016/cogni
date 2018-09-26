@@ -129,11 +129,22 @@ class change_info: UIViewController,UITableViewDelegate,UITableViewDataSource, U
                 cell.profile_picture.clipsToBounds = true
                 
                 
-                if let cachedVersion = imageCache.object(forKey: "\(p._userId!).png" as NSString) {
+//                if let cachedVersion = imageCache.object(forKey: "\(p._userId!).png" as NSString) {
+//                    cell.profile_picture.image = cachedVersion
+//                }
+//                else{
+//                    downloadImage(key_: "\(p._userId!).png", destination: cell.profile_picture)
+//                }
+                
+                let message = "\(p._userId!).png"
+                if let value = cache.secondaryCache?.load(key: message) {
+                    // print("inhaha")
+                    let cachedVersion = UIImage(data:value as! Data)
                     cell.profile_picture.image = cachedVersion
-                }
-                else{
-                    downloadImage(key_: "\(p._userId!).png", destination: cell.profile_picture)
+                    
+                }else
+                {
+                    downloadImage(key_: message as String, destination: cell.profile_picture)
                 }
                 
                 //downloadImage(key_: "\(p._userId!).png", destination: cell.profile_picture)

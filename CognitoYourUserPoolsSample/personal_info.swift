@@ -253,12 +253,24 @@ var renwu_list:[String] = []
         
         if (p._userId != nil){
             
-            if let cachedVersion = imageCache.object(forKey: "\(p._userId!).png" as NSString) {
+//            if let cachedVersion = imageCache.object(forKey: "\(p._userId!).png" as NSString) {
+//                self.profile_picture.image = cachedVersion
+//            }
+//            else{
+//                downloadImage(key_: "\(p._userId!).png", destination: self.profile_picture)
+//            }
+            let message = "\(p._userId!).png"
+            if let value = cache.secondaryCache?.load(key: message) {
+                // print("inhaha")
+                let cachedVersion = UIImage(data:value as! Data)
                 self.profile_picture.image = cachedVersion
+                
+            }else
+            {
+                downloadImage(key_: message as String, destination: self.profile_picture)
             }
-            else{
-                downloadImage(key_: "\(p._userId!).png", destination: self.profile_picture)
-            }
+            
+            
         }
         else
         {self.profile_picture.image = UIImage(named: "girl")}

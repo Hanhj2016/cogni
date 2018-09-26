@@ -128,6 +128,7 @@ func downloadImage(key_:String, destination:UIImageView){
                 
                 end = UIImage(data: data!)!
                 set_image_cache(key: key_, image: end)
+                cache[key_] = data! as Data
                 destination.image = end
                 //print("118: \(end)")
             }

@@ -177,15 +177,22 @@ class guanzhu: UIViewController,UITableViewDelegate,UITableViewDataSource{
                         let message = "\(resultBook._userId!).png"
                         if (resultBook._profilePic != nil){
                             
-                            if let cachedVersion = imageCache.object(forKey: message as NSString) {
+                            if let value = cache.secondaryCache?.load(key: message as String) {
+                                // print("inhaha")
+                                let cachedVersion = UIImage(data:value as! Data)
                                 cell.profile_picture.image = cachedVersion
-                            }
-                            else{
-                                downloadImage(key_: message, destination: cell.profile_picture)
+                                
+                            }else
+                            {
+                                downloadImage(key_: message as String, destination: cell.profile_picture)
                             }
                         }
                         else
                         {cell.profile_picture.image = UIImage(named: "girl")}
+                        
+                        
+                        
+                        
                         
                         
                         cell.profile_picture.layer.borderWidth = 1.0

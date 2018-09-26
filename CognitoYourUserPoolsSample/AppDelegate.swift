@@ -22,12 +22,15 @@ import AWSCore
 import AWSPinpoint
 import Foundation
 import AWSS3
+import DACache
 //var temp_Post:Posts = Posts()
 
 
 
 let imageCache = NSCache<NSString, UIImage>()
 var time:[Int] = []
+var cache = DACache()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     

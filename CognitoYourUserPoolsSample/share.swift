@@ -179,12 +179,27 @@ self.content_label.text = self.content
         self.profile_picture.image = UIImage(named:"morenzhuanfa")
         var link = self.profile_picture_link.deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
         
-        if let cachedVersion = imageCache.object(forKey: link as NSString) {
+//        if let cachedVersion = imageCache.object(forKey: link as NSString) {
+//            self.profile_picture.image = cachedVersion
+//        }
+//        else{
+//            downloadImage(key_: link, destination: self.profile_picture)
+//        }
+        
+        let message = link
+        if let value = cache.secondaryCache?.load(key: message) {
+            // print("inhaha")
+            let cachedVersion = UIImage(data:value as! Data)
             self.profile_picture.image = cachedVersion
+            
+        }else
+        {
+            downloadImage(key_: message as String, destination: self.profile_picture)
         }
-        else{
-            downloadImage(key_: link, destination: self.profile_picture)
-        }
+        
+        
+        
+        
         self.profile_picture.contentMode = .scaleAspectFit
         
         

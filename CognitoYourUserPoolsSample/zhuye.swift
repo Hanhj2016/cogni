@@ -644,11 +644,22 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             
             if (temp._profilePicture != nil){
                 
-                if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
+//                if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
+//                    cell.profile_picture.image = cachedVersion
+//                }
+//                else{
+//                    downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
+//                }
+                
+                let message = "\(temp._username!).png"
+                if let value = cache.secondaryCache?.load(key: message) {
+                    // print("inhaha")
+                    let cachedVersion = UIImage(data:value as! Data)
                     cell.profile_picture.image = cachedVersion
-                }
-                else{
-                    downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
+                    
+                }else
+                {
+                    downloadImage(key_: message as String, destination: cell.profile_picture)
                 }
             }
             else
@@ -978,11 +989,22 @@ class zhuye: UIViewController,UITableViewDelegate,UITableViewDataSource {
             cell.image_collection.reloadData()
             if (temp._profilePicture != nil){
                 
-                if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
+//                if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
+//                    cell.profile_picture.image = cachedVersion
+//                }
+//                else{
+//                    downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
+//                }
+                
+                let message = "\(temp._username!).png"
+                if let value = cache.secondaryCache?.load(key: message) {
+                    // print("inhaha")
+                    let cachedVersion = UIImage(data:value as! Data)
                     cell.profile_picture.image = cachedVersion
-                }
-                else{
-                    downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
+                    
+                }else
+                {
+                    downloadImage(key_: message as String, destination: cell.profile_picture)
                 }
             }
             else

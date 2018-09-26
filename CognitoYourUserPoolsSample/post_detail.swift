@@ -545,15 +545,27 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         let cell  = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell",
                                                        for: indexPath) as! MyCollectionViewCell
         let message = self.image_links[indexPath.row].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
-        if let cachedVersion = imageCache.object(forKey: message as NSString) {
+//        if let cachedVersion = imageCache.object(forKey: message as NSString) {
+//            cell.photo.image = cachedVersion
+//            if !self.images.contains(cachedVersion){
+//                self.images.append(cachedVersion)}
+//        }
+//        else{
+//            downloadImage(key_: message, destination: cell.photo)
+//            //print("title: \(self.title.text) count: \(self.images.count)" )
+//        }
+        if let value = cache.secondaryCache?.load(key: message) {
+            // print("inhaha")
+            let cachedVersion = UIImage(data:value as! Data)
             cell.photo.image = cachedVersion
-            if !self.images.contains(cachedVersion){
-                self.images.append(cachedVersion)}
-        }
-        else{
+            if !self.images.contains(cachedVersion!){
+                self.images.append(cachedVersion!)}
+            
+        }else
+        {
             downloadImage(key_: message, destination: cell.photo)
-            //print("title: \(self.title.text) count: \(self.images.count)" )
         }
+        
         
         cell.photo.backgroundColor = sign_in_colour
         cell.photo.contentMode = .scaleAspectFit
@@ -878,16 +890,32 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             {
                 
                 var message = p._pictures![i]
-                if let cachedVersion = imageCache.object(forKey: message as NSString) {
-                    self.images.append(cachedVersion)
-                    //print("1")
-                }
-                else{
+//                if let cachedVersion = imageCache.object(forKey: message as NSString) {
+//                    self.images.append(cachedVersion)
+//                    //print("1")
+//                }
+//                else{
+//                    message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+//                    var data:NSData = try! NSData(contentsOf: URL(string:message)!)
+//                    let image = UIImage(data: data as Data)!
+//                    set_image_cache(key: message, image: image)
+//                    // print("2")
+//                }
+                
+                
+                if let value = cache.secondaryCache?.load(key: message) {
+                    // print("inhaha")
+                    let cachedVersion = UIImage(data:value as! Data)
+                   self.images.append(cachedVersion!)
+                    
+                }else
+                {
                     message = message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
                     var data:NSData = try! NSData(contentsOf: URL(string:message)!)
-                    let image = UIImage(data: data as Data)!
-                    set_image_cache(key: message, image: image)
-                    // print("2")
+                   // let image = UIImage(data: data as Data)!
+                    cache[message] = data as Data
+                    //set_image_cache(key: message, image: image)
+                    
                 }
                 
                 
@@ -895,12 +923,24 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
         }
         if (p._profilePicture != nil){
             
-            if let cachedVersion = imageCache.object(forKey: "\(p._username!).png" as NSString) {
+//            if let cachedVersion = imageCache.object(forKey: "\(p._username!).png" as NSString) {
+//                self.profile_picture.image = cachedVersion
+//            }
+//            else{
+//                downloadImage(key_: "\(p._username!).png", destination: self.profile_picture)
+//            }
+            let message = "\(p._username!).png"
+            if let value = cache.secondaryCache?.load(key: message) {
+                // print("inhaha")
+                let cachedVersion = UIImage(data:value as! Data)
                 self.profile_picture.image = cachedVersion
+                
+            }else
+            {
+                downloadImage(key_: message as String, destination: self.profile_picture)
             }
-            else{
-                downloadImage(key_: "\(p._username!).png", destination: self.profile_picture)
-            }
+            
+            
         }
         else
         {self.profile_picture.image = UIImage(named: "girl")}
@@ -1209,11 +1249,21 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             self.share_profile_picture.image = UIImage(named:"morenzhuanfa")
             var link = p._sharedFrom![3].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
             
-            if let cachedVersion = imageCache.object(forKey: link as NSString) {
+//            if let cachedVersion = imageCache.object(forKey: link as NSString) {
+//                self.share_profile_picture.image = cachedVersion
+//            }
+//            else{
+//                downloadImage(key_: link, destination: self.share_profile_picture)
+//            }
+            let message = link
+            if let value = cache.secondaryCache?.load(key: message) {
+                // print("inhaha")
+                let cachedVersion = UIImage(data:value as! Data)
                 self.share_profile_picture.image = cachedVersion
-            }
-            else{
-                downloadImage(key_: link, destination: self.share_profile_picture)
+                
+            }else
+            {
+                downloadImage(key_: message as String, destination: self.share_profile_picture)
             }
             //downloadImage(key_: "\(temp._sharedFrom![1]).png".deletingPrefix("@"), destination: cell.share_profile_picture)
             self.share_title.text = p._sharedFrom![2]
@@ -1346,12 +1396,24 @@ class post_detail: UIViewController, UIScrollViewDelegate,UITableViewDelegate,UI
             
             if (comments[index]._userPic != nil){
                 
-                if let cachedVersion = imageCache.object(forKey: "\(comments[index]._userId!).png" as NSString) {
+//                if let cachedVersion = imageCache.object(forKey: "\(comments[index]._userId!).png" as NSString) {
+//                    cell.profile_picture.image = cachedVersion
+//                }
+//                else{
+//                    downloadImage(key_: "\(comments[index]._userId!).png", destination: cell.profile_picture)
+//                }
+                let message = "\(comments[index]._userId!).png"
+                if let value = cache.secondaryCache?.load(key: message) {
+                    // print("inhaha")
+                    let cachedVersion = UIImage(data:value as! Data)
                     cell.profile_picture.image = cachedVersion
+                    
+                }else
+                {
+                    downloadImage(key_: message as String, destination: cell.profile_picture)
                 }
-                else{
-                    downloadImage(key_: "\(comments[index]._userId!).png", destination: cell.profile_picture)
-                }
+                
+                
             }
             else
             {cell.profile_picture.image = UIImage(named: "girl")}

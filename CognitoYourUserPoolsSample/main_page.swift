@@ -19,6 +19,7 @@ import Photos
 import BSImagePicker
 import Foundation
 //var temp = "start"
+import DACache
 
 class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
@@ -494,12 +495,23 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
         
             if (temp._profilePicture != nil){
                 
-                if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
-                    cell.profile_picture.image = cachedVersion
-                }
-                else{
+                if let value = cache.secondaryCache?.load(key: "\(temp._username!).png") {
+                   // print("inhaha")
+                    cell.profile_picture.image = UIImage(data:value as! Data)
+                }else
+                {
+                   // print("out")
                     downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
                 }
+//                if cache["key"] = dataObjectToCache // Store
+//                let value: NSData? = cache["key"]
+//
+////                if let cachedVersion = imageCache.object(forKey: "\(temp._username!).png" as NSString) {
+//                    cell.profile_picture.image = cachedVersion
+//                }
+//                else{
+//                    downloadImage(key_: "\(temp._username!).png", destination: cell.profile_picture)
+//                }
             }
             else
             {cell.profile_picture.image = UIImage(named: "girl")}
@@ -653,12 +665,23 @@ class main_page: UIViewController,UITableViewDataSource,UITableViewDelegate {
                 cell.share_profile_picture.image = UIImage(named:"morenzhuanfa")
                 var link = temp._sharedFrom![3].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
                 
-                if let cachedVersion = imageCache.object(forKey: link as NSString) {
-                    cell.share_profile_picture.image = cachedVersion
-                }
-                else{
+//                if let cachedVersion = imageCache.object(forKey: link as NSString) {
+//                    cell.share_profile_picture.image = cachedVersion
+//                }
+//                else{
+//                    downloadImage(key_: link, destination: cell.share_profile_picture)
+//                }
+                if let value = cache.secondaryCache?.load(key: link) {
+                    // print("inhaha")
+                    cell.share_profile_picture.image = UIImage(data:value as! Data)
+                }else
+                {
+                    // print("out")
                     downloadImage(key_: link, destination: cell.share_profile_picture)
                 }
+                
+                
+                
                 if temp._sharedFrom!.count > 4{
                     cell.share_content.text = temp._sharedFrom![4]
                     cell.share_content.isHidden = false

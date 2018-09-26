@@ -42,14 +42,23 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
         let profile_picture = name + ".png"
         
         //downloadImage(key_: profile_picture, destination: cell.profile_picture)
-
-            if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
-                cell.profile_picture.image = cachedVersion
-            }
-            else{
-                downloadImage(key_: profile_picture, destination: cell.profile_picture)
-            }
-        
+//
+//            if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
+//                cell.profile_picture.image = cachedVersion
+//            }
+//            else{
+//                downloadImage(key_: profile_picture, destination: cell.profile_picture)
+//            }
+        let message = profile_picture as NSString
+        if let value = cache.secondaryCache?.load(key: message as String) {
+            // print("inhaha")
+            let cachedVersion = UIImage(data:value as! Data)
+            cell.profile_picture.image = cachedVersion
+            
+        }else
+        {
+            downloadImage(key_: message as String, destination: cell.profile_picture)
+        }
         
         cell.profile_picture.layer.borderWidth = 1.0
         cell.profile_picture.layer.masksToBounds = false
@@ -206,19 +215,16 @@ class chat_message: UIViewController,UITableViewDelegate,UITableViewDataSource {
         var profile_picture = target + ".png"
      
             
-            if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
-                new_chat.target_image = cachedVersion
+            if let cachedVersion = cache.secondaryCache?.load(key: profile_picture) {
+                new_chat.target_image = UIImage(data:cachedVersion as Data)!
             }
         
     
         profile_picture = user + ".png"
-        if let cachedVersion = imageCache.object(forKey: profile_picture as NSString) {
-            new_chat.user_image  = cachedVersion
+        if let cachedVersion = cache.secondaryCache?.load(key: profile_picture) {
+            new_chat.user_image = UIImage(data:cachedVersion as Data)!
         }
         
-//
-//        let new_chat = chat(user: user, target: target, user_image: user_image!, target_image: target_image!)
-       
         
         new_chat.user = user
         new_chat.target = target

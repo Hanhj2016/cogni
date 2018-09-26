@@ -21,14 +21,16 @@ class tableView2: UITableViewCell, UICollectionViewDelegate, UICollectionViewDat
                                                        for: indexPath) as! MyCollectionViewCell
         
         let message = self.image_links[indexPath.row].deletingPrefix("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/")
-        if let cachedVersion = imageCache.object(forKey: message as NSString) {
+        if let value = cache.secondaryCache?.load(key: message) {
+            // print("inhaha")
+            let cachedVersion = UIImage(data:value as! Data)
             cell.photo.image = cachedVersion
-            if !self.images.contains(cachedVersion){
-                self.images.append(cachedVersion)}
-        }
-        else{
+            if !self.images.contains(cachedVersion!){
+                self.images.append(cachedVersion!)}
+            
+        }else
+        {
             downloadImage(key_: message, destination: cell.photo)
-            //print("title: \(self.title.text) count: \(self.images.count)" )
         }
         
         cell.photo.backgroundColor = sign_in_colour
